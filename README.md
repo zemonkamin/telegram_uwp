@@ -10,7 +10,7 @@ The project aims to provide a native Windows experience using the **Universal Wi
 Telegram UWP is intended for enthusiasts of Windows Phone, Windows 10 Mobile, and UWP applications, as well as anyone interested in keeping these platforms usable and alive.
 
 # Screenshots:
-<img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/photo_2026-08-01%2023.57.57.jpeg" width=20%><img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/photo_2026-08-01 23.57.58.jpeg" width=20%><img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/photo_2026-08-01 23.57.59.jpeg" width=20%><img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/2026-08-02 00.11.19.jpeg" width=20%><img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/photo_2026-08-01 23.58.01.jpeg" width=20%>
+<img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/photo_2026-08-01%2023.57.57.jpeg" width=20%><img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/photo_2026-08-01 23.57.58.jpeg" width=20%><img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/photo_2026-08-01 23.57.59.jpeg" width=20%><img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/2026-08-02 00.11.19.jpg" width=20%><img src="https://raw.githubusercontent.com/zemonkamin/telegram_uwp/refs/heads/main/Screenshots/photo_2026-08-01 23.58.01.jpeg" width=20%>
 
 # Developers:
 <table style="border-collapse: separate; border-spacing: 0 10px;">
