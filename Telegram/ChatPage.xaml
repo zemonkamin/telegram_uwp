@@ -2527,14 +2527,14 @@
                             Text="&#xE76E;" />
                     </Button>
 
-                    <Button
+                    <local:ComposerSendButton
                         x:Name="SendButton"
                         Grid.Column="2"
                         Width="56"
                         Height="56"
                         Margin="0"
                         VerticalAlignment="Bottom"
-                        Click="SendButton_Click"
+                        Invoked="SendButton_Click"
                         Style="{StaticResource TelegramBareButtonStyle}">
                         <Button.Transitions>
                             <TransitionCollection />
@@ -2554,7 +2554,7 @@
                                 Opacity="0.6"
                                 Text="&#xE720;" />
                         </Grid>
-                    </Button>
+                    </local:ComposerSendButton>
                 </Grid>
 
                 <Grid

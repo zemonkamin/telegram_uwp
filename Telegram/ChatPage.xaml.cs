@@ -36,6 +36,120 @@ using Windows.UI.Text;
 
 namespace Telegram
 {
+    /// <summary>
+    /// A send button that can complete a pointer click without taking focus from the
+    /// composer. This keeps the system input pane open continuously on older UWP
+    /// targets where Control.AllowFocusOnInteraction is not available.
+    /// </summary>
+    public sealed class ComposerSendButton : Button
+    {
+        private bool _nonFocusPointerPressed;
+        private uint _nonFocusPointerId;
+
+        public ComposerSendButton()
+        {
+            Click += ComposerSendButton_Click;
+        }
+
+        public event RoutedEventHandler Invoked;
+
+        public bool PreserveComposerFocusOnPointer { get; set; }
+
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
+        {
+            if (!ShouldHandleWithoutFocus(e))
+            {
+                base.OnPointerPressed(e);
+                return;
+            }
+
+            _nonFocusPointerPressed = true;
+            _nonFocusPointerId = e.Pointer.PointerId;
+            CapturePointer(e.Pointer);
+            VisualStateManager.GoToState(this, "Pressed", true);
+            e.Handled = true;
+        }
+
+        protected override void OnPointerReleased(PointerRoutedEventArgs e)
+        {
+            if (!_nonFocusPointerPressed || e == null || e.Pointer.PointerId != _nonFocusPointerId)
+            {
+                base.OnPointerReleased(e);
+                return;
+            }
+
+            var point = e.GetCurrentPoint(this).Position;
+            var invokeClick = IsEnabled && point.X >= 0 && point.Y >= 0 &&
+                              point.X <= ActualWidth && point.Y <= ActualHeight;
+
+            _nonFocusPointerPressed = false;
+            _nonFocusPointerId = 0;
+            ReleasePointerCapture(e.Pointer);
+            VisualStateManager.GoToState(this, "Normal", true);
+            e.Handled = true;
+
+            if (invokeClick)
+                RaiseInvoked(new RoutedEventArgs());
+        }
+
+        protected override void OnPointerCanceled(PointerRoutedEventArgs e)
+        {
+            if (!_nonFocusPointerPressed)
+            {
+                base.OnPointerCanceled(e);
+                return;
+            }
+
+            CancelNonFocusPointer(e);
+        }
+
+        protected override void OnPointerCaptureLost(PointerRoutedEventArgs e)
+        {
+            if (!_nonFocusPointerPressed)
+            {
+                base.OnPointerCaptureLost(e);
+                return;
+            }
+
+            _nonFocusPointerPressed = false;
+            _nonFocusPointerId = 0;
+            VisualStateManager.GoToState(this, "Normal", true);
+            if (e != null) e.Handled = true;
+        }
+
+        private void ComposerSendButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseInvoked(e);
+        }
+
+        private void RaiseInvoked(RoutedEventArgs e)
+        {
+            var handler = Invoked;
+            if (handler != null)
+                handler(this, e ?? new RoutedEventArgs());
+        }
+
+        private bool ShouldHandleWithoutFocus(PointerRoutedEventArgs e)
+        {
+            if (!PreserveComposerFocusOnPointer || !IsEnabled || e == null || e.Pointer == null)
+                return false;
+
+            var point = e.GetCurrentPoint(this);
+            return e.Pointer.PointerDeviceType != Windows.Devices.Input.PointerDeviceType.Mouse ||
+                   point.Properties.IsLeftButtonPressed;
+        }
+
+        private void CancelNonFocusPointer(PointerRoutedEventArgs e)
+        {
+            _nonFocusPointerPressed = false;
+            _nonFocusPointerId = 0;
+            if (e != null && e.Pointer != null)
+                ReleasePointerCapture(e.Pointer);
+            VisualStateManager.GoToState(this, "Normal", true);
+            if (e != null) e.Handled = true;
+        }
+    }
+
     public sealed partial class ChatPage : Page
     {
         private ChatViewModel _chat;
@@ -10068,7 +10182,6 @@ namespace Telegram
             CancelTypingAction();
             DismissUnreadSeparatorAfterOutgoing();
             AddPendingOutgoingMessage(pending);
-            ScrollToBottomSoon();
             ClearReply();
 
             StartOutgoingSend(
@@ -10195,6 +10308,9 @@ namespace Telegram
             var hasText = !string.IsNullOrWhiteSpace(MessageText.Text);
             var hasPayload = HasComposerPayload();
             var hideInputButtons = hasPayload || isRecording;
+
+            if (SendButton != null)
+                SendButton.PreserveComposerFocusOnPointer = hasPayload;
 
             if (hideInputButtons)
                 SetEmojiKeyboardVisible(false);
@@ -11023,7 +11139,6 @@ namespace Telegram
             var replyToMessageId = _replyToMessageId;
 
             AddPendingOutgoingMessage(pending);
-            ScrollToBottomSoon();
             DismissUnreadSeparatorAfterOutgoing();
             ClearReply();
             SendChatActionFireAndForget(sendKind == "voice" ? "uploading_voice" : "uploading_document");
@@ -11049,7 +11164,6 @@ namespace Telegram
             var replyToMessageId = _replyToMessageId;
 
             AddPendingOutgoingMessage(pending);
-            ScrollToBottomSoon();
             DismissUnreadSeparatorAfterOutgoing();
             ClearReply();
             SendChatActionFireAndForget("uploading_video_note");
@@ -11194,7 +11308,6 @@ namespace Telegram
                 {
                     var pendingTextMessage = CreatePendingOutgoingTextMessage(text);
                     AddPendingOutgoingMessage(pendingTextMessage);
-                    ScrollToBottomSoon();
                     StartOutgoingSend(
                         delegate { return TelegramService.Instance.SendTextAsync(chat, text, replyToMessageId); },
                         new List<ChatMessageViewModel> { pendingTextMessage },
@@ -11210,7 +11323,6 @@ namespace Telegram
                         var pendingMediaMessage = CreatePendingOutgoingMediaMessage(pendingPhotos[i], caption);
                         pendingMediaMessages.Add(pendingMediaMessage);
                         AddPendingOutgoingMessage(pendingMediaMessage);
-                        ScrollToBottomSoon();
                     }
 
                     if (pendingPhotos.Count == 1)
@@ -11271,7 +11383,6 @@ namespace Telegram
             DismissUnreadSeparatorAfterOutgoing();
 
             AddPendingOutgoingMessage(pendingTextMessage);
-            ScrollMessageIntoViewSoon(pendingTextMessage);
 
             var ignored = Dispatcher.RunAsync(CoreDispatcherPriority.Low, delegate
             {
@@ -11413,6 +11524,24 @@ namespace Telegram
             message.IsFirstInSenderGroup = !IsSameSenderAsPrevious(previous, message);
             _messages.Add(message);
             _messageKeys.Add(MessageKey(message));
+
+            // A local outgoing placeholder is already a new visible message. Move the
+            // viewport immediately, just as we do when the confirmed server message arrives,
+            // and keep it pinned while ListView realizes and measures the new container.
+            BringPendingOutgoingMessageIntoView();
+        }
+
+        private void BringPendingOutgoingMessageIntoView()
+        {
+            if (_messages == null || _messages.Count == 0 || MessageList == null) return;
+
+            // Sending is an explicit request to return to the newest message, so an old
+            // interaction suppression must not prevent the local "sending" bubble from
+            // lifting the chat above the composer.
+            _suppressViewportCorrectionsUntilTicks = 0;
+            _stickToBottom = true;
+            ScrollToBottom(false);
+            QueueBottomPinBurst();
         }
 
         private void RemovePendingOutgoingMessage(ChatMessageViewModel message)
@@ -11788,7 +11917,6 @@ namespace Telegram
                 DismissUnreadSeparatorAfterOutgoing();
                 UpdateComposerState();
                 AddPendingOutgoingMessage(pending);
-                ScrollToBottomSoon();
                 SendChatActionFireAndForget(GuessUploadChatAction(kind));
                 StartOutgoingSend(
                     delegate { return TelegramService.Instance.SendMediaAsync(chat, file, kind, caption, replyToMessageId); },
