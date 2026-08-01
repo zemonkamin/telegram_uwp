@@ -1,5 +1,5 @@
 <div align="center">
-<img src="YouTube/Assets/Square150x150Logo.scale-200.png?raw=true" width=20% height=20%>
+<img src="Telegram/Assets/Square150x150Logo.scale-200.png?raw=true" width=20% height=20%>
 <h1>Telegram UWP</h1>
 </div>
 
