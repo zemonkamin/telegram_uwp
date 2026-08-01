@@ -1,0 +1,316 @@
+<Page
+    x:Class="Telegram.ForwardPickPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
+   mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="TelegramPageBackgroundBrush" Color="#FF000000" />
+                    <SolidColorBrush x:Key="TelegramPrimaryTextBrush" Color="#FFF2F2F2" />
+                    <SolidColorBrush x:Key="TelegramSecondaryTextBrush" Color="#FF8D8D8D" />
+                    <SolidColorBrush x:Key="TelegramTimeTextBrush" Color="#FF9A9A9A" />
+                    <SolidColorBrush x:Key="TelegramAvatarPlaceholderBrush" Color="#FF2E2E2E" />
+                    <SolidColorBrush x:Key="TelegramAvatarTextBrush" Color="#FFEDEDED" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="TelegramPageBackgroundBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="TelegramPrimaryTextBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="TelegramSecondaryTextBrush" Color="#FF666666" />
+                    <SolidColorBrush x:Key="TelegramTimeTextBrush" Color="#FF777777" />
+                    <SolidColorBrush x:Key="TelegramAvatarPlaceholderBrush" Color="#FFE1E1E1" />
+                    <SolidColorBrush x:Key="TelegramAvatarTextBrush" Color="#FF333333" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Search -->
+        <TextBox
+            x:Name="SearchBox"
+            Grid.Row="0"
+            Margin="12,8,12,4"
+            PlaceholderText="Search..."
+            TextChanged="SearchBox_TextChanged" />
+
+        <!-- Folder tabs -->
+        <ListView
+            x:Name="FolderList"
+            Grid.Row="1"
+            Height="48"
+            Padding="14,0,0,0"
+            Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
+            BorderThickness="0"
+            IsSwipeEnabled="False"
+            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+            ScrollViewer.HorizontalScrollMode="Enabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollMode="Disabled"
+            SelectionChanged="FolderList_SelectionChanged"
+            SelectionMode="Single">
+            <ListView.Resources>
+                <SolidColorBrush x:Key="ListViewItemBackground" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemSelectedBackgroundThemeBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemPointerOverBackgroundThemeBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemPressedBackgroundThemeBrush" Color="Transparent" />
+            </ListView.Resources>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection />
+            </ListView.ItemContainerTransitions>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="MinWidth" Value="0" />
+                    <Setter Property="MinHeight" Value="0" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Grid Background="Transparent">
+                                    <ContentPresenter
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid
+                        Height="48"
+                        Padding="0,0,20,0"
+                        VerticalAlignment="Center"
+                        Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="3" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            Margin="0,0,0,4"
+                            VerticalAlignment="Bottom"
+                            FontSize="18"
+                            FontWeight="Light"
+                            Foreground="{Binding HeaderForeground}"
+                            Text="{Binding HeaderTitle}"
+                            TextTrimming="CharacterEllipsis" />
+                        <Border
+                            Grid.Row="1"
+                            Height="3"
+                            Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                            Visibility="{Binding SelectedUnderlineVisibility}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Chat list -->
+        <ListView
+            x:Name="ChatList"
+            Grid.Row="2"
+            Padding="0,2,0,2"
+            Background="{ThemeResource TelegramPageBackgroundBrush}"
+            BorderThickness="0"
+            IsItemClickEnabled="True"
+            ItemClick="ChatList_ItemClick"
+            SelectionMode="None">
+            <ListView.Resources>
+                <SolidColorBrush x:Key="ListViewItemBackground" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemSelectedBackgroundThemeBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemPointerOverBackgroundThemeBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemPressedBackgroundThemeBrush" Color="Transparent" />
+            </ListView.Resources>
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection />
+            </ListView.ItemContainerTransitions>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="MinHeight" Value="0" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Grid Background="Transparent">
+                                    <ContentPresenter
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid
+                        MinHeight="64"
+                        Padding="10,5,10,5"
+                        HorizontalAlignment="Stretch"
+                        Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="76" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid
+                            Width="46"
+                            Height="46"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                            <Border
+                                Width="46"
+                                Height="46"
+                                Background="{ThemeResource TelegramAvatarPlaceholderBrush}"
+                                CornerRadius="23">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="15"
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource TelegramAvatarTextBrush}"
+                                    Text="{Binding IconText}" />
+                            </Border>
+                            <Ellipse Width="46" Height="46">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding AvatarImageSource}" Stretch="UniformToFill" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+
+                        <Grid
+                            Grid.Column="1"
+                            Margin="4,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Row="0"
+                                HorizontalAlignment="Stretch"
+                                FontSize="18"
+                                FontWeight="SemiLight"
+                                Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                                MaxLines="1"
+                                Text="{Binding Title}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Margin="0,2,0,0"
+                                HorizontalAlignment="Stretch"
+                                FontSize="13"
+                                Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                                MaxLines="1"
+                                Text="{Binding SubtitleText}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </Grid>
+
+                        <Grid
+                            Grid.Column="2"
+                            Width="76"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel
+                                Grid.Row="0"
+                                Margin="0,0,0,6"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <FontIcon
+                                    Margin="0,0,4,0"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="11"
+                                    Foreground="{ThemeResource TelegramTimeTextBrush}"
+                                    Glyph="&#xE718;"
+                                    Visibility="{Binding PinnedIconVisibility}" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="11"
+                                    Foreground="{ThemeResource TelegramTimeTextBrush}"
+                                    MaxLines="1"
+                                    Text="{Binding LastTimeText}"
+                                    TextAlignment="Right"
+                                    TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                            <Border
+                                Grid.Row="1"
+                                Height="18"
+                                MinWidth="18"
+                                Padding="5,0"
+                                HorizontalAlignment="Right"
+                                Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                                CornerRadius="9"
+                                Visibility="{Binding UnreadBadgeVisibility}">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="11"
+                                    Foreground="White"
+                                    Text="{Binding UnreadBadge}" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <TextBlock
+            x:Name="EmptyText"
+            Grid.Row="2"
+            Margin="24"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="14"
+            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+            Text="No chats found."
+            TextAlignment="Center"
+            Visibility="Collapsed" />
+    </Grid>
+</Page>

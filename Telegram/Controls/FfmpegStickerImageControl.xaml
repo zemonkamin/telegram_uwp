@@ -1,0 +1,52 @@
+﻿<UserControl
+    x:Class="Telegram.Controls.FfmpegStickerImageControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    MaxWidth="196"
+    MaxHeight="196">
+
+    <Grid Background="Transparent"
+          MaxWidth="196"
+          MaxHeight="196">
+        <Image x:Name="RasterImage"
+               Stretch="Uniform"
+               MaxWidth="196"
+               MaxHeight="196"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Visibility="Collapsed" />
+
+        <Grid x:Name="FfmpegHost"
+              Background="Transparent"
+              Visibility="Collapsed"
+              MaxWidth="196"
+              MaxHeight="196"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+            <MediaElement x:Name="FfmpegImagePlayer"
+                          AreTransportControlsEnabled="False"
+                          AutoPlay="True"
+                          Stretch="Uniform"
+                          MaxWidth="196"
+                          MaxHeight="196"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Visibility="Collapsed"
+                          Loaded="FfmpegImagePlayer_Loaded"
+                          MediaOpened="FfmpegImagePlayer_MediaOpened"
+                          MediaEnded="FfmpegImagePlayer_MediaEnded"
+                          MediaFailed="FfmpegImagePlayer_MediaFailed" />
+        </Grid>
+
+        <ProgressRing x:Name="LoadingRing"
+                      Width="28"
+                      Height="28"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsActive="False"
+                      Visibility="Collapsed" />
+    </Grid>
+</UserControl>

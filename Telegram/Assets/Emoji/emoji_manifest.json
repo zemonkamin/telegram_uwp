@@ -1,0 +1,4257 @@
+﻿[
+    {
+        "key":  "002320E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/002320E3.png"
+    },
+    {
+        "key":  "003020E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003020E3.png"
+    },
+    {
+        "key":  "003120E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003120E3.png"
+    },
+    {
+        "key":  "003220E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003220E3.png"
+    },
+    {
+        "key":  "003320E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003320E3.png"
+    },
+    {
+        "key":  "003420E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003420E3.png"
+    },
+    {
+        "key":  "003520E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003520E3.png"
+    },
+    {
+        "key":  "003620E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003620E3.png"
+    },
+    {
+        "key":  "003720E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003720E3.png"
+    },
+    {
+        "key":  "003820E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003820E3.png"
+    },
+    {
+        "key":  "003920E3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/003920E3.png"
+    },
+    {
+        "key":  "00A9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/00A9.png"
+    },
+    {
+        "key":  "00AE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/00AE.png"
+    },
+    {
+        "key":  "203C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/203C.png"
+    },
+    {
+        "key":  "2049",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2049.png"
+    },
+    {
+        "key":  "2122",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2122.png"
+    },
+    {
+        "key":  "2139",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2139.png"
+    },
+    {
+        "key":  "2194",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2194.png"
+    },
+    {
+        "key":  "2195",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2195.png"
+    },
+    {
+        "key":  "2196",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2196.png"
+    },
+    {
+        "key":  "2197",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2197.png"
+    },
+    {
+        "key":  "2198",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2198.png"
+    },
+    {
+        "key":  "2199",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2199.png"
+    },
+    {
+        "key":  "21A9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/21A9.png"
+    },
+    {
+        "key":  "21AA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/21AA.png"
+    },
+    {
+        "key":  "231A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/231A.png"
+    },
+    {
+        "key":  "231B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/231B.png"
+    },
+    {
+        "key":  "23E9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/23E9.png"
+    },
+    {
+        "key":  "23EA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/23EA.png"
+    },
+    {
+        "key":  "23EB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/23EB.png"
+    },
+    {
+        "key":  "23EC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/23EC.png"
+    },
+    {
+        "key":  "23F0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/23F0.png"
+    },
+    {
+        "key":  "23F3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/23F3.png"
+    },
+    {
+        "key":  "24C2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/24C2.png"
+    },
+    {
+        "key":  "25AA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/25AA.png"
+    },
+    {
+        "key":  "25AB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/25AB.png"
+    },
+    {
+        "key":  "25B6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/25B6.png"
+    },
+    {
+        "key":  "25C0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/25C0.png"
+    },
+    {
+        "key":  "25FB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/25FB.png"
+    },
+    {
+        "key":  "25FC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/25FC.png"
+    },
+    {
+        "key":  "25FD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/25FD.png"
+    },
+    {
+        "key":  "25FE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/25FE.png"
+    },
+    {
+        "key":  "2600",
+        "animated":  "Assets/Emoji/Animated/2600.webp",
+        "static":  "Assets/Emoji/Static/2600.png"
+    },
+    {
+        "key":  "2601",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2601.png"
+    },
+    {
+        "key":  "260E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/260E.png"
+    },
+    {
+        "key":  "2611",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2611.png"
+    },
+    {
+        "key":  "2614",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2614.png"
+    },
+    {
+        "key":  "2615",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2615.png"
+    },
+    {
+        "key":  "261D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/261D.png"
+    },
+    {
+        "key":  "263A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/263A.png"
+    },
+    {
+        "key":  "2648",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2648.png"
+    },
+    {
+        "key":  "2649",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2649.png"
+    },
+    {
+        "key":  "264A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/264A.png"
+    },
+    {
+        "key":  "264B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/264B.png"
+    },
+    {
+        "key":  "264C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/264C.png"
+    },
+    {
+        "key":  "264D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/264D.png"
+    },
+    {
+        "key":  "264E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/264E.png"
+    },
+    {
+        "key":  "264F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/264F.png"
+    },
+    {
+        "key":  "2650",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2650.png"
+    },
+    {
+        "key":  "2651",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2651.png"
+    },
+    {
+        "key":  "2652",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2652.png"
+    },
+    {
+        "key":  "2653",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2653.png"
+    },
+    {
+        "key":  "2660",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2660.png"
+    },
+    {
+        "key":  "2663",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2663.png"
+    },
+    {
+        "key":  "2665",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2665.png"
+    },
+    {
+        "key":  "2666",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2666.png"
+    },
+    {
+        "key":  "2668",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2668.png"
+    },
+    {
+        "key":  "267B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/267B.png"
+    },
+    {
+        "key":  "267F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/267F.png"
+    },
+    {
+        "key":  "2693",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2693.png"
+    },
+    {
+        "key":  "26A0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26A0.png"
+    },
+    {
+        "key":  "26A1",
+        "animated":  "Assets/Emoji/Animated/26A1.webp",
+        "static":  "Assets/Emoji/Static/26A1.png"
+    },
+    {
+        "key":  "26AA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26AA.png"
+    },
+    {
+        "key":  "26AB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26AB.png"
+    },
+    {
+        "key":  "26BD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26BD.png"
+    },
+    {
+        "key":  "26BE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26BE.png"
+    },
+    {
+        "key":  "26C4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26C4.png"
+    },
+    {
+        "key":  "26C5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26C5.png"
+    },
+    {
+        "key":  "26CE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26CE.png"
+    },
+    {
+        "key":  "26D4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26D4.png"
+    },
+    {
+        "key":  "26EA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26EA.png"
+    },
+    {
+        "key":  "26F2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26F2.png"
+    },
+    {
+        "key":  "26F3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26F3.png"
+    },
+    {
+        "key":  "26F5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26F5.png"
+    },
+    {
+        "key":  "26FA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26FA.png"
+    },
+    {
+        "key":  "26FD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/26FD.png"
+    },
+    {
+        "key":  "2702",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2702.png"
+    },
+    {
+        "key":  "2705",
+        "animated":  "Assets/Emoji/Animated/2705.webp",
+        "static":  "Assets/Emoji/Static/2705.png"
+    },
+    {
+        "key":  "2708",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2708.png"
+    },
+    {
+        "key":  "2709",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2709.png"
+    },
+    {
+        "key":  "270A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/270A.png"
+    },
+    {
+        "key":  "270B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/270B.png"
+    },
+    {
+        "key":  "270C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/270C.png"
+    },
+    {
+        "key":  "270F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/270F.png"
+    },
+    {
+        "key":  "2712",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2712.png"
+    },
+    {
+        "key":  "2714",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2714.png"
+    },
+    {
+        "key":  "2716",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2716.png"
+    },
+    {
+        "key":  "2728",
+        "animated":  "Assets/Emoji/Animated/2728.webp",
+        "static":  "Assets/Emoji/Static/2728.png"
+    },
+    {
+        "key":  "2733",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2733.png"
+    },
+    {
+        "key":  "2734",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2734.png"
+    },
+    {
+        "key":  "2744",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2744.png"
+    },
+    {
+        "key":  "2747",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2747.png"
+    },
+    {
+        "key":  "274C",
+        "animated":  "Assets/Emoji/Animated/274C.webp",
+        "static":  "Assets/Emoji/Static/274C.png"
+    },
+    {
+        "key":  "274E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/274E.png"
+    },
+    {
+        "key":  "2753",
+        "animated":  "Assets/Emoji/Animated/2753.webp",
+        "static":  "Assets/Emoji/Static/2753.png"
+    },
+    {
+        "key":  "2754",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2754.png"
+    },
+    {
+        "key":  "2755",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2755.png"
+    },
+    {
+        "key":  "2757",
+        "animated":  "Assets/Emoji/Animated/2757.webp",
+        "static":  "Assets/Emoji/Static/2757.png"
+    },
+    {
+        "key":  "2764",
+        "animated":  "Assets/Emoji/Animated/2764.webp",
+        "static":  "Assets/Emoji/Static/2764.png"
+    },
+    {
+        "key":  "2795",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2795.png"
+    },
+    {
+        "key":  "2796",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2796.png"
+    },
+    {
+        "key":  "2797",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2797.png"
+    },
+    {
+        "key":  "27A1",
+        "animated":  "Assets/Emoji/Animated/27A1.webp",
+        "static":  "Assets/Emoji/Static/27A1.png"
+    },
+    {
+        "key":  "27B0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/27B0.png"
+    },
+    {
+        "key":  "27BF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/27BF.png"
+    },
+    {
+        "key":  "2934",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2934.png"
+    },
+    {
+        "key":  "2935",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2935.png"
+    },
+    {
+        "key":  "2B05",
+        "animated":  "Assets/Emoji/Animated/2B05.webp",
+        "static":  "Assets/Emoji/Static/2B05.png"
+    },
+    {
+        "key":  "2B06",
+        "animated":  "Assets/Emoji/Animated/2B06.webp",
+        "static":  "Assets/Emoji/Static/2B06.png"
+    },
+    {
+        "key":  "2B07",
+        "animated":  "Assets/Emoji/Animated/2B07.webp",
+        "static":  "Assets/Emoji/Static/2B07.png"
+    },
+    {
+        "key":  "2B1B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2B1B.png"
+    },
+    {
+        "key":  "2B1C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2B1C.png"
+    },
+    {
+        "key":  "2B50",
+        "animated":  "Assets/Emoji/Animated/2B50.webp",
+        "static":  "Assets/Emoji/Static/2B50.png"
+    },
+    {
+        "key":  "2B55",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/2B55.png"
+    },
+    {
+        "key":  "3030",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/3030.png"
+    },
+    {
+        "key":  "303D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/303D.png"
+    },
+    {
+        "key":  "3297",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/3297.png"
+    },
+    {
+        "key":  "3299",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/3299.png"
+    },
+    {
+        "key":  "D83CDC04",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDC04.png"
+    },
+    {
+        "key":  "D83CDCCF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDCCF.png"
+    },
+    {
+        "key":  "D83CDD70",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD70.png"
+    },
+    {
+        "key":  "D83CDD71",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD71.png"
+    },
+    {
+        "key":  "D83CDD7E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD7E.png"
+    },
+    {
+        "key":  "D83CDD7F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD7F.png"
+    },
+    {
+        "key":  "D83CDD8E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD8E.png"
+    },
+    {
+        "key":  "D83CDD91",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD91.png"
+    },
+    {
+        "key":  "D83CDD92",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD92.png"
+    },
+    {
+        "key":  "D83CDD93",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD93.png"
+    },
+    {
+        "key":  "D83CDD94",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD94.png"
+    },
+    {
+        "key":  "D83CDD95",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD95.png"
+    },
+    {
+        "key":  "D83CDD96",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD96.png"
+    },
+    {
+        "key":  "D83CDD97",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD97.png"
+    },
+    {
+        "key":  "D83CDD98",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD98.png"
+    },
+    {
+        "key":  "D83CDD99",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD99.png"
+    },
+    {
+        "key":  "D83CDD9A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDD9A.png"
+    },
+    {
+        "key":  "D83CDDE8D83CDDF3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDE8D83CDDF3.png"
+    },
+    {
+        "key":  "D83CDDE9D83CDDEA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDE9D83CDDEA.png"
+    },
+    {
+        "key":  "D83CDDEAD83CDDF8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDEAD83CDDF8.png"
+    },
+    {
+        "key":  "D83CDDEBD83CDDF7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDEBD83CDDF7.png"
+    },
+    {
+        "key":  "D83CDDECD83CDDE7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDECD83CDDE7.png"
+    },
+    {
+        "key":  "D83CDDEED83CDDF9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDEED83CDDF9.png"
+    },
+    {
+        "key":  "D83CDDEFD83CDDF5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDEFD83CDDF5.png"
+    },
+    {
+        "key":  "D83CDDF0D83CDDF7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDF0D83CDDF7.png"
+    },
+    {
+        "key":  "D83CDDF7D83CDDFA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDF7D83CDDFA.png"
+    },
+    {
+        "key":  "D83CDDFAD83CDDF8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDDFAD83CDDF8.png"
+    },
+    {
+        "key":  "D83CDE01",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE01.png"
+    },
+    {
+        "key":  "D83CDE02",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE02.png"
+    },
+    {
+        "key":  "D83CDE1A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE1A.png"
+    },
+    {
+        "key":  "D83CDE2F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE2F.png"
+    },
+    {
+        "key":  "D83CDE32",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE32.png"
+    },
+    {
+        "key":  "D83CDE33",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE33.png"
+    },
+    {
+        "key":  "D83CDE34",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE34.png"
+    },
+    {
+        "key":  "D83CDE35",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE35.png"
+    },
+    {
+        "key":  "D83CDE36",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE36.png"
+    },
+    {
+        "key":  "D83CDE37",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE37.png"
+    },
+    {
+        "key":  "D83CDE38",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE38.png"
+    },
+    {
+        "key":  "D83CDE39",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE39.png"
+    },
+    {
+        "key":  "D83CDE3A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE3A.png"
+    },
+    {
+        "key":  "D83CDE50",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE50.png"
+    },
+    {
+        "key":  "D83CDE51",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDE51.png"
+    },
+    {
+        "key":  "D83CDF00",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF00.png"
+    },
+    {
+        "key":  "D83CDF01",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF01.png"
+    },
+    {
+        "key":  "D83CDF02",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF02.png"
+    },
+    {
+        "key":  "D83CDF03",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF03.png"
+    },
+    {
+        "key":  "D83CDF04",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF04.png"
+    },
+    {
+        "key":  "D83CDF05",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF05.png"
+    },
+    {
+        "key":  "D83CDF06",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF06.png"
+    },
+    {
+        "key":  "D83CDF07",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF07.png"
+    },
+    {
+        "key":  "D83CDF08",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF08.png"
+    },
+    {
+        "key":  "D83CDF09",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF09.png"
+    },
+    {
+        "key":  "D83CDF0A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF0A.png"
+    },
+    {
+        "key":  "D83CDF0B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF0B.png"
+    },
+    {
+        "key":  "D83CDF0C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF0C.png"
+    },
+    {
+        "key":  "D83CDF0D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF0D.png"
+    },
+    {
+        "key":  "D83CDF0E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF0E.png"
+    },
+    {
+        "key":  "D83CDF0F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF0F.png"
+    },
+    {
+        "key":  "D83CDF10",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF10.png"
+    },
+    {
+        "key":  "D83CDF11",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF11.png"
+    },
+    {
+        "key":  "D83CDF12",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF12.png"
+    },
+    {
+        "key":  "D83CDF13",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF13.png"
+    },
+    {
+        "key":  "D83CDF14",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF14.png"
+    },
+    {
+        "key":  "D83CDF15",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF15.png"
+    },
+    {
+        "key":  "D83CDF16",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF16.png"
+    },
+    {
+        "key":  "D83CDF17",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF17.png"
+    },
+    {
+        "key":  "D83CDF18",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF18.png"
+    },
+    {
+        "key":  "D83CDF19",
+        "animated":  "Assets/Emoji/Animated/D83CDF19.webp",
+        "static":  "Assets/Emoji/Static/D83CDF19.png"
+    },
+    {
+        "key":  "D83CDF1A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF1A.png"
+    },
+    {
+        "key":  "D83CDF1B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF1B.png"
+    },
+    {
+        "key":  "D83CDF1C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF1C.png"
+    },
+    {
+        "key":  "D83CDF1D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF1D.png"
+    },
+    {
+        "key":  "D83CDF1E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF1E.png"
+    },
+    {
+        "key":  "D83CDF1F",
+        "animated":  "Assets/Emoji/Animated/D83CDF1F.webp",
+        "static":  "Assets/Emoji/Static/D83CDF1F.png"
+    },
+    {
+        "key":  "D83CDF20",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF20.png"
+    },
+    {
+        "key":  "D83CDF30",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF30.png"
+    },
+    {
+        "key":  "D83CDF31",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF31.png"
+    },
+    {
+        "key":  "D83CDF32",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF32.png"
+    },
+    {
+        "key":  "D83CDF33",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF33.png"
+    },
+    {
+        "key":  "D83CDF34",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF34.png"
+    },
+    {
+        "key":  "D83CDF35",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF35.png"
+    },
+    {
+        "key":  "D83CDF37",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF37.png"
+    },
+    {
+        "key":  "D83CDF38",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF38.png"
+    },
+    {
+        "key":  "D83CDF39",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF39.png"
+    },
+    {
+        "key":  "D83CDF3A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF3A.png"
+    },
+    {
+        "key":  "D83CDF3B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF3B.png"
+    },
+    {
+        "key":  "D83CDF3C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF3C.png"
+    },
+    {
+        "key":  "D83CDF3D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF3D.png"
+    },
+    {
+        "key":  "D83CDF3E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF3E.png"
+    },
+    {
+        "key":  "D83CDF3F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF3F.png"
+    },
+    {
+        "key":  "D83CDF40",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF40.png"
+    },
+    {
+        "key":  "D83CDF41",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF41.png"
+    },
+    {
+        "key":  "D83CDF42",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF42.png"
+    },
+    {
+        "key":  "D83CDF43",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF43.png"
+    },
+    {
+        "key":  "D83CDF44",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF44.png"
+    },
+    {
+        "key":  "D83CDF45",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF45.png"
+    },
+    {
+        "key":  "D83CDF46",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF46.png"
+    },
+    {
+        "key":  "D83CDF47",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF47.png"
+    },
+    {
+        "key":  "D83CDF48",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF48.png"
+    },
+    {
+        "key":  "D83CDF49",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF49.png"
+    },
+    {
+        "key":  "D83CDF4A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF4A.png"
+    },
+    {
+        "key":  "D83CDF4B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF4B.png"
+    },
+    {
+        "key":  "D83CDF4C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF4C.png"
+    },
+    {
+        "key":  "D83CDF4D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF4D.png"
+    },
+    {
+        "key":  "D83CDF4E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF4E.png"
+    },
+    {
+        "key":  "D83CDF4F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF4F.png"
+    },
+    {
+        "key":  "D83CDF50",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF50.png"
+    },
+    {
+        "key":  "D83CDF51",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF51.png"
+    },
+    {
+        "key":  "D83CDF52",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF52.png"
+    },
+    {
+        "key":  "D83CDF53",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF53.png"
+    },
+    {
+        "key":  "D83CDF54",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF54.png"
+    },
+    {
+        "key":  "D83CDF55",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF55.png"
+    },
+    {
+        "key":  "D83CDF56",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF56.png"
+    },
+    {
+        "key":  "D83CDF57",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF57.png"
+    },
+    {
+        "key":  "D83CDF58",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF58.png"
+    },
+    {
+        "key":  "D83CDF59",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF59.png"
+    },
+    {
+        "key":  "D83CDF5A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF5A.png"
+    },
+    {
+        "key":  "D83CDF5B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF5B.png"
+    },
+    {
+        "key":  "D83CDF5C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF5C.png"
+    },
+    {
+        "key":  "D83CDF5D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF5D.png"
+    },
+    {
+        "key":  "D83CDF5E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF5E.png"
+    },
+    {
+        "key":  "D83CDF5F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF5F.png"
+    },
+    {
+        "key":  "D83CDF60",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF60.png"
+    },
+    {
+        "key":  "D83CDF61",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF61.png"
+    },
+    {
+        "key":  "D83CDF62",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF62.png"
+    },
+    {
+        "key":  "D83CDF63",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF63.png"
+    },
+    {
+        "key":  "D83CDF64",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF64.png"
+    },
+    {
+        "key":  "D83CDF65",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF65.png"
+    },
+    {
+        "key":  "D83CDF66",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF66.png"
+    },
+    {
+        "key":  "D83CDF67",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF67.png"
+    },
+    {
+        "key":  "D83CDF68",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF68.png"
+    },
+    {
+        "key":  "D83CDF69",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF69.png"
+    },
+    {
+        "key":  "D83CDF6A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF6A.png"
+    },
+    {
+        "key":  "D83CDF6B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF6B.png"
+    },
+    {
+        "key":  "D83CDF6C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF6C.png"
+    },
+    {
+        "key":  "D83CDF6D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF6D.png"
+    },
+    {
+        "key":  "D83CDF6E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF6E.png"
+    },
+    {
+        "key":  "D83CDF6F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF6F.png"
+    },
+    {
+        "key":  "D83CDF70",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF70.png"
+    },
+    {
+        "key":  "D83CDF71",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF71.png"
+    },
+    {
+        "key":  "D83CDF72",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF72.png"
+    },
+    {
+        "key":  "D83CDF73",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF73.png"
+    },
+    {
+        "key":  "D83CDF74",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF74.png"
+    },
+    {
+        "key":  "D83CDF75",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF75.png"
+    },
+    {
+        "key":  "D83CDF76",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF76.png"
+    },
+    {
+        "key":  "D83CDF77",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF77.png"
+    },
+    {
+        "key":  "D83CDF78",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF78.png"
+    },
+    {
+        "key":  "D83CDF79",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF79.png"
+    },
+    {
+        "key":  "D83CDF7A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF7A.png"
+    },
+    {
+        "key":  "D83CDF7B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF7B.png"
+    },
+    {
+        "key":  "D83CDF7C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF7C.png"
+    },
+    {
+        "key":  "D83CDF80",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF80.png"
+    },
+    {
+        "key":  "D83CDF81",
+        "animated":  "Assets/Emoji/Animated/D83CDF81.webp",
+        "static":  "Assets/Emoji/Static/D83CDF81.png"
+    },
+    {
+        "key":  "D83CDF82",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF82.png"
+    },
+    {
+        "key":  "D83CDF83",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF83.png"
+    },
+    {
+        "key":  "D83CDF84",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF84.png"
+    },
+    {
+        "key":  "D83CDF85",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF85.png"
+    },
+    {
+        "key":  "D83CDF86",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF86.png"
+    },
+    {
+        "key":  "D83CDF87",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF87.png"
+    },
+    {
+        "key":  "D83CDF88",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF88.png"
+    },
+    {
+        "key":  "D83CDF89",
+        "animated":  "Assets/Emoji/Animated/D83CDF89.webp",
+        "static":  "Assets/Emoji/Static/D83CDF89.png"
+    },
+    {
+        "key":  "D83CDF8A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF8A.png"
+    },
+    {
+        "key":  "D83CDF8B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF8B.png"
+    },
+    {
+        "key":  "D83CDF8C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF8C.png"
+    },
+    {
+        "key":  "D83CDF8D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF8D.png"
+    },
+    {
+        "key":  "D83CDF8E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF8E.png"
+    },
+    {
+        "key":  "D83CDF8F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF8F.png"
+    },
+    {
+        "key":  "D83CDF90",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF90.png"
+    },
+    {
+        "key":  "D83CDF91",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF91.png"
+    },
+    {
+        "key":  "D83CDF92",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF92.png"
+    },
+    {
+        "key":  "D83CDF93",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDF93.png"
+    },
+    {
+        "key":  "D83CDFA0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA0.png"
+    },
+    {
+        "key":  "D83CDFA1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA1.png"
+    },
+    {
+        "key":  "D83CDFA2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA2.png"
+    },
+    {
+        "key":  "D83CDFA3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA3.png"
+    },
+    {
+        "key":  "D83CDFA4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA4.png"
+    },
+    {
+        "key":  "D83CDFA5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA5.png"
+    },
+    {
+        "key":  "D83CDFA6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA6.png"
+    },
+    {
+        "key":  "D83CDFA7",
+        "animated":  "Assets/Emoji/Animated/D83CDFA7.webp",
+        "static":  "Assets/Emoji/Static/D83CDFA7.png"
+    },
+    {
+        "key":  "D83CDFA8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA8.png"
+    },
+    {
+        "key":  "D83CDFA9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFA9.png"
+    },
+    {
+        "key":  "D83CDFAA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFAA.png"
+    },
+    {
+        "key":  "D83CDFAB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFAB.png"
+    },
+    {
+        "key":  "D83CDFAC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFAC.png"
+    },
+    {
+        "key":  "D83CDFAD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFAD.png"
+    },
+    {
+        "key":  "D83CDFAE",
+        "animated":  "Assets/Emoji/Animated/D83CDFAE.webp",
+        "static":  "Assets/Emoji/Static/D83CDFAE.png"
+    },
+    {
+        "key":  "D83CDFAF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFAF.png"
+    },
+    {
+        "key":  "D83CDFB0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB0.png"
+    },
+    {
+        "key":  "D83CDFB1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB1.png"
+    },
+    {
+        "key":  "D83CDFB2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB2.png"
+    },
+    {
+        "key":  "D83CDFB3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB3.png"
+    },
+    {
+        "key":  "D83CDFB4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB4.png"
+    },
+    {
+        "key":  "D83CDFB5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB5.png"
+    },
+    {
+        "key":  "D83CDFB6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB6.png"
+    },
+    {
+        "key":  "D83CDFB7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB7.png"
+    },
+    {
+        "key":  "D83CDFB8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB8.png"
+    },
+    {
+        "key":  "D83CDFB9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFB9.png"
+    },
+    {
+        "key":  "D83CDFBA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFBA.png"
+    },
+    {
+        "key":  "D83CDFBB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFBB.png"
+    },
+    {
+        "key":  "D83CDFBC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFBC.png"
+    },
+    {
+        "key":  "D83CDFBD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFBD.png"
+    },
+    {
+        "key":  "D83CDFBE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFBE.png"
+    },
+    {
+        "key":  "D83CDFBF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFBF.png"
+    },
+    {
+        "key":  "D83CDFC0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFC0.png"
+    },
+    {
+        "key":  "D83CDFC1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFC1.png"
+    },
+    {
+        "key":  "D83CDFC2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFC2.png"
+    },
+    {
+        "key":  "D83CDFC3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFC3.png"
+    },
+    {
+        "key":  "D83CDFC4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFC4.png"
+    },
+    {
+        "key":  "D83CDFC6",
+        "animated":  "Assets/Emoji/Animated/D83CDFC6.webp",
+        "static":  "Assets/Emoji/Static/D83CDFC6.png"
+    },
+    {
+        "key":  "D83CDFC7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFC7.png"
+    },
+    {
+        "key":  "D83CDFC8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFC8.png"
+    },
+    {
+        "key":  "D83CDFC9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFC9.png"
+    },
+    {
+        "key":  "D83CDFCA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFCA.png"
+    },
+    {
+        "key":  "D83CDFE0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE0.png"
+    },
+    {
+        "key":  "D83CDFE1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE1.png"
+    },
+    {
+        "key":  "D83CDFE2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE2.png"
+    },
+    {
+        "key":  "D83CDFE3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE3.png"
+    },
+    {
+        "key":  "D83CDFE4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE4.png"
+    },
+    {
+        "key":  "D83CDFE5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE5.png"
+    },
+    {
+        "key":  "D83CDFE6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE6.png"
+    },
+    {
+        "key":  "D83CDFE7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE7.png"
+    },
+    {
+        "key":  "D83CDFE8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE8.png"
+    },
+    {
+        "key":  "D83CDFE9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFE9.png"
+    },
+    {
+        "key":  "D83CDFEA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFEA.png"
+    },
+    {
+        "key":  "D83CDFEB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFEB.png"
+    },
+    {
+        "key":  "D83CDFEC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFEC.png"
+    },
+    {
+        "key":  "D83CDFED",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFED.png"
+    },
+    {
+        "key":  "D83CDFEE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFEE.png"
+    },
+    {
+        "key":  "D83CDFEF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFEF.png"
+    },
+    {
+        "key":  "D83CDFF0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83CDFF0.png"
+    },
+    {
+        "key":  "D83DDC00",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC00.png"
+    },
+    {
+        "key":  "D83DDC01",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC01.png"
+    },
+    {
+        "key":  "D83DDC02",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC02.png"
+    },
+    {
+        "key":  "D83DDC03",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC03.png"
+    },
+    {
+        "key":  "D83DDC04",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC04.png"
+    },
+    {
+        "key":  "D83DDC05",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC05.png"
+    },
+    {
+        "key":  "D83DDC06",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC06.png"
+    },
+    {
+        "key":  "D83DDC07",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC07.png"
+    },
+    {
+        "key":  "D83DDC08",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC08.png"
+    },
+    {
+        "key":  "D83DDC09",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC09.png"
+    },
+    {
+        "key":  "D83DDC0A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC0A.png"
+    },
+    {
+        "key":  "D83DDC0B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC0B.png"
+    },
+    {
+        "key":  "D83DDC0C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC0C.png"
+    },
+    {
+        "key":  "D83DDC0D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC0D.png"
+    },
+    {
+        "key":  "D83DDC0E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC0E.png"
+    },
+    {
+        "key":  "D83DDC0F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC0F.png"
+    },
+    {
+        "key":  "D83DDC10",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC10.png"
+    },
+    {
+        "key":  "D83DDC11",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC11.png"
+    },
+    {
+        "key":  "D83DDC12",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC12.png"
+    },
+    {
+        "key":  "D83DDC13",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC13.png"
+    },
+    {
+        "key":  "D83DDC14",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC14.png"
+    },
+    {
+        "key":  "D83DDC15",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC15.png"
+    },
+    {
+        "key":  "D83DDC16",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC16.png"
+    },
+    {
+        "key":  "D83DDC17",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC17.png"
+    },
+    {
+        "key":  "D83DDC18",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC18.png"
+    },
+    {
+        "key":  "D83DDC19",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC19.png"
+    },
+    {
+        "key":  "D83DDC1A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC1A.png"
+    },
+    {
+        "key":  "D83DDC1B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC1B.png"
+    },
+    {
+        "key":  "D83DDC1C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC1C.png"
+    },
+    {
+        "key":  "D83DDC1D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC1D.png"
+    },
+    {
+        "key":  "D83DDC1E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC1E.png"
+    },
+    {
+        "key":  "D83DDC1F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC1F.png"
+    },
+    {
+        "key":  "D83DDC20",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC20.png"
+    },
+    {
+        "key":  "D83DDC21",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC21.png"
+    },
+    {
+        "key":  "D83DDC22",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC22.png"
+    },
+    {
+        "key":  "D83DDC23",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC23.png"
+    },
+    {
+        "key":  "D83DDC24",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC24.png"
+    },
+    {
+        "key":  "D83DDC25",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC25.png"
+    },
+    {
+        "key":  "D83DDC26",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC26.png"
+    },
+    {
+        "key":  "D83DDC27",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC27.png"
+    },
+    {
+        "key":  "D83DDC28",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC28.png"
+    },
+    {
+        "key":  "D83DDC29",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC29.png"
+    },
+    {
+        "key":  "D83DDC2A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC2A.png"
+    },
+    {
+        "key":  "D83DDC2B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC2B.png"
+    },
+    {
+        "key":  "D83DDC2C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC2C.png"
+    },
+    {
+        "key":  "D83DDC2D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC2D.png"
+    },
+    {
+        "key":  "D83DDC2E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC2E.png"
+    },
+    {
+        "key":  "D83DDC2F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC2F.png"
+    },
+    {
+        "key":  "D83DDC30",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC30.png"
+    },
+    {
+        "key":  "D83DDC31",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC31.png"
+    },
+    {
+        "key":  "D83DDC32",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC32.png"
+    },
+    {
+        "key":  "D83DDC33",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC33.png"
+    },
+    {
+        "key":  "D83DDC34",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC34.png"
+    },
+    {
+        "key":  "D83DDC35",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC35.png"
+    },
+    {
+        "key":  "D83DDC36",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC36.png"
+    },
+    {
+        "key":  "D83DDC37",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC37.png"
+    },
+    {
+        "key":  "D83DDC38",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC38.png"
+    },
+    {
+        "key":  "D83DDC39",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC39.png"
+    },
+    {
+        "key":  "D83DDC3A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC3A.png"
+    },
+    {
+        "key":  "D83DDC3B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC3B.png"
+    },
+    {
+        "key":  "D83DDC3C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC3C.png"
+    },
+    {
+        "key":  "D83DDC3D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC3D.png"
+    },
+    {
+        "key":  "D83DDC3E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC3E.png"
+    },
+    {
+        "key":  "D83DDC40",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC40.png"
+    },
+    {
+        "key":  "D83DDC42",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC42.png"
+    },
+    {
+        "key":  "D83DDC43",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC43.png"
+    },
+    {
+        "key":  "D83DDC44",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC44.png"
+    },
+    {
+        "key":  "D83DDC45",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC45.png"
+    },
+    {
+        "key":  "D83DDC46",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC46.png"
+    },
+    {
+        "key":  "D83DDC47",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC47.png"
+    },
+    {
+        "key":  "D83DDC48",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC48.png"
+    },
+    {
+        "key":  "D83DDC49",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC49.png"
+    },
+    {
+        "key":  "D83DDC4A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC4A.png"
+    },
+    {
+        "key":  "D83DDC4B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC4B.png"
+    },
+    {
+        "key":  "D83DDC4C",
+        "animated":  "Assets/Emoji/Animated/D83DDC4C.webp",
+        "static":  "Assets/Emoji/Static/D83DDC4C.png"
+    },
+    {
+        "key":  "D83DDC4D",
+        "animated":  "Assets/Emoji/Animated/D83DDC4D.webp",
+        "static":  "Assets/Emoji/Static/D83DDC4D.png"
+    },
+    {
+        "key":  "D83DDC4E",
+        "animated":  "Assets/Emoji/Animated/D83DDC4E.webp",
+        "static":  "Assets/Emoji/Static/D83DDC4E.png"
+    },
+    {
+        "key":  "D83DDC4F",
+        "animated":  "Assets/Emoji/Animated/D83DDC4F.webp",
+        "static":  "Assets/Emoji/Static/D83DDC4F.png"
+    },
+    {
+        "key":  "D83DDC50",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC50.png"
+    },
+    {
+        "key":  "D83DDC51",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC51.png"
+    },
+    {
+        "key":  "D83DDC52",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC52.png"
+    },
+    {
+        "key":  "D83DDC53",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC53.png"
+    },
+    {
+        "key":  "D83DDC54",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC54.png"
+    },
+    {
+        "key":  "D83DDC55",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC55.png"
+    },
+    {
+        "key":  "D83DDC56",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC56.png"
+    },
+    {
+        "key":  "D83DDC57",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC57.png"
+    },
+    {
+        "key":  "D83DDC58",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC58.png"
+    },
+    {
+        "key":  "D83DDC59",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC59.png"
+    },
+    {
+        "key":  "D83DDC5A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC5A.png"
+    },
+    {
+        "key":  "D83DDC5B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC5B.png"
+    },
+    {
+        "key":  "D83DDC5C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC5C.png"
+    },
+    {
+        "key":  "D83DDC5D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC5D.png"
+    },
+    {
+        "key":  "D83DDC5E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC5E.png"
+    },
+    {
+        "key":  "D83DDC5F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC5F.png"
+    },
+    {
+        "key":  "D83DDC60",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC60.png"
+    },
+    {
+        "key":  "D83DDC61",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC61.png"
+    },
+    {
+        "key":  "D83DDC62",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC62.png"
+    },
+    {
+        "key":  "D83DDC63",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC63.png"
+    },
+    {
+        "key":  "D83DDC64",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC64.png"
+    },
+    {
+        "key":  "D83DDC65",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC65.png"
+    },
+    {
+        "key":  "D83DDC66",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC66.png"
+    },
+    {
+        "key":  "D83DDC67",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC67.png"
+    },
+    {
+        "key":  "D83DDC68",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC68.png"
+    },
+    {
+        "key":  "D83DDC69",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC69.png"
+    },
+    {
+        "key":  "D83DDC6A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC6A.png"
+    },
+    {
+        "key":  "D83DDC6B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC6B.png"
+    },
+    {
+        "key":  "D83DDC6C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC6C.png"
+    },
+    {
+        "key":  "D83DDC6D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC6D.png"
+    },
+    {
+        "key":  "D83DDC6E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC6E.png"
+    },
+    {
+        "key":  "D83DDC6F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC6F.png"
+    },
+    {
+        "key":  "D83DDC70",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC70.png"
+    },
+    {
+        "key":  "D83DDC71",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC71.png"
+    },
+    {
+        "key":  "D83DDC72",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC72.png"
+    },
+    {
+        "key":  "D83DDC73",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC73.png"
+    },
+    {
+        "key":  "D83DDC74",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC74.png"
+    },
+    {
+        "key":  "D83DDC75",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC75.png"
+    },
+    {
+        "key":  "D83DDC76",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC76.png"
+    },
+    {
+        "key":  "D83DDC77",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC77.png"
+    },
+    {
+        "key":  "D83DDC78",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC78.png"
+    },
+    {
+        "key":  "D83DDC79",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC79.png"
+    },
+    {
+        "key":  "D83DDC7A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC7A.png"
+    },
+    {
+        "key":  "D83DDC7B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC7B.png"
+    },
+    {
+        "key":  "D83DDC7C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC7C.png"
+    },
+    {
+        "key":  "D83DDC7D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC7D.png"
+    },
+    {
+        "key":  "D83DDC7E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC7E.png"
+    },
+    {
+        "key":  "D83DDC7F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC7F.png"
+    },
+    {
+        "key":  "D83DDC80",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC80.png"
+    },
+    {
+        "key":  "D83DDC81",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC81.png"
+    },
+    {
+        "key":  "D83DDC82",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC82.png"
+    },
+    {
+        "key":  "D83DDC83",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC83.png"
+    },
+    {
+        "key":  "D83DDC84",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC84.png"
+    },
+    {
+        "key":  "D83DDC85",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC85.png"
+    },
+    {
+        "key":  "D83DDC86",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC86.png"
+    },
+    {
+        "key":  "D83DDC87",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC87.png"
+    },
+    {
+        "key":  "D83DDC88",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC88.png"
+    },
+    {
+        "key":  "D83DDC89",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC89.png"
+    },
+    {
+        "key":  "D83DDC8A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC8A.png"
+    },
+    {
+        "key":  "D83DDC8B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC8B.png"
+    },
+    {
+        "key":  "D83DDC8C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC8C.png"
+    },
+    {
+        "key":  "D83DDC8D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC8D.png"
+    },
+    {
+        "key":  "D83DDC8E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC8E.png"
+    },
+    {
+        "key":  "D83DDC8F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC8F.png"
+    },
+    {
+        "key":  "D83DDC90",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC90.png"
+    },
+    {
+        "key":  "D83DDC91",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC91.png"
+    },
+    {
+        "key":  "D83DDC92",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC92.png"
+    },
+    {
+        "key":  "D83DDC93",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC93.png"
+    },
+    {
+        "key":  "D83DDC94",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC94.png"
+    },
+    {
+        "key":  "D83DDC95",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC95.png"
+    },
+    {
+        "key":  "D83DDC96",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC96.png"
+    },
+    {
+        "key":  "D83DDC97",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC97.png"
+    },
+    {
+        "key":  "D83DDC98",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC98.png"
+    },
+    {
+        "key":  "D83DDC99",
+        "animated":  "Assets/Emoji/Animated/D83DDC99.webp",
+        "static":  "Assets/Emoji/Static/D83DDC99.png"
+    },
+    {
+        "key":  "D83DDC9A",
+        "animated":  "Assets/Emoji/Animated/D83DDC9A.webp",
+        "static":  "Assets/Emoji/Static/D83DDC9A.png"
+    },
+    {
+        "key":  "D83DDC9B",
+        "animated":  "Assets/Emoji/Animated/D83DDC9B.webp",
+        "static":  "Assets/Emoji/Static/D83DDC9B.png"
+    },
+    {
+        "key":  "D83DDC9C",
+        "animated":  "Assets/Emoji/Animated/D83DDC9C.webp",
+        "static":  "Assets/Emoji/Static/D83DDC9C.png"
+    },
+    {
+        "key":  "D83DDC9D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC9D.png"
+    },
+    {
+        "key":  "D83DDC9E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC9E.png"
+    },
+    {
+        "key":  "D83DDC9F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDC9F.png"
+    },
+    {
+        "key":  "D83DDCA0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA0.png"
+    },
+    {
+        "key":  "D83DDCA1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA1.png"
+    },
+    {
+        "key":  "D83DDCA2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA2.png"
+    },
+    {
+        "key":  "D83DDCA3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA3.png"
+    },
+    {
+        "key":  "D83DDCA4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA4.png"
+    },
+    {
+        "key":  "D83DDCA5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA5.png"
+    },
+    {
+        "key":  "D83DDCA6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA6.png"
+    },
+    {
+        "key":  "D83DDCA7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA7.png"
+    },
+    {
+        "key":  "D83DDCA8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA8.png"
+    },
+    {
+        "key":  "D83DDCA9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCA9.png"
+    },
+    {
+        "key":  "D83DDCAA",
+        "animated":  "Assets/Emoji/Animated/D83DDCAA.webp",
+        "static":  "Assets/Emoji/Static/D83DDCAA.png"
+    },
+    {
+        "key":  "D83DDCAB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCAB.png"
+    },
+    {
+        "key":  "D83DDCAC",
+        "animated":  "Assets/Emoji/Animated/D83DDCAC.webp",
+        "static":  "Assets/Emoji/Static/D83DDCAC.png"
+    },
+    {
+        "key":  "D83DDCAD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCAD.png"
+    },
+    {
+        "key":  "D83DDCAE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCAE.png"
+    },
+    {
+        "key":  "D83DDCAF",
+        "animated":  "Assets/Emoji/Animated/D83DDCAF.webp",
+        "static":  "Assets/Emoji/Static/D83DDCAF.png"
+    },
+    {
+        "key":  "D83DDCB0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB0.png"
+    },
+    {
+        "key":  "D83DDCB1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB1.png"
+    },
+    {
+        "key":  "D83DDCB2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB2.png"
+    },
+    {
+        "key":  "D83DDCB3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB3.png"
+    },
+    {
+        "key":  "D83DDCB4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB4.png"
+    },
+    {
+        "key":  "D83DDCB5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB5.png"
+    },
+    {
+        "key":  "D83DDCB6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB6.png"
+    },
+    {
+        "key":  "D83DDCB7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB7.png"
+    },
+    {
+        "key":  "D83DDCB8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB8.png"
+    },
+    {
+        "key":  "D83DDCB9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCB9.png"
+    },
+    {
+        "key":  "D83DDCBA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCBA.png"
+    },
+    {
+        "key":  "D83DDCBB",
+        "animated":  "Assets/Emoji/Animated/D83DDCBB.webp",
+        "static":  "Assets/Emoji/Static/D83DDCBB.png"
+    },
+    {
+        "key":  "D83DDCBC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCBC.png"
+    },
+    {
+        "key":  "D83DDCBD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCBD.png"
+    },
+    {
+        "key":  "D83DDCBE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCBE.png"
+    },
+    {
+        "key":  "D83DDCBF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCBF.png"
+    },
+    {
+        "key":  "D83DDCC0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC0.png"
+    },
+    {
+        "key":  "D83DDCC1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC1.png"
+    },
+    {
+        "key":  "D83DDCC2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC2.png"
+    },
+    {
+        "key":  "D83DDCC3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC3.png"
+    },
+    {
+        "key":  "D83DDCC4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC4.png"
+    },
+    {
+        "key":  "D83DDCC5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC5.png"
+    },
+    {
+        "key":  "D83DDCC6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC6.png"
+    },
+    {
+        "key":  "D83DDCC7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC7.png"
+    },
+    {
+        "key":  "D83DDCC8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC8.png"
+    },
+    {
+        "key":  "D83DDCC9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCC9.png"
+    },
+    {
+        "key":  "D83DDCCA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCCA.png"
+    },
+    {
+        "key":  "D83DDCCB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCCB.png"
+    },
+    {
+        "key":  "D83DDCCC",
+        "animated":  "Assets/Emoji/Animated/D83DDCCC.webp",
+        "static":  "Assets/Emoji/Static/D83DDCCC.png"
+    },
+    {
+        "key":  "D83DDCCD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCCD.png"
+    },
+    {
+        "key":  "D83DDCCE",
+        "animated":  "Assets/Emoji/Animated/D83DDCCE.webp",
+        "static":  "Assets/Emoji/Static/D83DDCCE.png"
+    },
+    {
+        "key":  "D83DDCCF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCCF.png"
+    },
+    {
+        "key":  "D83DDCD0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD0.png"
+    },
+    {
+        "key":  "D83DDCD1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD1.png"
+    },
+    {
+        "key":  "D83DDCD2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD2.png"
+    },
+    {
+        "key":  "D83DDCD3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD3.png"
+    },
+    {
+        "key":  "D83DDCD4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD4.png"
+    },
+    {
+        "key":  "D83DDCD5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD5.png"
+    },
+    {
+        "key":  "D83DDCD6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD6.png"
+    },
+    {
+        "key":  "D83DDCD7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD7.png"
+    },
+    {
+        "key":  "D83DDCD8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD8.png"
+    },
+    {
+        "key":  "D83DDCD9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCD9.png"
+    },
+    {
+        "key":  "D83DDCDA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCDA.png"
+    },
+    {
+        "key":  "D83DDCDB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCDB.png"
+    },
+    {
+        "key":  "D83DDCDC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCDC.png"
+    },
+    {
+        "key":  "D83DDCDD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCDD.png"
+    },
+    {
+        "key":  "D83DDCDE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCDE.png"
+    },
+    {
+        "key":  "D83DDCDF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCDF.png"
+    },
+    {
+        "key":  "D83DDCE0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE0.png"
+    },
+    {
+        "key":  "D83DDCE1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE1.png"
+    },
+    {
+        "key":  "D83DDCE2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE2.png"
+    },
+    {
+        "key":  "D83DDCE3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE3.png"
+    },
+    {
+        "key":  "D83DDCE4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE4.png"
+    },
+    {
+        "key":  "D83DDCE5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE5.png"
+    },
+    {
+        "key":  "D83DDCE6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE6.png"
+    },
+    {
+        "key":  "D83DDCE7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE7.png"
+    },
+    {
+        "key":  "D83DDCE8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE8.png"
+    },
+    {
+        "key":  "D83DDCE9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCE9.png"
+    },
+    {
+        "key":  "D83DDCEA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCEA.png"
+    },
+    {
+        "key":  "D83DDCEB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCEB.png"
+    },
+    {
+        "key":  "D83DDCEC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCEC.png"
+    },
+    {
+        "key":  "D83DDCED",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCED.png"
+    },
+    {
+        "key":  "D83DDCEE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCEE.png"
+    },
+    {
+        "key":  "D83DDCEF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCEF.png"
+    },
+    {
+        "key":  "D83DDCF0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCF0.png"
+    },
+    {
+        "key":  "D83DDCF1",
+        "animated":  "Assets/Emoji/Animated/D83DDCF1.webp",
+        "static":  "Assets/Emoji/Static/D83DDCF1.png"
+    },
+    {
+        "key":  "D83DDCF2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCF2.png"
+    },
+    {
+        "key":  "D83DDCF3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCF3.png"
+    },
+    {
+        "key":  "D83DDCF4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCF4.png"
+    },
+    {
+        "key":  "D83DDCF5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCF5.png"
+    },
+    {
+        "key":  "D83DDCF6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCF6.png"
+    },
+    {
+        "key":  "D83DDCF7",
+        "animated":  "Assets/Emoji/Animated/D83DDCF7.webp",
+        "static":  "Assets/Emoji/Static/D83DDCF7.png"
+    },
+    {
+        "key":  "D83DDCF9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCF9.png"
+    },
+    {
+        "key":  "D83DDCFA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCFA.png"
+    },
+    {
+        "key":  "D83DDCFB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCFB.png"
+    },
+    {
+        "key":  "D83DDCFC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDCFC.png"
+    },
+    {
+        "key":  "D83DDD00",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD00.png"
+    },
+    {
+        "key":  "D83DDD01",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD01.png"
+    },
+    {
+        "key":  "D83DDD02",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD02.png"
+    },
+    {
+        "key":  "D83DDD03",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD03.png"
+    },
+    {
+        "key":  "D83DDD04",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD04.png"
+    },
+    {
+        "key":  "D83DDD05",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD05.png"
+    },
+    {
+        "key":  "D83DDD06",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD06.png"
+    },
+    {
+        "key":  "D83DDD07",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD07.png"
+    },
+    {
+        "key":  "D83DDD08",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD08.png"
+    },
+    {
+        "key":  "D83DDD09",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD09.png"
+    },
+    {
+        "key":  "D83DDD0A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD0A.png"
+    },
+    {
+        "key":  "D83DDD0B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD0B.png"
+    },
+    {
+        "key":  "D83DDD0C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD0C.png"
+    },
+    {
+        "key":  "D83DDD0D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD0D.png"
+    },
+    {
+        "key":  "D83DDD0E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD0E.png"
+    },
+    {
+        "key":  "D83DDD0F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD0F.png"
+    },
+    {
+        "key":  "D83DDD10",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD10.png"
+    },
+    {
+        "key":  "D83DDD11",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD11.png"
+    },
+    {
+        "key":  "D83DDD12",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD12.png"
+    },
+    {
+        "key":  "D83DDD13",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD13.png"
+    },
+    {
+        "key":  "D83DDD14",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD14.png"
+    },
+    {
+        "key":  "D83DDD15",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD15.png"
+    },
+    {
+        "key":  "D83DDD16",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD16.png"
+    },
+    {
+        "key":  "D83DDD17",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD17.png"
+    },
+    {
+        "key":  "D83DDD18",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD18.png"
+    },
+    {
+        "key":  "D83DDD19",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD19.png"
+    },
+    {
+        "key":  "D83DDD1A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD1A.png"
+    },
+    {
+        "key":  "D83DDD1B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD1B.png"
+    },
+    {
+        "key":  "D83DDD1C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD1C.png"
+    },
+    {
+        "key":  "D83DDD1D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD1D.png"
+    },
+    {
+        "key":  "D83DDD1E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD1E.png"
+    },
+    {
+        "key":  "D83DDD1F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD1F.png"
+    },
+    {
+        "key":  "D83DDD20",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD20.png"
+    },
+    {
+        "key":  "D83DDD21",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD21.png"
+    },
+    {
+        "key":  "D83DDD22",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD22.png"
+    },
+    {
+        "key":  "D83DDD23",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD23.png"
+    },
+    {
+        "key":  "D83DDD24",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD24.png"
+    },
+    {
+        "key":  "D83DDD25",
+        "animated":  "Assets/Emoji/Animated/D83DDD25.webp",
+        "static":  "Assets/Emoji/Static/D83DDD25.png"
+    },
+    {
+        "key":  "D83DDD26",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD26.png"
+    },
+    {
+        "key":  "D83DDD27",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD27.png"
+    },
+    {
+        "key":  "D83DDD28",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD28.png"
+    },
+    {
+        "key":  "D83DDD29",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD29.png"
+    },
+    {
+        "key":  "D83DDD2A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD2A.png"
+    },
+    {
+        "key":  "D83DDD2B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD2B.png"
+    },
+    {
+        "key":  "D83DDD2C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD2C.png"
+    },
+    {
+        "key":  "D83DDD2D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD2D.png"
+    },
+    {
+        "key":  "D83DDD2E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD2E.png"
+    },
+    {
+        "key":  "D83DDD2F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD2F.png"
+    },
+    {
+        "key":  "D83DDD30",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD30.png"
+    },
+    {
+        "key":  "D83DDD31",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD31.png"
+    },
+    {
+        "key":  "D83DDD32",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD32.png"
+    },
+    {
+        "key":  "D83DDD33",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD33.png"
+    },
+    {
+        "key":  "D83DDD34",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD34.png"
+    },
+    {
+        "key":  "D83DDD35",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD35.png"
+    },
+    {
+        "key":  "D83DDD36",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD36.png"
+    },
+    {
+        "key":  "D83DDD37",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD37.png"
+    },
+    {
+        "key":  "D83DDD38",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD38.png"
+    },
+    {
+        "key":  "D83DDD39",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD39.png"
+    },
+    {
+        "key":  "D83DDD3A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD3A.png"
+    },
+    {
+        "key":  "D83DDD3B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD3B.png"
+    },
+    {
+        "key":  "D83DDD3C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD3C.png"
+    },
+    {
+        "key":  "D83DDD3D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD3D.png"
+    },
+    {
+        "key":  "D83DDD50",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD50.png"
+    },
+    {
+        "key":  "D83DDD51",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD51.png"
+    },
+    {
+        "key":  "D83DDD52",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD52.png"
+    },
+    {
+        "key":  "D83DDD53",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD53.png"
+    },
+    {
+        "key":  "D83DDD54",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD54.png"
+    },
+    {
+        "key":  "D83DDD55",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD55.png"
+    },
+    {
+        "key":  "D83DDD56",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD56.png"
+    },
+    {
+        "key":  "D83DDD57",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD57.png"
+    },
+    {
+        "key":  "D83DDD58",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD58.png"
+    },
+    {
+        "key":  "D83DDD59",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD59.png"
+    },
+    {
+        "key":  "D83DDD5A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD5A.png"
+    },
+    {
+        "key":  "D83DDD5B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD5B.png"
+    },
+    {
+        "key":  "D83DDD5C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD5C.png"
+    },
+    {
+        "key":  "D83DDD5D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD5D.png"
+    },
+    {
+        "key":  "D83DDD5E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD5E.png"
+    },
+    {
+        "key":  "D83DDD5F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD5F.png"
+    },
+    {
+        "key":  "D83DDD60",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD60.png"
+    },
+    {
+        "key":  "D83DDD61",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD61.png"
+    },
+    {
+        "key":  "D83DDD62",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD62.png"
+    },
+    {
+        "key":  "D83DDD63",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD63.png"
+    },
+    {
+        "key":  "D83DDD64",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD64.png"
+    },
+    {
+        "key":  "D83DDD65",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD65.png"
+    },
+    {
+        "key":  "D83DDD66",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD66.png"
+    },
+    {
+        "key":  "D83DDD67",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDD67.png"
+    },
+    {
+        "key":  "D83DDDFB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDDFB.png"
+    },
+    {
+        "key":  "D83DDDFC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDDFC.png"
+    },
+    {
+        "key":  "D83DDDFD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDDFD.png"
+    },
+    {
+        "key":  "D83DDDFE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDDFE.png"
+    },
+    {
+        "key":  "D83DDDFF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDDFF.png"
+    },
+    {
+        "key":  "D83DDE00",
+        "animated":  "Assets/Emoji/Animated/D83DDE00.webp",
+        "static":  "Assets/Emoji/Static/D83DDE00.png"
+    },
+    {
+        "key":  "D83DDE01",
+        "animated":  "Assets/Emoji/Animated/D83DDE01.webp",
+        "static":  "Assets/Emoji/Static/D83DDE01.png"
+    },
+    {
+        "key":  "D83DDE02",
+        "animated":  "Assets/Emoji/Animated/D83DDE02.webp",
+        "static":  "Assets/Emoji/Static/D83DDE02.png"
+    },
+    {
+        "key":  "D83DDE03",
+        "animated":  "Assets/Emoji/Animated/D83DDE03.webp",
+        "static":  "Assets/Emoji/Static/D83DDE03.png"
+    },
+    {
+        "key":  "D83DDE04",
+        "animated":  "Assets/Emoji/Animated/D83DDE04.webp",
+        "static":  "Assets/Emoji/Static/D83DDE04.png"
+    },
+    {
+        "key":  "D83DDE05",
+        "animated":  "Assets/Emoji/Animated/D83DDE05.webp",
+        "static":  "Assets/Emoji/Static/D83DDE05.png"
+    },
+    {
+        "key":  "D83DDE06",
+        "animated":  "Assets/Emoji/Animated/D83DDE06.webp",
+        "static":  "Assets/Emoji/Static/D83DDE06.png"
+    },
+    {
+        "key":  "D83DDE07",
+        "animated":  "Assets/Emoji/Animated/D83DDE07.webp",
+        "static":  "Assets/Emoji/Static/D83DDE07.png"
+    },
+    {
+        "key":  "D83DDE08",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE08.png"
+    },
+    {
+        "key":  "D83DDE09",
+        "animated":  "Assets/Emoji/Animated/D83DDE09.webp",
+        "static":  "Assets/Emoji/Static/D83DDE09.png"
+    },
+    {
+        "key":  "D83DDE0A",
+        "animated":  "Assets/Emoji/Animated/D83DDE0A.webp",
+        "static":  "Assets/Emoji/Static/D83DDE0A.png"
+    },
+    {
+        "key":  "D83DDE0B",
+        "animated":  "Assets/Emoji/Animated/D83DDE0B.webp",
+        "static":  "Assets/Emoji/Static/D83DDE0B.png"
+    },
+    {
+        "key":  "D83DDE0C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE0C.png"
+    },
+    {
+        "key":  "D83DDE0D",
+        "animated":  "Assets/Emoji/Animated/D83DDE0D.webp",
+        "static":  "Assets/Emoji/Static/D83DDE0D.png"
+    },
+    {
+        "key":  "D83DDE0E",
+        "animated":  "Assets/Emoji/Animated/D83DDE0E.webp",
+        "static":  "Assets/Emoji/Static/D83DDE0E.png"
+    },
+    {
+        "key":  "D83DDE0F",
+        "animated":  "Assets/Emoji/Animated/D83DDE0F.webp",
+        "static":  "Assets/Emoji/Static/D83DDE0F.png"
+    },
+    {
+        "key":  "D83DDE10",
+        "animated":  "Assets/Emoji/Animated/D83DDE10.webp",
+        "static":  "Assets/Emoji/Static/D83DDE10.png"
+    },
+    {
+        "key":  "D83DDE11",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE11.png"
+    },
+    {
+        "key":  "D83DDE12",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE12.png"
+    },
+    {
+        "key":  "D83DDE13",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE13.png"
+    },
+    {
+        "key":  "D83DDE14",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE14.png"
+    },
+    {
+        "key":  "D83DDE15",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE15.png"
+    },
+    {
+        "key":  "D83DDE16",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE16.png"
+    },
+    {
+        "key":  "D83DDE17",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE17.png"
+    },
+    {
+        "key":  "D83DDE18",
+        "animated":  "Assets/Emoji/Animated/D83DDE18.webp",
+        "static":  "Assets/Emoji/Static/D83DDE18.png"
+    },
+    {
+        "key":  "D83DDE19",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE19.png"
+    },
+    {
+        "key":  "D83DDE1A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE1A.png"
+    },
+    {
+        "key":  "D83DDE1B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE1B.png"
+    },
+    {
+        "key":  "D83DDE1C",
+        "animated":  "Assets/Emoji/Animated/D83DDE1C.webp",
+        "static":  "Assets/Emoji/Static/D83DDE1C.png"
+    },
+    {
+        "key":  "D83DDE1D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE1D.png"
+    },
+    {
+        "key":  "D83DDE1E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE1E.png"
+    },
+    {
+        "key":  "D83DDE1F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE1F.png"
+    },
+    {
+        "key":  "D83DDE20",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE20.png"
+    },
+    {
+        "key":  "D83DDE21",
+        "animated":  "Assets/Emoji/Animated/D83DDE21.webp",
+        "static":  "Assets/Emoji/Static/D83DDE21.png"
+    },
+    {
+        "key":  "D83DDE22",
+        "animated":  "Assets/Emoji/Animated/D83DDE22.webp",
+        "static":  "Assets/Emoji/Static/D83DDE22.png"
+    },
+    {
+        "key":  "D83DDE23",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE23.png"
+    },
+    {
+        "key":  "D83DDE24",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE24.png"
+    },
+    {
+        "key":  "D83DDE25",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE25.png"
+    },
+    {
+        "key":  "D83DDE26",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE26.png"
+    },
+    {
+        "key":  "D83DDE27",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE27.png"
+    },
+    {
+        "key":  "D83DDE28",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE28.png"
+    },
+    {
+        "key":  "D83DDE29",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE29.png"
+    },
+    {
+        "key":  "D83DDE2A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE2A.png"
+    },
+    {
+        "key":  "D83DDE2B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE2B.png"
+    },
+    {
+        "key":  "D83DDE2C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE2C.png"
+    },
+    {
+        "key":  "D83DDE2D",
+        "animated":  "Assets/Emoji/Animated/D83DDE2D.webp",
+        "static":  "Assets/Emoji/Static/D83DDE2D.png"
+    },
+    {
+        "key":  "D83DDE2E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE2E.png"
+    },
+    {
+        "key":  "D83DDE2F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE2F.png"
+    },
+    {
+        "key":  "D83DDE30",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE30.png"
+    },
+    {
+        "key":  "D83DDE31",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE31.png"
+    },
+    {
+        "key":  "D83DDE32",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE32.png"
+    },
+    {
+        "key":  "D83DDE33",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE33.png"
+    },
+    {
+        "key":  "D83DDE34",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE34.png"
+    },
+    {
+        "key":  "D83DDE35",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE35.png"
+    },
+    {
+        "key":  "D83DDE36",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE36.png"
+    },
+    {
+        "key":  "D83DDE37",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE37.png"
+    },
+    {
+        "key":  "D83DDE38",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE38.png"
+    },
+    {
+        "key":  "D83DDE39",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE39.png"
+    },
+    {
+        "key":  "D83DDE3A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE3A.png"
+    },
+    {
+        "key":  "D83DDE3B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE3B.png"
+    },
+    {
+        "key":  "D83DDE3C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE3C.png"
+    },
+    {
+        "key":  "D83DDE3D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE3D.png"
+    },
+    {
+        "key":  "D83DDE3E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE3E.png"
+    },
+    {
+        "key":  "D83DDE3F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE3F.png"
+    },
+    {
+        "key":  "D83DDE40",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE40.png"
+    },
+    {
+        "key":  "D83DDE42",
+        "animated":  "Assets/Emoji/Animated/D83DDE42.webp",
+        "static":  "Assets/Emoji/Static/D83DDE42.png"
+    },
+    {
+        "key":  "D83DDE43",
+        "animated":  "Assets/Emoji/Animated/D83DDE43.webp",
+        "static":  "Assets/Emoji/Static/D83DDE43.png"
+    },
+    {
+        "key":  "D83DDE44",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE44.png"
+    },
+    {
+        "key":  "D83DDE45",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE45.png"
+    },
+    {
+        "key":  "D83DDE46",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE46.png"
+    },
+    {
+        "key":  "D83DDE47",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE47.png"
+    },
+    {
+        "key":  "D83DDE48",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE48.png"
+    },
+    {
+        "key":  "D83DDE49",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE49.png"
+    },
+    {
+        "key":  "D83DDE4A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE4A.png"
+    },
+    {
+        "key":  "D83DDE4B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE4B.png"
+    },
+    {
+        "key":  "D83DDE4C",
+        "animated":  "Assets/Emoji/Animated/D83DDE4C.webp",
+        "static":  "Assets/Emoji/Static/D83DDE4C.png"
+    },
+    {
+        "key":  "D83DDE4D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE4D.png"
+    },
+    {
+        "key":  "D83DDE4E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE4E.png"
+    },
+    {
+        "key":  "D83DDE4F",
+        "animated":  "Assets/Emoji/Animated/D83DDE4F.webp",
+        "static":  "Assets/Emoji/Static/D83DDE4F.png"
+    },
+    {
+        "key":  "D83DDE80",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE80.png"
+    },
+    {
+        "key":  "D83DDE81",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE81.png"
+    },
+    {
+        "key":  "D83DDE82",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE82.png"
+    },
+    {
+        "key":  "D83DDE83",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE83.png"
+    },
+    {
+        "key":  "D83DDE84",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE84.png"
+    },
+    {
+        "key":  "D83DDE85",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE85.png"
+    },
+    {
+        "key":  "D83DDE86",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE86.png"
+    },
+    {
+        "key":  "D83DDE87",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE87.png"
+    },
+    {
+        "key":  "D83DDE88",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE88.png"
+    },
+    {
+        "key":  "D83DDE89",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE89.png"
+    },
+    {
+        "key":  "D83DDE8A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE8A.png"
+    },
+    {
+        "key":  "D83DDE8B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE8B.png"
+    },
+    {
+        "key":  "D83DDE8C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE8C.png"
+    },
+    {
+        "key":  "D83DDE8D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE8D.png"
+    },
+    {
+        "key":  "D83DDE8E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE8E.png"
+    },
+    {
+        "key":  "D83DDE8F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE8F.png"
+    },
+    {
+        "key":  "D83DDE90",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE90.png"
+    },
+    {
+        "key":  "D83DDE91",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE91.png"
+    },
+    {
+        "key":  "D83DDE92",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE92.png"
+    },
+    {
+        "key":  "D83DDE93",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE93.png"
+    },
+    {
+        "key":  "D83DDE94",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE94.png"
+    },
+    {
+        "key":  "D83DDE95",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE95.png"
+    },
+    {
+        "key":  "D83DDE96",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE96.png"
+    },
+    {
+        "key":  "D83DDE97",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE97.png"
+    },
+    {
+        "key":  "D83DDE98",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE98.png"
+    },
+    {
+        "key":  "D83DDE99",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE99.png"
+    },
+    {
+        "key":  "D83DDE9A",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE9A.png"
+    },
+    {
+        "key":  "D83DDE9B",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE9B.png"
+    },
+    {
+        "key":  "D83DDE9C",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE9C.png"
+    },
+    {
+        "key":  "D83DDE9D",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE9D.png"
+    },
+    {
+        "key":  "D83DDE9E",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE9E.png"
+    },
+    {
+        "key":  "D83DDE9F",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDE9F.png"
+    },
+    {
+        "key":  "D83DDEA0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA0.png"
+    },
+    {
+        "key":  "D83DDEA1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA1.png"
+    },
+    {
+        "key":  "D83DDEA2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA2.png"
+    },
+    {
+        "key":  "D83DDEA3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA3.png"
+    },
+    {
+        "key":  "D83DDEA4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA4.png"
+    },
+    {
+        "key":  "D83DDEA5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA5.png"
+    },
+    {
+        "key":  "D83DDEA6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA6.png"
+    },
+    {
+        "key":  "D83DDEA7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA7.png"
+    },
+    {
+        "key":  "D83DDEA8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA8.png"
+    },
+    {
+        "key":  "D83DDEA9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEA9.png"
+    },
+    {
+        "key":  "D83DDEAA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEAA.png"
+    },
+    {
+        "key":  "D83DDEAB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEAB.png"
+    },
+    {
+        "key":  "D83DDEAC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEAC.png"
+    },
+    {
+        "key":  "D83DDEAD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEAD.png"
+    },
+    {
+        "key":  "D83DDEAE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEAE.png"
+    },
+    {
+        "key":  "D83DDEAF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEAF.png"
+    },
+    {
+        "key":  "D83DDEB0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB0.png"
+    },
+    {
+        "key":  "D83DDEB1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB1.png"
+    },
+    {
+        "key":  "D83DDEB2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB2.png"
+    },
+    {
+        "key":  "D83DDEB3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB3.png"
+    },
+    {
+        "key":  "D83DDEB4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB4.png"
+    },
+    {
+        "key":  "D83DDEB5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB5.png"
+    },
+    {
+        "key":  "D83DDEB6",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB6.png"
+    },
+    {
+        "key":  "D83DDEB7",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB7.png"
+    },
+    {
+        "key":  "D83DDEB8",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB8.png"
+    },
+    {
+        "key":  "D83DDEB9",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEB9.png"
+    },
+    {
+        "key":  "D83DDEBA",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEBA.png"
+    },
+    {
+        "key":  "D83DDEBB",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEBB.png"
+    },
+    {
+        "key":  "D83DDEBC",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEBC.png"
+    },
+    {
+        "key":  "D83DDEBD",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEBD.png"
+    },
+    {
+        "key":  "D83DDEBE",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEBE.png"
+    },
+    {
+        "key":  "D83DDEBF",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEBF.png"
+    },
+    {
+        "key":  "D83DDEC0",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEC0.png"
+    },
+    {
+        "key":  "D83DDEC1",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEC1.png"
+    },
+    {
+        "key":  "D83DDEC2",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEC2.png"
+    },
+    {
+        "key":  "D83DDEC3",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEC3.png"
+    },
+    {
+        "key":  "D83DDEC4",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEC4.png"
+    },
+    {
+        "key":  "D83DDEC5",
+        "animated":  null,
+        "static":  "Assets/Emoji/Static/D83DDEC5.png"
+    },
+    {
+        "key":  "D83EDD14",
+        "animated":  "Assets/Emoji/Animated/D83EDD14.webp",
+        "static":  "Assets/Emoji/Static/D83EDD14.png"
+    },
+    {
+        "key":  "D83EDD1D",
+        "animated":  "Assets/Emoji/Animated/D83EDD1D.webp",
+        "static":  "Assets/Emoji/Static/D83EDD1D.png"
+    },
+    {
+        "key":  "D83EDD23",
+        "animated":  "Assets/Emoji/Animated/D83EDD23.webp",
+        "static":  "Assets/Emoji/Static/D83EDD23.png"
+    }
+]

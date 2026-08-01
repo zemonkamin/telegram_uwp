@@ -1,0 +1,96 @@
+﻿<Page
+    x:Class="Telegram.CallPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="CallPageBackgroundBrush" Color="#FF000000" />
+                    <SolidColorBrush x:Key="CallPagePrimaryTextBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="CallPageSecondaryTextBrush" Color="#FFB5B5B5" />
+                    <SolidColorBrush x:Key="CallPageAvatarFallbackBrush" Color="#FF584DFF" />
+                    <SolidColorBrush x:Key="CallPageHangupBrush" Color="#FFE53935" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="CallPageBackgroundBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="CallPagePrimaryTextBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="CallPageSecondaryTextBrush" Color="#FF666666" />
+                    <SolidColorBrush x:Key="CallPageAvatarFallbackBrush" Color="#FF584DFF" />
+                    <SolidColorBrush x:Key="CallPageHangupBrush" Color="#FFE53935" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource CallPageBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="72" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            Width="320"
+            Margin="0,72,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
+            <Grid
+                x:Name="AvatarHost"
+                Width="132"
+                Height="132"
+                HorizontalAlignment="Center">
+                <Ellipse Fill="{ThemeResource CallPageAvatarFallbackBrush}" />
+                <Ellipse x:Name="AvatarImage" Opacity="0">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="AvatarBrush" Stretch="UniformToFill" />
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock
+                    x:Name="AvatarInitials"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="48"
+                    FontWeight="SemiLight"
+                    Foreground="White"
+                    Text="?" />
+            </Grid>
+
+            <TextBlock
+                x:Name="PeerNameText"
+                Margin="0,28,0,0"
+                FontSize="30"
+                FontWeight="Light"
+                Foreground="{ThemeResource CallPagePrimaryTextBrush}"
+                MaxLines="2"
+                Text="Call"
+                TextAlignment="Center"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="Wrap" />
+
+            <TextBlock
+                x:Name="CallStatusText"
+                Margin="0,7,0,0"
+                FontSize="18"
+                Foreground="{ThemeResource CallPageSecondaryTextBrush}"
+                Text="Call"
+                TextAlignment="Center" />
+        </StackPanel>
+
+        <Button
+            x:Name="HangupButton"
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Background="{ThemeResource CallPageHangupBrush}"
+            BorderThickness="0"
+            Click="HangupButton_Click"
+            Content="hang up"
+            FontSize="22"
+            Foreground="White" />
+    </Grid>
+</Page>

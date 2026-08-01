@@ -1,0 +1,66 @@
+<ContentDialog
+    x:Class="Telegram.ProxyEditDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Telegram"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Proxy"
+    PrimaryButtonText="Save"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="OnSaveClick"
+    mc:Ignorable="d">
+
+    <ScrollViewer
+        HorizontalScrollMode="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Auto">
+        <StackPanel Margin="0,12,0,0">
+            <TextBlock
+                Margin="0,0,0,4"
+                FontSize="14"
+                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                Text="Type" />
+            <ComboBox
+                x:Name="TypeBox"
+                Margin="0,0,0,12"
+                HorizontalAlignment="Stretch"
+                SelectionChanged="TypeBox_SelectionChanged">
+                <ComboBoxItem Content="MTProto" />
+                <ComboBoxItem Content="SOCKS5" />
+                <ComboBoxItem Content="HTTP" />
+            </ComboBox>
+
+            <TextBox
+                x:Name="ServerBox"
+                Margin="0,0,0,10"
+                Header="Server"
+                PlaceholderText="proxy.example.com" />
+            <TextBox
+                x:Name="PortBox"
+                Margin="0,0,0,10"
+                Header="Port"
+                InputScope="Number"
+                PlaceholderText="443" />
+            <TextBox
+                x:Name="SecretBox"
+                Margin="0,0,0,10"
+                Header="Secret" />
+            <TextBox
+                x:Name="UsernameBox"
+                Margin="0,0,0,10"
+                Header="Username" />
+            <PasswordBox
+                x:Name="PasswordBox"
+                Margin="0,0,0,10"
+                Header="Password" />
+
+            <TextBlock
+                x:Name="ErrorText"
+                Margin="0,4,0,0"
+                FontSize="13"
+                Foreground="#FFE04343"
+                TextWrapping="Wrap" />
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>

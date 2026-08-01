@@ -1,0 +1,400 @@
+﻿<Page
+    x:Class="Telegram.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="TelegramPageBackgroundBrush" Color="#FF1D1D1D" />
+                    <SolidColorBrush x:Key="TelegramHeaderBackgroundBrush" Color="#FF1D1D1D" />
+                    <SolidColorBrush x:Key="TelegramPrimaryTextBrush" Color="#FFF2F2F2" />
+                    <SolidColorBrush x:Key="TelegramSecondaryTextBrush" Color="#FF9C9C9C" />
+                    <SolidColorBrush x:Key="TelegramSeparatorBrush" Color="#FF2A2A2A" />
+                    <SolidColorBrush x:Key="TelegramDangerBrush" Color="#FFE53935" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="TelegramPageBackgroundBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="TelegramHeaderBackgroundBrush" Color="#FFF3F3F3" />
+                    <SolidColorBrush x:Key="TelegramPrimaryTextBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="TelegramSecondaryTextBrush" Color="#FF666666" />
+                    <SolidColorBrush x:Key="TelegramSeparatorBrush" Color="#FFE5E5E5" />
+                    <SolidColorBrush x:Key="TelegramDangerBrush" Color="#FFD32F2F" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource TelegramPageBackgroundBrush}">
+        <Pivot
+            Background="{ThemeResource TelegramPageBackgroundBrush}"
+            Foreground="{ThemeResource TelegramPrimaryTextBrush}">
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock FontWeight="Medium" Text="{Binding}" />
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+            <PivotItem Header="GENERAL">
+                <ScrollViewer Background="{ThemeResource TelegramPageBackgroundBrush}">
+                    <StackPanel Padding="18,10,18,28">
+                        <TextBlock
+                            Margin="0,10,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Notifications" />
+                        <RadioButton
+                            x:Name="NotificationsPeriodicRadio"
+                            GroupName="NotificationsMode"
+                            Checked="NotificationModeRadio_Checked"
+                            Content="Periodically checks in background" />
+                        <RadioButton
+                            x:Name="NotificationsAlwaysRadio"
+                            Margin="0,6,0,0"
+                            GroupName="NotificationsMode"
+                            Checked="NotificationModeRadio_Checked"
+                            Content="Works always in background (drains battery)" />
+                        <RadioButton
+                            x:Name="NotificationsFixedSystemRadio"
+                            IsEnabled="False"
+                            Margin="0,6,0,0"
+                            GroupName="NotificationsMode"
+                            Checked="NotificationModeRadio_Checked"
+                            Content="Fixed system notifications (WNS unavailable)" />
+                        <RadioButton
+                            x:Name="NotificationsNoneRadio"
+                            Margin="0,6,0,0"
+                            GroupName="NotificationsMode"
+                            Checked="NotificationModeRadio_Checked"
+                            Content="None (fully disabled)" />
+                        <TextBlock
+                            x:Name="NotificationStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+
+                        <Rectangle Height="1" Margin="0,18,0,18" Fill="{ThemeResource TelegramSeparatorBrush}" />
+
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Live tile" />
+                        <ToggleSwitch
+                            x:Name="LiveTileSwitch"
+                            Header="Show the latest notification on the Start tile"
+                            OffContent="Off"
+                            OnContent="On"
+                            Toggled="LiveTileSwitch_Toggled" />
+                        <TextBlock
+                            x:Name="LiveTileStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+
+                        <Rectangle Height="1" Margin="0,18,0,18" Fill="{ThemeResource TelegramSeparatorBrush}" />
+
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Contacts" />
+                        <ToggleSwitch
+                            x:Name="ContactSyncPromptSwitch"
+                            Header="Offer to add Telegram contacts to Windows"
+                            OffContent="Off"
+                            OnContent="On"
+                            Toggled="ContactSyncPromptSwitch_Toggled" />
+                        <TextBlock
+                            x:Name="ContactSyncPromptStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+
+                        <Rectangle Height="1" Margin="0,18,0,18" Fill="{ThemeResource TelegramSeparatorBrush}" />
+
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Appearance" />
+                        <ToggleSwitch
+                            x:Name="GlassEffectSwitch"
+                            Header="Glass effect"
+                            OffContent="Off"
+                            OnContent="On"
+                            Toggled="GlassEffectSwitch_Toggled" />
+                        <TextBlock
+                            x:Name="GlassEffectStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+
+                        <TextBlock
+                            Margin="0,16,0,0"
+                            FontSize="15"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Wallpaper dimming" />
+                        <Slider
+                            x:Name="WallpaperDimmingSlider"
+                            Margin="0,4,0,0"
+                            Maximum="80"
+                            Minimum="0"
+                            StepFrequency="5"
+                            ValueChanged="WallpaperDimmingSlider_ValueChanged" />
+                        <TextBlock
+                            x:Name="WallpaperDimmingStatusText"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+
+            <PivotItem Header="CHATS">
+                <ScrollViewer Background="{ThemeResource TelegramPageBackgroundBrush}">
+                    <StackPanel Padding="18,10,18,28">
+                        <TextBlock
+                            Margin="0,10,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Message loading" />
+                        <TextBlock
+                            FontSize="15"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Messages per load" />
+                        <TextBox
+                            x:Name="MessageBatchSizeBox"
+                            Margin="0,8,0,0"
+                            InputScope="Number"
+                            PlaceholderText="10" />
+                        <Button
+                            x:Name="SaveMessageBatchSizeButton"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Stretch"
+                            Click="SaveMessageBatchSizeButton_Click"
+                            Content="Save message limit" />
+                        <TextBlock
+                            x:Name="MessageBatchSizeStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+
+                        <Rectangle Height="1" Margin="0,18,0,18" Fill="{ThemeResource TelegramSeparatorBrush}" />
+
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Media auto-download" />
+                        <CheckBox
+                            x:Name="AutoDownloadPhotosCheckBox"
+                            Content="Photos"
+                            Checked="AutoDownloadCheckBox_Changed"
+                            Unchecked="AutoDownloadCheckBox_Changed" />
+                        <CheckBox
+                            x:Name="AutoDownloadGifsCheckBox"
+                            Margin="0,6,0,0"
+                            Content="GIFs"
+                            Checked="AutoDownloadCheckBox_Changed"
+                            Unchecked="AutoDownloadCheckBox_Changed" />
+                        <CheckBox
+                            x:Name="AutoDownloadStickersCheckBox"
+                            Margin="0,6,0,0"
+                            Content="Stickers"
+                            Checked="AutoDownloadCheckBox_Changed"
+                            Unchecked="AutoDownloadCheckBox_Changed" />
+                        <CheckBox
+                            x:Name="AutoDownloadVideosCheckBox"
+                            Margin="0,6,0,0"
+                            Content="Videos (not recommended)"
+                            Checked="AutoDownloadCheckBox_Changed"
+                            Unchecked="AutoDownloadCheckBox_Changed" />
+                        <CheckBox
+                            x:Name="AutoDownloadOtherCheckBox"
+                            Margin="0,6,0,0"
+                            Content="Other media (not files)"
+                            Checked="AutoDownloadCheckBox_Changed"
+                            Unchecked="AutoDownloadCheckBox_Changed" />
+                        <TextBlock
+                            x:Name="AutoDownloadStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+
+                        <Rectangle Height="1" Margin="0,18,0,18" Fill="{ThemeResource TelegramSeparatorBrush}" />
+
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Chat list" />
+                        <ToggleSwitch
+                            x:Name="ChatsShowAllImmediatelySwitch"
+                            Header="Show all chats immediately"
+                            OffContent="Off"
+                            OnContent="On"
+                            Toggled="ChatsShowAllImmediatelySwitch_Toggled" />
+                        <TextBlock
+                            Margin="0,12,0,0"
+                            FontSize="15"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Chats shown at first" />
+                        <TextBox
+                            x:Name="ChatsInitialDisplayCountBox"
+                            Margin="0,8,0,0"
+                            InputScope="Number"
+                            PlaceholderText="20"
+                            TextChanged="ChatsDisplayCountBox_TextChanged" />
+                        <TextBlock
+                            Margin="0,16,0,0"
+                            FontSize="15"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Chats added near bottom" />
+                        <TextBox
+                            x:Name="ChatsIncrementalDisplayCountBox"
+                            Margin="0,8,0,0"
+                            InputScope="Number"
+                            PlaceholderText="20"
+                            TextChanged="ChatsDisplayCountBox_TextChanged" />
+                        <Button
+                            x:Name="SaveChatsDisplayButton"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Stretch"
+                            Click="SaveChatsDisplayButton_Click"
+                            Content="Save chat list limits" />
+                        <TextBlock
+                            x:Name="ChatsDisplayStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+
+            <PivotItem Header="DATA">
+                <ScrollViewer Background="{ThemeResource TelegramPageBackgroundBrush}">
+                    <StackPanel Padding="18,10,18,28">
+                        <TextBlock
+                            Margin="0,10,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Connection" />
+                        <Button
+                            x:Name="ProxyButton"
+                            Padding="0,8"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="ProxyButton_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock
+                                        FontSize="16"
+                                        Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                                        Text="Proxy" />
+                                    <TextBlock
+                                        x:Name="ProxySubtitleText"
+                                        Margin="0,2,0,0"
+                                        FontSize="13"
+                                        Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                                        Text="System proxy / VPN"
+                                        TextWrapping="WrapWholeWords" />
+                                </StackPanel>
+                                <FontIcon
+                                    Grid.Column="1"
+                                    Margin="12,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                                    Glyph="&#xE76C;" />
+                            </Grid>
+                        </Button>
+
+                        <Rectangle Height="1" Margin="0,18,0,18" Fill="{ThemeResource TelegramSeparatorBrush}" />
+
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Storage" />
+                        <TextBlock
+                            FontSize="15"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Reset chat list cache"
+                            TextWrapping="WrapWholeWords" />
+                        <TextBlock
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            Text="Clears cached chats, archive, search preview and contacts. Account and session stay untouched."
+                            TextWrapping="WrapWholeWords" />
+                        <Button
+                            x:Name="ResetCacheButton"
+                            Margin="0,14,0,0"
+                            HorizontalAlignment="Stretch"
+                            Click="ResetCacheButton_Click"
+                            Content="Reset cache" />
+                        <TextBlock
+                            x:Name="CacheStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+
+            <PivotItem Header="ACCOUNT">
+                <ScrollViewer Background="{ThemeResource TelegramPageBackgroundBrush}">
+                    <StackPanel Padding="18,10,18,28">
+                        <TextBlock
+                            Margin="0,10,0,12"
+                            FontSize="20"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Session" />
+                        <TextBlock
+                            FontSize="15"
+                            Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                            Text="Sign out of this device"
+                            TextWrapping="WrapWholeWords" />
+                        <TextBlock
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            Text="Ends the saved TDLib session on this device and returns to the welcome screen."
+                            TextWrapping="WrapWholeWords" />
+                        <Button
+                            x:Name="LogoutButton"
+                            Margin="0,14,0,0"
+                            HorizontalAlignment="Stretch"
+                            Click="LogoutButton_Click"
+                            Content="Sign out"
+                            Foreground="{ThemeResource TelegramDangerBrush}" />
+                        <TextBlock
+                            x:Name="LogoutStatusText"
+                            Margin="0,8,0,0"
+                            FontSize="13"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            TextWrapping="WrapWholeWords" />
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>

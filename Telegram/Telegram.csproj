@@ -1,0 +1,535 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{CFF919CE-7391-4243-91ED-E6310F3B354B}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Telegram</RootNamespace>
+    <AssemblyName>Telegram</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>Telegram_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Auto</AppxBundle>
+    <AppxBundlePlatforms>arm</AppxBundlePlatforms>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CountryPickerDialog.xaml.cs">
+      <DependentUpon>CountryPickerDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProxyEditDialog.xaml.cs">
+      <DependentUpon>ProxyEditDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProxyPage.xaml.cs">
+      <DependentUpon>ProxyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Welcome.xaml.cs">
+      <DependentUpon>Welcome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CallPage.xaml.cs">
+      <DependentUpon>CallPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdaptiveShellPage.xaml.cs">
+      <DependentUpon>AdaptiveShellPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Chats.xaml.cs">
+      <DependentUpon>Chats.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ArchivePage.xaml.cs">
+      <DependentUpon>ArchivePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TopicListPage.xaml.cs">
+      <DependentUpon>TopicListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ContactsPage.xaml.cs">
+      <DependentUpon>ContactsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatPage.xaml.cs">
+      <DependentUpon>ChatPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EmojiAssetCatalog.g.cs" />
+    <Compile Include="HeaderGlassEffectHelper.cs" />
+    <Compile Include="FluentGlassEffectHelper.cs" />
+    <Compile Include="StatusBarLoadingIndicator.cs" />
+    <Compile Include="TelegramAppSettings.cs" />
+    <Compile Include="AppConfig.cs" />
+    <Compile Include="TdJson.cs" />
+    <Compile Include="UserProfilePage.xaml.cs">
+      <DependentUpon>UserProfilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChannelProfilePage.xaml.cs">
+      <DependentUpon>ChannelProfilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GroupProfilePage.xaml.cs">
+      <DependentUpon>GroupProfilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MessagePalette.cs" />
+    <Compile Include="Models\ChatViewModel.cs" />
+    <Compile Include="Models\ChatMessageViewModel.cs" />
+    <Compile Include="Models\FolderViewModel.cs" />
+    <Compile Include="Models\StickerItemViewModel.cs" />
+    <Compile Include="Models\StickerSetViewModel.cs" />
+    <Compile Include="Models\UserProfileViewModel.cs" />
+    <Compile Include="Controls\Messages\MessageMediaHost.cs" />
+    <Compile Include="Controls\CommentsPreviewControl.xaml.cs">
+      <DependentUpon>CommentsPreviewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FfmpegVideoPlayerControl.xaml.cs">
+      <DependentUpon>FfmpegVideoPlayerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FfmpegAudioPlayerControl.xaml.cs">
+      <DependentUpon>FfmpegAudioPlayerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FfmpegMusicPlayerControl.xaml.cs">
+      <DependentUpon>FfmpegMusicPlayerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserProfileMusicSheet.xaml.cs">
+      <DependentUpon>UserProfileMusicSheet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ChatPickerSheet.xaml.cs">
+      <DependentUpon>ChatPickerSheet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReadBySheet.xaml.cs">
+      <DependentUpon>ReadBySheet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ForwardPickControl.xaml.cs">
+      <DependentUpon>ForwardPickControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ForwardPickPage.xaml.cs">
+      <DependentUpon>ForwardPickPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReadByPage.xaml.cs">
+      <DependentUpon>ReadByPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FfmpegStickerImageControl.xaml.cs">
+      <DependentUpon>FfmpegStickerImageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PollControl.xaml.cs">
+      <DependentUpon>PollControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FfmpegWebpBitmapDecoder.cs" />
+    <Compile Include="Controls\ReactionWrapPanel.cs" />
+    <Compile Include="Controls\LocalEmojiTextBlock.cs" />
+    <Compile Include="Notifications\TelegramContinuousNotificationPoller.cs" />
+    <Compile Include="Notifications\TelegramFixedSystemNotificationBridge.cs" />
+    <Compile Include="Notifications\TelegramNotificationBackgroundTask.cs" />
+    <Compile Include="Notifications\TelegramNotificationRegistrar.cs" />
+    <Compile Include="Notifications\TelegramNotificationRuntime.cs" />
+    <Compile Include="Notifications\TelegramLiveTileRuntime.cs" />
+    <Compile Include="Services\QrLoginModels.cs" />
+    <Compile Include="Services\ProxySettings.cs" />
+    <Compile Include="Services\ProxyProfile.cs" />
+    <Compile Include="Services\TdLibTelegramClient.cs" />
+    <Compile Include="Services\TelegramService.cs" />
+    <Compile Include="Services\TelegramSettings.cs" />
+    <Compile Include="Services\ActiveChatService.cs" />
+    <Compile Include="Services\AdaptiveShellNavigationService.cs" />
+    <Compile Include="Services\WindowsContactImportService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="Telegram_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\archive.png" />
+    <Content Include="tdjson.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zlib1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libwebp.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libsharpyuv.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Newtonsoft.Json.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Emoji\emoji_manifest.json" />
+    <Content Include="Assets\ApplicationBar\appbar.add.rest.png" />
+    <Content Include="Assets\ApplicationBar\appbar.attach.png" />
+    <Content Include="Assets\ApplicationBar\appbar.back.png" />
+    <Content Include="Assets\ApplicationBar\appbar.basecircle.light.png" />
+    <Content Include="Assets\ApplicationBar\appbar.basecircle.png" />
+    <Content Include="Assets\ApplicationBar\appbar.cancel.rest.png" />
+    <Content Include="Assets\ApplicationBar\appbar.check.png" />
+    <Content Include="Assets\ApplicationBar\appbar.delete.png" />
+    <Content Include="Assets\ApplicationBar\appbar.edit.png" />
+    <Content Include="Assets\ApplicationBar\appbar.feature.search.rest.png" />
+    <Content Include="Assets\ApplicationBar\appbar.feature.video.rest.png" />
+    <Content Include="Assets\ApplicationBar\appbar.forwardmessage.png" />
+    <Content Include="Assets\ApplicationBar\appbar.manage.rest.png" />
+    <Content Include="Assets\ApplicationBar\appbar.music.double.png" />
+    <Content Include="Assets\ApplicationBar\appbar.map.centerme.png" />
+    <Content Include="Assets\ApplicationBar\appbar.map.checkin.png" />
+    <Content Include="Assets\ApplicationBar\appbar.map.direction.png" />
+    <Content Include="Assets\ApplicationBar\appbar.next.light.png" />
+    <Content Include="Assets\ApplicationBar\appbar.next.png" />
+    <Content Include="Assets\ApplicationBar\appbar.refresh.rest.png" />
+    <Content Include="Assets\ApplicationBar\appbar.save.png" />
+    <Content Include="Assets\ApplicationBar\appbar.send.text.rest.png" />
+    <Content Include="Assets\ApplicationBar\appbar.share.png" />
+    <Content Include="Assets\ApplicationBar\appbar.smile.png" />
+    <Content Include="Assets\ApplicationBar\appbar.stop.rest.png" />
+    <Content Include="Assets\ApplicationBar\appbar.transport.play.light.png" />
+    <Content Include="Assets\ApplicationBar\appbar.transport.play.png" />
+    <Content Include="Assets\ApplicationBar\appbar.user.dark.png" />
+    <Content Include="Assets\ApplicationBar\appbar.user.light.png" />
+    <Content Include="Assets\ApplicationBar\feature.calendar.light.png" />
+    <Content Include="Assets\ApplicationBar\feature.calendar.png" />
+    <Content Include="Assets\Audio\appbar.basecircle.rest.png" />
+    <Content Include="Assets\Audio\appbar.download.rest.png" />
+    <Content Include="Assets\Audio\appbar.transport.pause.rest.png" />
+    <Content Include="Assets\Audio\appbar.transport.play.rest.png" />
+    <Content Include="Assets\Backgrounds\Dark\background1.jpg" />
+    <Content Include="Assets\Backgrounds\Dark\background2.jpg" />
+    <Content Include="Assets\Backgrounds\Dark\background3.jpg" />
+    <Content Include="Assets\Backgrounds\Dark\background4.jpg" />
+    <Content Include="Assets\Backgrounds\gallery_WXGA.png" />
+    <Content Include="Assets\Backgrounds\Light\background1.jpg" />
+    <Content Include="Assets\Backgrounds\Light\background2.jpg" />
+    <Content Include="Assets\Backgrounds\Light\background3.jpg" />
+    <Content Include="Assets\Backgrounds\Light\background4.jpg" />
+    <Content Include="Assets\Backgrounds\Photo_Placeholder.png" />
+    <Content Include="Assets\Backgrounds\wallpapercheck_WXGA.png" />
+    <Content Include="Assets\Dialogs\broadcast-WXGA.png" />
+    <Content Include="Assets\Dialogs\channel.check-WXGA.png" />
+    <Content Include="Assets\Dialogs\channel.muted.png" />
+    <Content Include="Assets\Dialogs\channel.unmuted.png" />
+    <Content Include="Assets\Dialogs\chat.check-WXGA.png" />
+    <Content Include="Assets\Dialogs\chat.commands-WXGA.png" />
+    <Content Include="Assets\Dialogs\chat.customkeyboard-WXGA.png" />
+    <Content Include="Assets\Dialogs\chat.draft-WXGA.png" />
+    <Content Include="Assets\Dialogs\chat.gas-WXGA.png" />
+    <Content Include="Assets\Dialogs\chat.keyboard-WXGA.png" />
+    <Content Include="Assets\Dialogs\chat.masks.png" />
+    <Content Include="Assets\Dialogs\chat.mute-WXGA.png" />
+    <Content Include="Assets\Dialogs\chat.smile-black.png" />
+    <Content Include="Assets\Dialogs\chat.smile-white.png" />
+    <Content Include="Assets\Dialogs\chat.smile.png" />
+    <Content Include="Assets\Dialogs\chat.state.read-black-WXGA.png" />
+    <Content Include="Assets\Dialogs\chat.state.sent-black-WXGA.png" />
+    <Content Include="Assets\Dialogs\group-WXGA.png" />
+    <Content Include="Assets\Dialogs\passcode.close-WXGA.png" />
+    <Content Include="Assets\Dialogs\passcode.open-WXGA.png" />
+    <Content Include="Assets\Dialogs\secretchat-black-WXGA.png" />
+    <Content Include="Assets\Dialogs\secretchat-white-WXGA.png" />
+    <Content Include="Assets\Dialogs\secretchat-WXGA.png" />
+    <Content Include="Assets\LockScreen\lockscreen.logo.png" />
+    <Content Include="Assets\LockScreen\lockscreen.logo.white.png" />
+    <Content Include="Assets\LockScreen\lockscreen.png" />
+    <Content Include="Assets\Maps\4SQ.png" />
+    <Content Include="Assets\Maps\attach-location-black.png" />
+    <Content Include="Assets\Maps\Map_Pin.png" />
+    <Content Include="Assets\Messages\channel.broadcast-WXGA.png" />
+    <Content Include="Assets\Messages\channel.share.black.png" />
+    <Content Include="Assets\Messages\channel.share.white.png" />
+    <Content Include="Assets\Messages\chat.cloudstorage-white-WXGA.png" />
+    <Content Include="Assets\Messages\chat.cloudstorage-WXGA.png.png" />
+    <Content Include="Assets\Messages\chat.nomessages-720p.png" />
+    <Content Include="Assets\Messages\chat.nomessages-white-WXGA.png" />
+    <Content Include="Assets\Messages\chat.nomessages-WXGA.png" />
+    <Content Include="Assets\Messages\chat_doc-WXGA.png" />
+    <Content Include="Assets\Messages\chat_nomessages-white-WXGA.png" />
+    <Content Include="Assets\Messages\doc.cancel.png" />
+    <Content Include="Assets\Messages\doc.download.png" />
+    <Content Include="Assets\Messages\doc.pause.png" />
+    <Content Include="Assets\Messages\file.black-WXGA.png" />
+    <Content Include="Assets\Messages\file.white-WXGA.png" />
+    <Content Include="Assets\Messages\inline.openweb.light.png" />
+    <Content Include="Assets\Messages\inline.openweb.png" />
+    <Content Include="Assets\Messages\inline.share.light.png" />
+    <Content Include="Assets\Messages\inline.share.png" />
+    <Content Include="Assets\Messages\link.png" />
+    <Content Include="Assets\Messages\media.black-WXGA.png" />
+    <Content Include="Assets\Messages\media.canceldownload.png" />
+    <Content Include="Assets\Messages\media.download-WXGA.png" />
+    <Content Include="Assets\Messages\media.download.png" />
+    <Content Include="Assets\Messages\media.download.white-WXGA.png" />
+    <Content Include="Assets\Messages\media.white-WXGA.png" />
+    <Content Include="Assets\Messages\message.deletereply.png" />
+    <Content Include="Assets\Messages\message.state.broadcast.png" />
+    <Content Include="Assets\Messages\message.state.read-WXGA.png" />
+    <Content Include="Assets\Messages\message.state.sending-WXGA.png" />
+    <Content Include="Assets\Messages\message.state.sent-WXGA.png" />
+    <Content Include="Assets\Messages\message.state.views-WXGA.png" />
+    <Content Include="Assets\Messages\movestickerpack.png" />
+    <Content Include="Assets\Messages\nomusic.png" />
+    <Content Include="Assets\Messages\unreadmessages.png" />
+    <Content Include="Assets\NumericKeyboard\back.png" />
+    <Content Include="Assets\NumericKeyboard\back.white.png" />
+    <Content Include="Assets\PhoneNumber\changenumber_2x.png" />
+    <Content Include="Assets\Placeholder\placeholder.broadcast.png" />
+    <Content Include="Assets\Placeholder\placeholder.group.transparent-720p.png" />
+    <Content Include="Assets\Placeholder\placeholder.group.transparent-WVGA.png" />
+    <Content Include="Assets\Placeholder\placeholder.group.transparent-WXGA.png" />
+    <Content Include="Assets\Placeholder\placeholder.user.transparent-720p.png" />
+    <Content Include="Assets\Placeholder\placeholder.user.transparent-WVGA.png" />
+    <Content Include="Assets\Placeholder\placeholder.user.transparent-WXGA.png" />
+    <Content Include="Assets\Startup\intro.1-720p.png" />
+    <Content Include="Assets\Startup\intro.2-WXGA.png" />
+    <Content Include="Assets\Startup\intro.3-WXGA.png" />
+    <Content Include="Assets\Startup\intro.4-WXGA.png" />
+    <Content Include="Assets\Startup\intro.5-WXGA.png" />
+    <Content Include="Assets\Startup\intro.6-WXGA.png" />
+    <Content Include="Assets\Startup\intro.channel.black-WXGA.png" />
+    <Content Include="Assets\Startup\intro.channel.white-WXGA.png" />
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\HeaderGlassMask.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Shaders\FluentGlassEffect.cso" />
+    <Content Include="Shaders\FluentGlassEffect.fx" />
+    <Content Include="Shaders\GlassEffect.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CountryPickerDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ProxyEditDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ProxyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Welcome.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CallPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AdaptiveShellPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Chats.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ArchivePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TopicListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ContactsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CommentsPreviewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FfmpegVideoPlayerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FfmpegAudioPlayerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FfmpegMusicPlayerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\UserProfileMusicSheet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ChatPickerSheet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ReadBySheet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ForwardPickControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ForwardPickPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ReadByPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FfmpegStickerImageControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PollControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChannelProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GroupProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Emoji\Static\" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Target Name="EnsureEntrypointExecutableForAppxPackage" BeforeTargets="_GenerateAppxPackageFile" Condition="'$(AppxPackageLayoutDir)' != '' and Exists('$(AppxPackageLayoutDir)$(TargetFileName)')">
+    <MakeDir Directories="$(AppxPackageLayoutDir)entrypoint" />
+    <Copy SourceFiles="$(AppxPackageLayoutDir)$(TargetFileName)" DestinationFiles="$(AppxPackageLayoutDir)entrypoint\$(TargetFileName)" SkipUnchangedFiles="true" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

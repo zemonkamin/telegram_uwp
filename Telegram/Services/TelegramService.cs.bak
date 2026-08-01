@@ -1,0 +1,966 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Telegram.Models;
+using Telegram.Notifications;
+using Windows.Storage;
+
+namespace Telegram.Services
+{
+    public sealed class TelegramService
+    {
+        public event EventHandler<long> NewMessageArrived;
+        public event EventHandler<long> MessageContentUpdated;
+        public event EventHandler<long> MessagesDeleted;
+        public event EventHandler<long> UserStatusChanged;
+
+        private static readonly TelegramService _instance = new TelegramService();
+        public static TelegramService Instance { get { return _instance; } }
+
+        private readonly TdLibTelegramClient _client = new TdLibTelegramClient();
+        private readonly SemaphoreSlim _tdLibOperationGate = new SemaphoreSlim(1, 1);
+        private QrLoginInfo _currentQr;
+        private string _lastPhoneNumber;
+        private string _lastPhoneCodeHash;
+        public QrLoginInfo CurrentQr { get { return _currentQr; } }
+
+        private TelegramService() { }
+
+        public void Start()
+        {
+            _client.NewMessageArrived += (s, chatId) =>
+            {
+                var h = NewMessageArrived;
+                if (h != null) h(this, chatId);
+            };
+            _client.MessageContentUpdated += (s, chatId) =>
+            {
+                var h = MessageContentUpdated;
+                if (h != null) h(this, chatId);
+            };
+            _client.MessagesDeleted += (s, chatId) =>
+            {
+                var h = MessagesDeleted;
+                if (h != null) h(this, chatId);
+            };
+            _client.UserStatusChanged += (s, userId) =>
+            {
+                var h = UserStatusChanged;
+                if (h != null) h(this, userId);
+            };
+            _client.Start();
+        }
+
+        public async Task<bool> IsAuthorizedAsync()
+        {
+            return await _client.IsAuthorizedAsync();
+        }
+
+        public void ApplyCachedUserStatus(long userId, ChatViewModel vm)
+        {
+            _client.ApplyCachedUserStatus(userId, vm);
+        }
+
+        public async Task ResetSessionAsync()
+        {
+            TelegramContinuousNotificationPoller.Stop();
+            TelegramNotificationRegistrar.DisableLiveTile();
+            _currentQr = null;
+            _lastPhoneNumber = null;
+            _lastPhoneCodeHash = null;
+            await _client.ResetAsync();
+        }
+
+        public async Task ApplyConnectionSettingsAsync()
+        {
+            await _client.RefreshConnectionSettingsAsync();
+        }
+
+        public ProxySettings Proxy
+        {
+            get { return _client.Proxy; }
+        }
+
+        public void ApplyProxySettings(ProxySettings settings)
+        {
+            _client.ApplyProxySettings(settings);
+        }
+
+        public void ClearDialogsCache()
+        {
+            _client.ClearDialogsCache();
+        }
+
+        public async Task<ChatWallpaperInfo> GetChatWallpaperAsync(ChatViewModel peer)
+        {
+            if (peer == null) return null;
+            try
+            {
+                return await _client.GetChatWallpaperAsync(peer.PeerId);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public void PrepareForBackgroundNotifications()
+        {
+            // TDLib owns its network sockets; there is no custom socket to transfer.
+        }
+
+        public async Task<PhoneCodeSentInfo> SendPhoneCodeAsync(string phoneNumber)
+        {
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+                throw new ArgumentException("Enter the phone number in international format.", "phoneNumber");
+
+            _currentQr = null;
+            var sent = await _client.SendPhoneCodeAsync(phoneNumber);
+            if (sent == null)
+                throw new InvalidOperationException("Telegram did not return auth.sentCode.");
+
+            _lastPhoneNumber = phoneNumber;
+            _lastPhoneCodeHash = sent.PhoneCodeHash;
+
+            var message = sent.Authorized
+                ? "Session is already authorized."
+                : BuildPhoneCodeMessage(sent);
+
+            return new PhoneCodeSentInfo
+            {
+                Authorized = sent.Authorized,
+                PhoneNumber = phoneNumber,
+                PhoneCodeHash = sent.PhoneCodeHash,
+                CodeType = sent.CodeType,
+                Length = sent.Length,
+                Timeout = sent.Timeout,
+                Message = message
+            };
+        }
+
+        public async Task SignInWithPhoneCodeAsync(string code)
+        {
+            if (string.IsNullOrWhiteSpace(_lastPhoneNumber) || string.IsNullOrWhiteSpace(_lastPhoneCodeHash))
+                throw new InvalidOperationException("Request a code for the phone number first.");
+            if (string.IsNullOrWhiteSpace(code))
+                throw new ArgumentException("Enter the Telegram code.", "code");
+
+            await _client.SignInWithPhoneCodeAsync(_lastPhoneNumber, _lastPhoneCodeHash, code);
+            await TelegramNotificationRegistrar.RegisterAsync();
+        }
+
+        public async Task SignInWithCloudPasswordAsync(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("Enter the cloud password.", "password");
+
+            await _client.SignInWithCloudPasswordAsync(password);
+            await TelegramNotificationRegistrar.RegisterAsync();
+        }
+
+        public async Task<QrLoginInfo> CreateQrLoginAsync()
+        {
+            var qr = await _client.CreateQrLoginAsync();
+            if (qr == null)
+                throw new InvalidOperationException("Telegram did not return a QR login token.");
+            if (qr.LoginUrl == "authorized")
+                return new QrLoginInfo { LoginUrl = "authorized", QrImageUrl = "", ExpiresUnix = 0 };
+            _currentQr = qr;
+            return _currentQr;
+        }
+
+        public async Task<QrLoginState> CheckQrLoginAsync()
+        {
+            if (_currentQr == null) return QrLoginState.TokenExpired;
+            var now = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            if (_currentQr.ExpiresUnix > 0 && now >= _currentQr.ExpiresUnix - 2)
+                return QrLoginState.TokenExpired;
+
+            // QR login works like in MadelineProto: the displayed token is not re-exported on every
+            // timer tick. We read Telegram updates with a lightweight ping and call auth.exportLoginToken
+            // only after updateLoginToken arrives.
+            var token = await _client.CheckLoginTokenAsync();
+            if (token.Success)
+            {
+                await TelegramNotificationRegistrar.RegisterAsync();
+                return QrLoginState.Accepted;
+            }
+            if (token.Expired) return QrLoginState.TokenExpired;
+
+            return QrLoginState.Waiting;
+        }
+
+        public async Task<List<FolderViewModel>> GetFoldersAsync()
+        {
+            return await RunTdLibAsync(async delegate
+            {
+                var folders = await _client.GetDialogFiltersAsync();
+                if (folders.Count == 0)
+                    folders.Add(new FolderViewModel { Id = -1, Title = "All chats" });
+                return folders;
+            });
+        }
+
+        public async Task<List<ChatViewModel>> GetChatsAsync(int folderId)
+        {
+            return await RunTdLibAsync(() => _client.GetDialogsAsync(folderId));
+        }
+
+        public async Task<List<ChatViewModel>> GetNotificationDialogsAsync(int limit)
+        {
+            return await _client.GetNotificationDialogsAsync(limit);
+        }
+
+        public async Task PollServiceUpdatesAsync()
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.PollServiceUpdatesAsync();
+                return true;
+            });
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, int offset)
+        {
+            return await GetChatsPageAsync(folderId, offset, 0, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, bool refresh)
+        {
+            return await GetChatsPageAsync(folderId, refresh, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId)
+        {
+            return await GetChatsPageAsync(folderId, 0, 0, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, int offset, int limit)
+        {
+            return await GetChatsPageAsync(folderId, offset, limit, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, int offset, CancellationToken cancellationToken)
+        {
+            return await GetChatsPageAsync(folderId, offset, 0, cancellationToken);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, bool refresh, CancellationToken cancellationToken)
+        {
+            return await GetChatsPageAsync(folderId, 0, 0, refresh, cancellationToken);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, int offset, int limit, CancellationToken cancellationToken)
+        {
+            return await GetChatsPageAsync(folderId, offset, limit, false, cancellationToken);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, int offset, int limit, bool refresh)
+        {
+            return await GetChatsPageAsync(folderId, offset, limit, refresh, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, int offset, int limit, bool refresh, CancellationToken cancellationToken)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                return Tuple.Create(new List<ChatViewModel>(), false);
+
+            var page = await RunTdLibAsync(() => _client.GetDialogsPageAsync(folderId, offset, limit, refresh));
+            if (cancellationToken.IsCancellationRequested)
+                return Tuple.Create(new List<ChatViewModel>(), false);
+
+            if (page == null || page.Item1 == null)
+                return Tuple.Create(new List<ChatViewModel>(), false);
+            return page;
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, long offset)
+        {
+            return await GetChatsPageAsync(folderId, SafeOffset(offset), 0, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, long offset, int limit)
+        {
+            return await GetChatsPageAsync(folderId, SafeOffset(offset), limit, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, long offset, CancellationToken cancellationToken)
+        {
+            return await GetChatsPageAsync(folderId, SafeOffset(offset), 0, cancellationToken);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(int folderId, long offset, int limit, CancellationToken cancellationToken)
+        {
+            return await GetChatsPageAsync(folderId, SafeOffset(offset), limit, cancellationToken);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(FolderViewModel folder)
+        {
+            return await GetChatsPageAsync(folder == null ? -1 : folder.Id, 0, 0, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(FolderViewModel folder, int offset)
+        {
+            return await GetChatsPageAsync(folder == null ? -1 : folder.Id, offset, 0, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(FolderViewModel folder, bool refresh)
+        {
+            return await GetChatsPageAsync(folder == null ? -1 : folder.Id, 0, 0, refresh, CancellationToken.None);
+        }
+
+        public async Task<Tuple<List<ChatViewModel>, bool>> GetChatsPageAsync(FolderViewModel folder, int offset, int limit)
+        {
+            return await GetChatsPageAsync(folder == null ? -1 : folder.Id, offset, limit, CancellationToken.None);
+        }
+
+        private static int SafeOffset(long offset)
+        {
+            if (offset <= 0) return 0;
+            if (offset > int.MaxValue) return int.MaxValue;
+            return (int)offset;
+        }
+
+        private async Task<T> RunTdLibAsync<T>(Func<Task<T>> action)
+        {
+            await _tdLibOperationGate.WaitAsync();
+            try
+            {
+                return await action();
+            }
+            finally
+            {
+                _tdLibOperationGate.Release();
+            }
+        }
+
+        public async Task<ChatViewModel> GetSavedMessagesChatAsync()
+        {
+            return await _client.GetSavedMessagesChatAsync();
+        }
+
+        public async Task<ChatViewModel> GetSelfUserAsync()
+        {
+            return await _client.GetSelfUserAsync();
+        }
+
+        public async Task<UserProfileViewModel> GetUserProfileAsync(ChatViewModel chat)
+        {
+            return await _client.GetUserProfileAsync(chat);
+        }
+
+        public async Task<List<ProfilePhotoViewModel>> GetProfilePhotosAsync(ChatViewModel chat, int limit)
+        {
+            return await _client.GetProfilePhotosAsync(chat, limit);
+        }
+
+        public async Task<List<ChatViewModel>> GetChatMembersAsync(ChatViewModel chat, int limit)
+        {
+            return await _client.GetChatMembersAsync(chat, limit);
+        }
+
+        public async Task<List<ChatViewModel>> GetContactsAsync()
+        {
+            return await _client.GetContactsAsync();
+        }
+
+        public async Task<List<ChatViewModel>> GetArchivePreviewChatsAsync()
+        {
+            return await _client.GetArchivePreviewDialogsAsync();
+        }
+
+        public async Task<List<ChatViewModel>> SearchChatsAsync(string query)
+        {
+            return await _client.SearchChatsAsync(query, 50);
+        }
+
+        public async Task<TelegramLinkTarget> ResolveTelegramLinkAsync(string link)
+        {
+            return await _client.ResolveTelegramLinkAsync(link);
+        }
+
+        public async Task<ChatViewModel> RefreshFullChatInfoAsync(ChatViewModel chat)
+        {
+            return await RefreshFullChatInfoAsync(chat, true);
+        }
+
+        public async Task<ChatViewModel> RefreshFullChatInfoAsync(ChatViewModel chat, bool refreshDialogList)
+        {
+            if (chat == null) return null;
+            if (chat.IsForumTopic) return chat;
+
+            if (refreshDialogList)
+            {
+                try
+                {
+                    _client.ClearDialogsCache();
+                    var dialogs = await _client.GetDialogsAsync(chat.FolderId);
+                    var refreshed = FindSameChat(dialogs, chat);
+                    if (refreshed != null)
+                        CopyChatInfo(refreshed, chat);
+                }
+                catch
+                {
+                    // Keep the chat page usable if Telegram rejects or delays this request.
+                }
+            }
+
+            try
+            {
+                var full = await _client.GetFullPeerInfoAsync(chat);
+                if (full != null)
+                    CopyChatInfo(full, chat);
+            }
+            catch
+            {
+                // Full info is optional: keep dialog data if Telegram refuses the request.
+            }
+
+            try
+            {
+                chat.IsMuted = await _client.GetNotificationsMutedAsync(chat);
+            }
+            catch
+            {
+                // Per-peer notification state is optional; keep the dialog value if this request fails.
+            }
+
+            return chat;
+        }
+
+        public int CallProtocolVariantCount
+        {
+            get { return _client.CallProtocolVariantCount; }
+        }
+
+        public async Task<TelegramCallInfo> RequestCallAsync(ChatViewModel peer)
+        {
+            return await RequestCallAsync(peer, 0);
+        }
+
+        public async Task<TelegramCallInfo> RequestCallAsync(ChatViewModel peer, int protocolIndex)
+        {
+            return await RunTdLibAsync(() => _client.RequestCallAsync(peer, protocolIndex));
+        }
+
+        public async Task<TelegramCallInfo> GetCallAsync(TelegramCallInfo call)
+        {
+            return await RunTdLibAsync(() => _client.GetCallAsync(call));
+        }
+
+        public async Task DiscardCallAsync(TelegramCallInfo call, int durationSeconds)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DiscardCallAsync(call, durationSeconds);
+                return true;
+            });
+        }
+
+        public async Task<List<ChatMessageViewModel>> GetHistoryAsync(ChatViewModel chat, int limit)
+        {
+            return await RunTdLibAsync(() => _client.GetHistoryAsync(chat, limit));
+        }
+
+        public async Task<List<ChatMessageViewModel>> GetHistoryBeforeAsync(ChatViewModel chat, int beforeMessageId, int limit)
+        {
+            return await RunTdLibAsync(() => _client.GetHistoryBeforeAsync(chat, beforeMessageId, limit));
+        }
+
+        public async Task<List<ChatMessageViewModel>> GetHistoryAroundAsync(ChatViewModel chat, int messageId, int limit)
+        {
+            return await RunTdLibAsync(() => _client.GetHistoryAroundAsync(chat, messageId, limit));
+        }
+
+        public async Task<List<ChatMessageViewModel>> GetHistoryForwardAsync(ChatViewModel chat, int fromMessageId, int limit)
+        {
+            return await RunTdLibAsync(() => _client.GetHistoryForwardAsync(chat, fromMessageId, limit));
+        }
+
+        public async Task<List<ChatMessageViewModel>> GetHistorySinceAsync(ChatViewModel chat, int minMessageId, int limit)
+        {
+            return await RunTdLibAsync(() => _client.GetHistorySinceAsync(chat, minMessageId, limit));
+        }
+
+        public bool ConsumeReplyMarkupReset(ChatViewModel chat)
+        {
+            return _client.ConsumeReplyMarkupReset(chat);
+        }
+
+        public async Task<List<ChatMessageViewModel>> TakeMessageUpdatesAsync(ChatViewModel chat)
+        {
+            return await RunTdLibAsync(() => _client.TakeMessageUpdatesAsync(chat));
+        }
+
+        public async Task<List<int>> TakeDeletedMessageIdsAsync(ChatViewModel chat)
+        {
+            return await RunTdLibAsync(() => _client.TakeDeletedMessageIdsAsync(chat));
+        }
+
+        public async Task<List<ChatMessageViewModel>> GetMessagesByIdAsync(ChatViewModel chat, int messageId)
+        {
+            return await _client.GetMessagesByIdAsync(chat, messageId);
+        }
+
+        public async Task<List<ChatMessageViewModel>> GetPinnedMessagesAsync(ChatViewModel chat, int limit)
+        {
+            return await RunTdLibAsync(() => _client.GetPinnedMessagesAsync(chat, limit));
+        }
+
+        public async Task<Dictionary<int, List<MessageReactionViewModel>>> GetMessageReactionsAsync(ChatViewModel chat, IList<int> messageIds)
+        {
+            return await RunTdLibAsync(() => _client.GetMessageReactionsAsync(chat, messageIds));
+        }
+
+        public async Task<List<MessageReactionViewModel>> GetMessageAvailableReactionsAsync(ChatViewModel chat, int messageId)
+        {
+            return await RunTdLibAsync(() => _client.GetMessageAvailableReactionsAsync(chat, messageId));
+        }
+
+        public async Task<string> GetCustomEmojiStickerUriAsync(long customEmojiId)
+        {
+            return await RunTdLibAsync(() => _client.GetCustomEmojiStickerUriAsync(customEmojiId));
+        }
+
+        public async Task<List<StickerSetViewModel>> GetStickerPanelSetsAsync()
+        {
+            return await RunTdLibAsync(() => _client.GetStickerPanelSetsAsync());
+        }
+
+        public async Task<List<ChatViewModel>> GetForumTopicsAsync(ChatViewModel chat, int limit)
+        {
+            return await _client.GetForumTopicsAsync(chat, limit);
+        }
+
+        public async Task<ChatViewModel> ResolveDiscussionChatAsync(ChatViewModel chat, ChatMessageViewModel message)
+        {
+            return await _client.ResolveDiscussionChatAsync(chat, message);
+        }
+
+        public async Task DownloadMessageMediaAsync(ChatMessageViewModel message)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageMediaAsync(message);
+                return true;
+            });
+        }
+
+        public async Task DownloadMessageMediaAsync(ChatViewModel chat, ChatMessageViewModel message)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageMediaAsync(chat, message);
+                return true;
+            });
+        }
+
+        public async Task DownloadMessageMediaAsync(ChatViewModel chat, ChatMessageViewModel message, Action<long, long> progress)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageMediaAsync(chat, message, progress);
+                return true;
+            });
+        }
+
+        public async Task DownloadMessageMediaAsync(ChatViewModel chat, ChatMessageViewModel message, Action<long> progress)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageMediaAsync(chat, message, progress);
+                return true;
+            });
+        }
+
+        public async Task DownloadMessageMediaAsync(ChatMediaItemViewModel item)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageMediaAsync(item);
+                return true;
+            });
+        }
+
+        public async Task<StorageFile> DownloadOriginalPhotoAsync(ChatViewModel chat, ChatMessageViewModel message)
+        {
+            return await RunTdLibAsync(() => _client.DownloadOriginalPhotoAsync(chat, message));
+        }
+
+        public async Task<StorageFile> DownloadOriginalPhotoAsync(ChatMediaItemViewModel item)
+        {
+            return await RunTdLibAsync(() => _client.DownloadOriginalPhotoAsync(item));
+        }
+
+        public async Task DownloadMessageVideoForPlaybackAsync(ChatViewModel chat, ChatMessageViewModel message, Action<string> ready, Action<long, long> progress)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageVideoForPlaybackAsync(chat, message, ready, progress);
+                return true;
+            });
+        }
+
+        public async Task DownloadMessageVideoPreviewAsync(ChatViewModel chat, ChatMessageViewModel message)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageVideoPreviewAsync(chat, message);
+                return true;
+            });
+        }
+
+        public async Task DownloadMessageVideoPreviewAsync(ChatMediaItemViewModel item)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageVideoPreviewAsync(item);
+                return true;
+            });
+        }
+
+        public async Task DownloadMessageVideoForPlaybackAsync(ChatMediaItemViewModel item, Action<string> ready, Action<long, long> progress)
+        {
+            await RunTdLibAsync(async delegate
+            {
+                await _client.DownloadMessageVideoForPlaybackAsync(item, ready, progress);
+                return true;
+            });
+        }
+
+        public async Task<ChatMessageViewModel> GetChatReplyMarkupMessageAsync(ChatViewModel chat)
+        {
+            return await _client.GetChatReplyMarkupMessageAsync(chat);
+        }
+
+        public async Task SendBotStartMessageAsync(ChatViewModel chat, string parameter)
+        {
+            await _client.SendBotStartMessageAsync(chat, parameter);
+        }
+
+        public async Task<BotCallbackAnswerViewModel> AnswerBotCallbackAsync(ChatViewModel chat, BotKeyboardButtonViewModel button)
+        {
+            return await _client.AnswerBotCallbackAsync(chat, button);
+        }
+
+        public async Task SendOwnContactAsync(ChatViewModel chat)
+        {
+            await _client.SendOwnContactAsync(chat);
+        }
+
+        public async Task SendLocationAsync(ChatViewModel chat, double latitude, double longitude, double horizontalAccuracy)
+        {
+            await _client.SendLocationAsync(chat, latitude, longitude, horizontalAccuracy);
+        }
+
+        public async Task SendTextAsync(ChatViewModel chat, string text)
+        {
+            await _client.SendTextMessageAsync(chat, text);
+        }
+
+        public async Task SendTextAsync(ChatViewModel chat, string text, int replyToMessageId)
+        {
+            await _client.SendTextMessageAsync(chat, text, replyToMessageId);
+        }
+
+        public async Task SendReactionAsync(ChatViewModel chat, int messageId, string emoticon, bool remove)
+        {
+            await _client.SendReactionAsync(chat, messageId, emoticon, remove);
+        }
+
+        public async Task SendReactionAsync(ChatViewModel chat, int messageId, string emoticon, long customEmojiDocumentId, bool remove)
+        {
+            await _client.SendReactionAsync(chat, messageId, emoticon, customEmojiDocumentId, remove);
+        }
+
+        public async Task SendNotificationReplyAsync(string peerType, long peerId, long accessHash, bool canSendMessages, string text)
+        {
+            if (string.IsNullOrWhiteSpace(peerType) || peerId == 0 || string.IsNullOrWhiteSpace(text))
+                return;
+
+            var chat = new ChatViewModel
+            {
+                PeerType = peerType,
+                PeerId = peerId,
+                PeerKey = peerType + ":" + peerId.ToString(),
+                AccessHash = accessHash,
+                CanSendMessages = canSendMessages
+            };
+
+            await _client.SendTextMessageAsync(chat, text);
+        }
+
+        public async Task SendMediaAsync(ChatViewModel chat, StorageFile file, string kind, string caption)
+        {
+            await _client.SendMediaMessageAsync(chat, file, kind, caption);
+        }
+
+        public async Task SendMediaAsync(ChatViewModel chat, StorageFile file, string kind, string caption, int replyToMessageId)
+        {
+            await _client.SendMediaMessageAsync(chat, file, kind, caption, replyToMessageId);
+        }
+
+        public async Task SendMediaAsync(ChatViewModel chat, StorageFile file, string kind, string caption, int replyToMessageId, int duration)
+        {
+            await _client.SendMediaMessageAsync(chat, file, kind, caption, replyToMessageId, duration);
+        }
+
+        public async Task SendMediaAlbumAsync(ChatViewModel chat, IList<StorageFile> files, IList<string> kinds, string caption, int replyToMessageId)
+        {
+            await _client.SendMediaAlbumMessageAsync(chat, files, kinds, caption, replyToMessageId);
+        }
+
+        public async Task SendStickerAsync(ChatViewModel chat, StickerItemViewModel sticker, int replyToMessageId)
+        {
+            await _client.SendStickerMessageAsync(chat, sticker, replyToMessageId);
+        }
+
+        public async Task SendChatActionAsync(ChatViewModel chat, string actionKind)
+        {
+            await _client.SendChatActionAsync(chat, actionKind);
+        }
+
+        public async Task SetNotificationsMutedAsync(ChatViewModel chat, bool muted)
+        {
+            await _client.SetNotificationsMutedAsync(chat, muted);
+        }
+
+        public async Task<bool> GetNotificationsMutedAsync(ChatViewModel chat)
+        {
+            return await _client.GetNotificationsMutedAsync(chat);
+        }
+
+        public async Task<ChatViewModel> SetChatPinnedAsync(ChatViewModel chat, bool pinned)
+        {
+            return await _client.SetDialogPinnedAsync(chat, pinned);
+        }
+
+        public async Task<ChatViewModel> SetChatArchivedAsync(ChatViewModel chat, bool archived)
+        {
+            return await _client.SetDialogArchivedAsync(chat, archived);
+        }
+
+        public async Task<ChatViewModel> MarkChatReadAsync(ChatViewModel chat)
+        {
+            return await _client.MarkDialogReadAsync(chat);
+        }
+
+        public async Task MarkChatMessagesReadAsync(ChatViewModel chat, IList<int> messageIds)
+        {
+            await _client.MarkMessagesReadAsync(chat, messageIds);
+        }
+
+        public async Task PinMessageAsync(ChatViewModel chat, ChatMessageViewModel message)
+        {
+            await _client.PinMessageAsync(chat, message);
+        }
+
+        public async Task DeleteMessageAsync(ChatViewModel chat, ChatMessageViewModel message)
+        {
+            await _client.DeleteMessageAsync(chat, message);
+        }
+
+        public async Task SendPollVoteAsync(ChatViewModel chat, ChatMessageViewModel message, List<byte[]> options)
+        {
+            await _client.SendPollVoteAsync(chat, message == null ? 0 : message.Id, options);
+        }
+
+        public async Task ToggleTodoCompletedAsync(ChatViewModel chat, ChatMessageViewModel message, int todoId, bool completed)
+        {
+            var completedIds = completed ? new List<int> { todoId } : new List<int>();
+            var incompletedIds = completed ? new List<int>() : new List<int> { todoId };
+            await _client.ToggleTodoCompletedAsync(chat, message == null ? 0 : message.Id, completedIds, incompletedIds);
+        }
+
+        public async Task DeleteChatAsync(ChatViewModel chat)
+        {
+            await _client.DeleteDialogAsync(chat);
+        }
+
+        public async Task LeaveChatAsync(ChatViewModel chat)
+        {
+            await _client.LeaveDialogAsync(chat);
+        }
+
+        public async Task JoinChatAsync(ChatViewModel chat)
+        {
+            await _client.JoinDialogAsync(chat);
+        }
+
+        public async Task OpenChatAsync(ChatViewModel chat)
+        {
+            await _client.OpenChatAsync(chat);
+        }
+
+        public async Task ForwardMessageToSavedAsync(ChatViewModel chat, ChatMessageViewModel message)
+        {
+            await _client.ForwardMessageToSavedAsync(chat, message);
+        }
+
+        public async Task ForwardMessageAsync(ChatViewModel fromChat, ChatMessageViewModel message, ChatViewModel toChat)
+        {
+            await _client.ForwardMessageAsync(fromChat, message, toChat);
+        }
+
+
+        private static string BuildPhoneCodeMessage(PhoneCodeResponse sent)
+        {
+            if (sent == null) return "Code sent. Enter the code from Telegram.";
+
+            var target = sent.CodeType;
+            if (string.IsNullOrEmpty(target))
+                target = "Telegram";
+
+            var message = "Code sent via " + target + ". Enter it below.";
+            if (sent.Length > 0)
+                message += " Code length: " + sent.Length + ".";
+            if (sent.Timeout > 0)
+                message += " A repeat request is usually available in " + sent.Timeout + " sec.";
+            return message;
+        }
+
+        private static ChatViewModel FindSameChat(List<ChatViewModel> dialogs, ChatViewModel chat)
+        {
+            if (dialogs == null || chat == null) return null;
+
+            var targetKey = chat.PeerKey;
+            for (var i = 0; i < dialogs.Count; i++)
+            {
+                var item = dialogs[i];
+                if (item == null) continue;
+
+                if (!string.IsNullOrEmpty(targetKey) && item.PeerKey == targetKey)
+                    return item;
+
+                if (item.PeerId == chat.PeerId && item.PeerType == chat.PeerType)
+                    return item;
+            }
+
+            return null;
+        }
+
+        private static void CopyChatInfo(ChatViewModel source, ChatViewModel target)
+        {
+            if (source == null || target == null) return;
+
+            target.PeerId = source.PeerId;
+            target.PeerType = source.PeerType;
+            target.PeerKey = source.PeerKey;
+            target.AccessHash = source.AccessHash;
+            target.Title = source.Title;
+            target.LastMessage = source.LastMessage;
+            target.LastMessageDate = source.LastMessageDate;
+            target.LastMessageIsOutgoing = source.LastMessageIsOutgoing;
+            target.UnreadCount = source.UnreadCount;
+            target.TopMessageId = source.TopMessageId;
+            target.ReadOutboxMaxId = source.ReadOutboxMaxId;
+            target.FolderId = source.FolderId;
+            target.IsMuted = source.IsMuted;
+            target.IsPinned = source.IsPinned;
+            target.PinnedMessageId = source.PinnedMessageId;
+            target.PinnedMessagePreview = source.PinnedMessagePreview;
+            target.PinnedMessageIds = source.PinnedMessageIds == null ? null : new List<int>(source.PinnedMessageIds);
+            target.CurrentPinnedMessageIndex = source.CurrentPinnedMessageIndex;
+            target.IsContact = source.IsContact;
+            target.IsBot = source.IsBot;
+            target.BotUserId = source.BotUserId != 0 ? source.BotUserId : target.BotUserId;
+            target.ReplyMarkupMessageId = source.ReplyMarkupMessageId;
+            target.BotDescription = source.BotDescription ?? target.BotDescription;
+            target.BotMenuButtonType = source.BotMenuButtonType ?? target.BotMenuButtonType;
+            target.BotMenuButtonText = source.BotMenuButtonText ?? target.BotMenuButtonText;
+            target.BotMenuButtonUrl = source.BotMenuButtonUrl ?? target.BotMenuButtonUrl;
+            if (source.BotCommands != null && source.BotCommands.Count > 0) target.BotCommands = source.BotCommands;
+            target.IsGroup = source.IsGroup;
+            target.IsBroadcast = source.IsBroadcast;
+            target.IsChannel = source.IsChannel;
+            target.IsJoined = source.IsJoined;
+            target.CanJoin = source.CanJoin;
+            target.IsForum = source.IsForum;
+            target.IsForumTopic = source.IsForumTopic;
+            target.TopicId = source.TopicId;
+            target.TopicRootMessageId = source.TopicRootMessageId;
+            target.TopicIconColor = source.TopicIconColor;
+            target.TopicIconEmojiId = source.TopicIconEmojiId;
+            target.TopicIconUri = source.TopicIconUri;
+            target.IsTopicClosed = source.IsTopicClosed;
+            target.ParentPeerType = source.ParentPeerType;
+            target.ParentPeerId = source.ParentPeerId;
+            target.ParentPeerKey = source.ParentPeerKey;
+            target.ParentAccessHash = source.ParentAccessHash;
+            target.ParentTitle = source.ParentTitle;
+            target.CanSendMessages = source.CanSendMessages;
+            target.CanPinMessages = source.CanPinMessages;
+            target.CanDeleteMessages = source.CanDeleteMessages;
+            target.NoForwards = source.NoForwards;
+            if (source.SubscriberCount > 0) target.SubscriberCount = source.SubscriberCount;
+            target.OnlineCount = source.OnlineCount;
+            if (source.LastSeenUnixTime > 0) target.LastSeenUnixTime = source.LastSeenUnixTime;
+            if (!string.IsNullOrEmpty(source.LastSeenText)) target.LastSeenText = source.LastSeenText;
+            if (!string.IsNullOrEmpty(source.UserStatusKind)) target.UserStatusKind = source.UserStatusKind;
+            if (!string.IsNullOrEmpty(source.Username)) target.Username = source.Username;
+            if (!string.IsNullOrEmpty(source.Phone)) target.Phone = source.Phone;
+            if (!string.IsNullOrEmpty(source.Bio)) target.Bio = source.Bio;
+            if (!string.IsNullOrEmpty(source.BirthdayText)) target.BirthdayText = source.BirthdayText;
+            target.ProfileChannel = source.ProfileChannel;
+            target.IconText = source.IconText;
+            target.TypeIcon = source.TypeIcon;
+            target.TypeGlyph = source.TypeGlyph;
+            target.AvatarUri = source.AvatarUri;
+            target.AvatarIsPreview = source.AvatarIsPreview;
+            target.AvatarPhotoId = source.AvatarPhotoId;
+            target.AvatarDcId = source.AvatarDcId;
+            target.AvatarStrippedThumb = source.AvatarStrippedThumb;
+        }
+    }
+
+    public sealed class PhoneCodeSentInfo
+    {
+        public bool Authorized { get; set; }
+        public string PhoneNumber { get; set; }
+        public string PhoneCodeHash { get; set; }
+        public string CodeType { get; set; }
+        public int Length { get; set; }
+        public int Timeout { get; set; }
+        public string Message { get; set; }
+    }
+
+    public sealed class TelegramCloudPasswordRequiredException : InvalidOperationException
+    {
+        public TelegramCloudPasswordRequiredException(string message) : base(message) { }
+    }
+
+    public sealed class TelegramCallInfo
+    {
+        public long Id { get; set; }
+        public long AccessHash { get; set; }
+        public string State { get; set; }
+        public bool IsAccepted { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDiscarded { get; set; }
+        public string DiscardReason { get; set; }
+        public int StartDate { get; set; }
+        public bool IsIncomingRequested { get; set; }
+        public long AdminId { get; set; }
+        public long ParticipantId { get; set; }
+        public int ProtocolIndex { get; set; }
+        public string ProtocolName { get; set; }
+
+        public byte[] LocalA { get; set; }
+        public byte[] LocalGA { get; set; }
+        public byte[] RemoteGB { get; set; }
+        public byte[] RemoteGAHash { get; set; }
+        public byte[] DhP { get; set; }
+        public int DhG { get; set; }
+        public byte[] AuthKey { get; set; }
+        public long KeyFingerprint { get; set; }
+        public long RemoteKeyFingerprint { get; set; }
+        public bool IsConfirmed { get; set; }
+    }
+
+    public sealed class TelegramLinkTarget
+    {
+        public ChatViewModel Chat { get; set; }
+        public int MessageId { get; set; }
+    }
+}

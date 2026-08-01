@@ -1,0 +1,265 @@
+<Page
+    x:Class="Telegram.Welcome"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Telegram"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="TelegramWelcomeBackgroundBrush" Color="#FF000000" />
+                    <SolidColorBrush x:Key="TelegramWelcomeTitleBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="TelegramWelcomeTextBrush" Color="#FFB5B5B5" />
+                    <SolidColorBrush x:Key="TelegramWelcomeDotBrush" Color="#FF4D4D4D" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="TelegramWelcomeBackgroundBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="TelegramWelcomeTitleBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="TelegramWelcomeTextBrush" Color="#FF666666" />
+                    <SolidColorBrush x:Key="TelegramWelcomeDotBrush" Color="#FFAAAAAA" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid
+        x:Name="RootGrid"
+        Background="{ThemeResource TelegramWelcomeBackgroundBrush}"
+        SizeChanged="RootGrid_SizeChanged">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition x:Name="StartButtonRow" Height="58" />
+        </Grid.RowDefinitions>
+
+        <Pivot
+            x:Name="StartView"
+            Grid.Row="0"
+            Background="Transparent"
+            SelectionChanged="StartView_SelectionChanged">
+            <Pivot.Resources>
+                <SolidColorBrush x:Key="PivotHeaderForegroundUnselectedBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="PivotHeaderForegroundSelectedBrush" Color="Transparent" />
+            </Pivot.Resources>
+
+            <PivotItem>
+                <Grid>
+                    <StackPanel
+                        x:Name="IntroPanel0"
+                        Width="320"
+                        Margin="0,-30,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Image
+                            x:Name="IntroImage0"
+                            Width="150"
+                            Height="150"
+                            Source="ms-appx:///Assets/Startup/intro.1-720p.png"
+                            Stretch="Uniform" />
+                        <TextBlock
+                            x:Name="IntroTitle0"
+                            Margin="0,26,0,8"
+                            FontSize="34"
+                            FontWeight="Light"
+                            Foreground="{ThemeResource TelegramWelcomeTitleBrush}"
+                            Text="Telegram"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            x:Name="IntroText0"
+                            FontSize="18"
+                            Foreground="{ThemeResource TelegramWelcomeTextBrush}"
+                            Text="Welcome to Telegram client for Windows 10 Mobile."
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem>
+                <Grid>
+                    <StackPanel
+                        x:Name="IntroPanel1"
+                        Width="320"
+                        Margin="0,-30,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Image
+                            x:Name="IntroImage1"
+                            Width="150"
+                            Height="150"
+                            Source="ms-appx:///Assets/Startup/intro.2-WXGA.png"
+                            Stretch="Uniform" />
+                        <TextBlock
+                            x:Name="IntroTitle1"
+                            Margin="0,26,0,8"
+                            FontSize="34"
+                            FontWeight="Light"
+                            Foreground="#FFF85B3E"
+                            Text="Fast"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            x:Name="IntroText1"
+                            FontSize="18"
+                            Foreground="{ThemeResource TelegramWelcomeTextBrush}"
+                            Text="Telegram delivers messages quickly and keeps your chats in sync."
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem>
+                <Grid>
+                    <StackPanel
+                        x:Name="IntroPanel2"
+                        Width="320"
+                        Margin="0,-30,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Image
+                            x:Name="IntroImage2"
+                            Width="150"
+                            Height="150"
+                            Source="ms-appx:///Assets/Startup/intro.3-WXGA.png"
+                            Stretch="Uniform" />
+                        <TextBlock
+                            x:Name="IntroTitle2"
+                            Margin="0,26,0,8"
+                            FontSize="34"
+                            FontWeight="Light"
+                            Foreground="#FF4DA3F2"
+                            Text="Powerful"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            x:Name="IntroText2"
+                            FontSize="18"
+                            Foreground="{ThemeResource TelegramWelcomeTextBrush}"
+                            Text="Groups, channels, media and cloud history are available from one app."
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem>
+                <Grid>
+                    <StackPanel
+                        x:Name="IntroPanel3"
+                        Width="320"
+                        Margin="0,-30,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Image
+                            x:Name="IntroImage3"
+                            Width="150"
+                            Height="150"
+                            Source="ms-appx:///Assets/Startup/intro.4-WXGA.png"
+                            Stretch="Uniform" />
+                        <TextBlock
+                            x:Name="IntroTitle3"
+                            Margin="0,26,0,8"
+                            FontSize="34"
+                            FontWeight="Light"
+                            Foreground="#FFA46AF2"
+                            Text="Private"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            x:Name="IntroText3"
+                            FontSize="18"
+                            Foreground="{ThemeResource TelegramWelcomeTextBrush}"
+                            Text="Your messages are protected by Telegram TDLib authorization."
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem>
+                <Grid>
+                    <StackPanel
+                        x:Name="IntroPanel4"
+                        Width="320"
+                        Margin="0,-30,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Image
+                            x:Name="IntroImage4"
+                            Width="150"
+                            Height="150"
+                            Source="ms-appx:///Assets/Startup/intro.5-WXGA.png"
+                            Stretch="Uniform" />
+                        <TextBlock
+                            x:Name="IntroTitle4"
+                            Margin="0,26,0,8"
+                            FontSize="34"
+                            FontWeight="Light"
+                            Foreground="#FF5DC226"
+                            Text="Cloud-Based"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            x:Name="IntroText4"
+                            FontSize="18"
+                            Foreground="{ThemeResource TelegramWelcomeTextBrush}"
+                            Text="Access your messages from any authorized Telegram device."
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+
+        <StackPanel
+            x:Name="DotsPanel"
+            Grid.Row="0"
+            Margin="0,0,0,96"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Ellipse
+                x:Name="Dot0"
+                Width="8"
+                Height="8"
+                Margin="5,0"
+                Fill="{ThemeResource TelegramWelcomeTitleBrush}" />
+            <Ellipse
+                x:Name="Dot1"
+                Width="8"
+                Height="8"
+                Margin="5,0"
+                Fill="{ThemeResource TelegramWelcomeDotBrush}" />
+            <Ellipse
+                x:Name="Dot2"
+                Width="8"
+                Height="8"
+                Margin="5,0"
+                Fill="{ThemeResource TelegramWelcomeDotBrush}" />
+            <Ellipse
+                x:Name="Dot3"
+                Width="8"
+                Height="8"
+                Margin="5,0"
+                Fill="{ThemeResource TelegramWelcomeDotBrush}" />
+            <Ellipse
+                x:Name="Dot4"
+                Width="8"
+                Height="8"
+                Margin="5,0"
+                Fill="{ThemeResource TelegramWelcomeDotBrush}" />
+        </StackPanel>
+
+        <Button
+            x:Name="StartButton"
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Background="{ThemeResource SystemControlHighlightAccentBrush}"
+            BorderThickness="0"
+            Click="StartButton_Click"
+            Content="start messaging"
+            FontSize="22"
+            Foreground="White" />
+    </Grid>
+</Page>

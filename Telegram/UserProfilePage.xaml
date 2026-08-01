@@ -1,0 +1,837 @@
+﻿<Page
+    x:Class="Telegram.UserProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Telegram.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ProfilePageBackgroundBrush" Color="#FF000000" />
+                    <SolidColorBrush x:Key="ProfilePanelBackgroundBrush" Color="#FF1F1F1F" />
+                    <SolidColorBrush x:Key="ProfilePrimaryTextBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="ProfileSecondaryTextBrush" Color="#FFB8B8B8" />
+                    <SolidColorBrush x:Key="ProfileHeaderTabBrush" Color="#FFE9E9E9" />
+                    <SolidColorBrush x:Key="ProfileHeaderPrimaryTextBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="ProfileHeaderSecondaryTextBrush" Color="#FFE6E6E6" />
+                    <SolidColorBrush x:Key="ProfileAvatarFallbackBrush" Color="#FF584DFF" />
+                    <SolidColorBrush x:Key="ProfileHeaderBackgroundBrush" Color="#FF282828" />
+                    <SolidColorBrush x:Key="ProfileDividerBrush" Color="#FF202020" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ProfilePageBackgroundBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="ProfilePanelBackgroundBrush" Color="#FFF5F5F5" />
+                    <SolidColorBrush x:Key="ProfilePrimaryTextBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="ProfileSecondaryTextBrush" Color="#FF666666" />
+                    <SolidColorBrush x:Key="ProfileHeaderTabBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="ProfileHeaderPrimaryTextBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="ProfileHeaderSecondaryTextBrush" Color="#FF666666" />
+                    <SolidColorBrush x:Key="ProfileAvatarFallbackBrush" Color="#FF584DFF" />
+                    <SolidColorBrush x:Key="ProfileHeaderBackgroundBrush" Color="#FFF3F3F3" />
+                    <SolidColorBrush x:Key="ProfileDividerBrush" Color="#FFE5E5E5" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <ControlTemplate x:Key="ChatsSecondaryCommandButtonTemplate" TargetType="AppBarButton">
+                <Grid
+                    Width="{TemplateBinding Width}"
+                    MinHeight="44"
+                    Padding="12,0,12,0"
+                    HorizontalAlignment="Stretch"
+                    Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="38" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter
+                        Grid.Column="0"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{TemplateBinding Icon}"
+                        Foreground="{TemplateBinding Foreground}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Center"
+                        FontFamily="{TemplateBinding FontFamily}"
+                        FontSize="15"
+                        Foreground="{TemplateBinding Foreground}"
+                        Text="{TemplateBinding Label}"
+                        TextTrimming="CharacterEllipsis" />
+                </Grid>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid x:Name="RootGrid" Background="{ThemeResource ProfilePageBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer
+            x:Name="ProfileScroll"
+            Grid.Row="0"
+            HorizontalScrollBarVisibility="Disabled"
+            HorizontalScrollMode="Disabled"
+            VerticalScrollBarVisibility="Hidden"
+            VerticalScrollMode="Enabled"
+            ViewChanged="ProfileScroll_ViewChanged">
+            <StackPanel>
+                <Grid
+                    x:Name="HeaderHost"
+                    Height="142"
+                    Background="{ThemeResource ProfileHeaderBackgroundBrush}"
+                    SizeChanged="HeaderHost_SizeChanged">
+                    <Grid
+                        x:Name="ExpandedHeaderMedia"
+                        Background="{ThemeResource ProfileHeaderBackgroundBrush}"
+                        Opacity="0">
+                        <Image
+                            x:Name="HeaderPhoto"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Opacity="0"
+                            Stretch="UniformToFill" />
+
+                        <Grid
+                            x:Name="HeaderFallback"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Background="{ThemeResource ProfileAvatarFallbackBrush}">
+                            <TextBlock
+                                x:Name="HeaderInitials"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="96"
+                                FontWeight="SemiLight"
+                                Foreground="White"
+                                Text="?" />
+                        </Grid>
+                        <Grid
+                            x:Name="HeaderGlassGradient"
+                            Height="190"
+                            VerticalAlignment="Bottom"
+                            Background="Transparent"
+                            IsHitTestVisible="False"
+                            Loaded="HeaderGlassGradient_Loaded" />
+
+                        <Rectangle
+                            x:Name="HeaderDarkGradient"
+                            Height="116"
+                            VerticalAlignment="Bottom"
+                            IsHitTestVisible="False"
+                            Visibility="Collapsed">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Offset="0" Color="#00000000" />
+                                    <GradientStop Offset="0.72" Color="#77000000" />
+                                    <GradientStop Offset="1" Color="#BB000000" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+
+
+                        <Grid
+                            x:Name="HeaderPhotoIndicators"
+                            Height="4"
+                            Margin="10,10,10,0"
+                            VerticalAlignment="Top"
+                            IsHitTestVisible="False"
+                            Visibility="Collapsed" />
+                    </Grid>
+
+                    <Grid
+                        x:Name="CompactAvatar"
+                        Width="54"
+                        Height="54"
+                        Margin="12,30,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top">
+                        <Ellipse Fill="{ThemeResource ProfileAvatarFallbackBrush}" />
+                        <Ellipse x:Name="CompactAvatarImage" Opacity="0">
+                            <Ellipse.Fill>
+                                <ImageBrush x:Name="CompactAvatarBrush" Stretch="UniformToFill" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock
+                            x:Name="CompactInitials"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="SemiBold"
+                            Foreground="White"
+                            Text="?" />
+                    </Grid>
+
+                    <Grid
+                        x:Name="HeaderTextPanel"
+                        Height="54"
+                        Margin="78,30,12,0"
+                        VerticalAlignment="Top">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock
+                                x:Name="ProfileTitle"
+                                FontSize="25"
+                                FontWeight="SemiLight"
+                                Foreground="{ThemeResource ProfileHeaderPrimaryTextBrush}"
+                                MaxLines="1"
+                                Text="Profile"
+                                TextTrimming="CharacterEllipsis" />
+                            <TextBlock
+                                x:Name="ProfileSubtitle"
+                                Margin="0,-2,0,0"
+                                FontSize="14"
+                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                MaxLines="1"
+                                Text=""
+                                TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel
+                        Height="46"
+                        Padding="12,0,18,0"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            x:Name="InfoTab"
+                            Margin="0,0,24,8"
+                            VerticalAlignment="Bottom"
+                            FontSize="24"
+                            FontWeight="Light"
+                            Foreground="{ThemeResource ProfileHeaderPrimaryTextBrush}"
+                            Tapped="InfoTab_Tapped"
+                            Text="Info" />
+                        <TextBlock
+                            x:Name="MediaTab"
+                            Margin="0,0,24,8"
+                            VerticalAlignment="Bottom"
+                            FontSize="24"
+                            FontWeight="Light"
+                            Foreground="{ThemeResource ProfileHeaderTabBrush}"
+                            Opacity="0.68"
+                            Tapped="MediaTab_Tapped"
+                            Text="Media" />
+                        <TextBlock
+                            x:Name="FilesTab"
+                            Margin="0,0,24,8"
+                            VerticalAlignment="Bottom"
+                            FontSize="24"
+                            FontWeight="Light"
+                            Foreground="{ThemeResource ProfileHeaderTabBrush}"
+                            Opacity="0.68"
+                            Tapped="FilesTab_Tapped"
+                            Text="Files" />
+                        <TextBlock
+                            x:Name="AudioTab"
+                            Margin="0,0,0,8"
+                            VerticalAlignment="Bottom"
+                            FontSize="24"
+                            FontWeight="Light"
+                            Foreground="{ThemeResource ProfileHeaderTabBrush}"
+                            Opacity="0.68"
+                            Tapped="AudioTab_Tapped"
+                            Text="Audio" />
+                    </StackPanel>
+
+                    <Rectangle
+                        x:Name="HeaderGestureArea"
+                        Margin="0,0,0,46"
+                        Fill="Transparent"
+                        ManipulationMode="TranslateY"
+                        PointerCanceled="HeaderGestureArea_PointerReleased"
+                        PointerCaptureLost="HeaderGestureArea_PointerReleased"
+                        PointerMoved="HeaderGestureArea_PointerMoved"
+                        PointerPressed="HeaderGestureArea_PointerPressed"
+                        PointerReleased="HeaderGestureArea_PointerReleased" />
+                </Grid>
+
+                <Grid Padding="12,13,12,16">
+                    <StackPanel>
+                        <StackPanel x:Name="InfoPanel">
+                            <Grid
+                                x:Name="InfoHeaderPanel"
+                                Margin="0,0,0,10"
+                                Visibility="Collapsed">
+                                <TextBlock
+                                    x:Name="SectionTitle"
+                                    HorizontalAlignment="Left"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                    Text="INFO" />
+                                <TextBlock
+                                    x:Name="SectionCounter"
+                                    HorizontalAlignment="Right"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                    Text=""
+                                    Visibility="Collapsed" />
+                            </Grid>
+
+                            <Grid
+                                x:Name="ChannelPanel"
+                                Margin="0,0,0,14"
+                                Tapped="ChannelPanel_Tapped"
+                                Visibility="Collapsed">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="64" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Margin="0,0,0,6">
+                                    <TextBlock
+                                        HorizontalAlignment="Left"
+                                        FontSize="12"
+                                        FontWeight="Bold"
+                                        Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                        Text="CHANNEL" />
+                                    <TextBlock
+                                        x:Name="ChannelCounterText"
+                                        HorizontalAlignment="Right"
+                                        FontSize="12"
+                                        FontWeight="Bold"
+                                        Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                        Text="" />
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="54" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="54" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid
+                                        Width="42"
+                                        Height="42"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                        <Ellipse Fill="{ThemeResource ProfileAvatarFallbackBrush}" />
+                                        <Ellipse x:Name="ChannelAvatarImage" Opacity="0">
+                                            <Ellipse.Fill>
+                                                <ImageBrush x:Name="ChannelAvatarBrush" Stretch="UniformToFill" />
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock
+                                            x:Name="ChannelInitials"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="SemiBold"
+                                            Foreground="White"
+                                            Text="?" />
+                                    </Grid>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock
+                                            x:Name="ChannelTitleText"
+                                            FontSize="18"
+                                            FontWeight="SemiLight"
+                                            Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                            MaxLines="1"
+                                            Text="Channel"
+                                            TextTrimming="CharacterEllipsis" />
+                                        <TextBlock
+                                            x:Name="ChannelSubtitleText"
+                                            Margin="0,1,0,0"
+                                            FontSize="13"
+                                            Foreground="{ThemeResource ProfileSecondaryTextBrush}"
+                                            MaxLines="1"
+                                            Text="Last message in the channel"
+                                            TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+                                    <TextBlock
+                                        x:Name="ChannelTimeText"
+                                        Grid.Column="2"
+                                        Margin="0,10,0,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        FontSize="12"
+                                        Foreground="{ThemeResource ProfileSecondaryTextBrush}"
+                                        Text="" />
+                                </Grid>
+                            </Grid>
+
+                            <ListView
+                                x:Name="InfoList"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                IsItemClickEnabled="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollMode="Disabled"
+                                SelectionMode="None">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="MinHeight" Value="0" />
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,0,0,16" Visibility="{Binding Visibility}">
+                                            <TextBlock
+                                                FontSize="16"
+                                                FontWeight="SemiBold"
+                                                Foreground="{ThemeResource ProfileSecondaryTextBrush}"
+                                                Text="{Binding Label}" />
+                                            <TextBlock
+                                                Margin="0,2,0,0"
+                                                FontSize="19"
+                                                FontWeight="SemiLight"
+                                                Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                                Text="{Binding Value}"
+                                                TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                            <Button
+                                x:Name="BlockUserButton"
+                                Height="44"
+                                Margin="0,6,0,0"
+                                HorizontalAlignment="Stretch"
+                                Background="{ThemeResource ProfilePanelBackgroundBrush}"
+                                BorderThickness="0"
+                                Content="Block user"
+                                Foreground="#FFE53935"
+                                IsEnabled="False" />
+                        </StackPanel>
+
+                        <ListView
+                            x:Name="ContentList"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            IsItemClickEnabled="True"
+                            ItemClick="ContentList_ItemClick"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ScrollViewer.VerticalScrollMode="Disabled"
+                            SelectionMode="None"
+                            Visibility="Collapsed">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid MinHeight="58" Margin="0,0,0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="42"
+                                            Height="42"
+                                            VerticalAlignment="Center"
+                                            Background="{ThemeResource ProfileDividerBrush}">
+                                            <Grid>
+                                                <Image
+                                                    Source="{Binding PreviewSource}"
+                                                    Stretch="UniformToFill"
+                                                    Visibility="{Binding PreviewVisibility}" />
+                                                <StackPanel
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Visibility="{Binding AudioPreviewVisibility}">
+                                                    <TextBlock
+                                                        HorizontalAlignment="Center"
+                                                        FontFamily="Segoe MDL2 Assets"
+                                                        FontSize="17"
+                                                        Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                                        Text="{Binding IconGlyph}" />
+                                                    <TextBlock
+                                                        Margin="0,1,0,0"
+                                                        HorizontalAlignment="Center"
+                                                        FontSize="8"
+                                                        FontWeight="Bold"
+                                                        Foreground="{ThemeResource ProfileSecondaryTextBrush}"
+                                                        Text="{Binding PreviewLabel}" />
+                                                </StackPanel>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontFamily="Segoe MDL2 Assets"
+                                                    FontSize="18"
+                                                    Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                                    Text="{Binding IconGlyph}"
+                                                    Visibility="{Binding IconVisibility}" />
+                                            </Grid>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="16"
+                                                FontWeight="SemiLight"
+                                                Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                                MaxLines="1"
+                                                Text="{Binding Title}"
+                                                TextTrimming="CharacterEllipsis" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{ThemeResource ProfileSecondaryTextBrush}"
+                                                MaxLines="1"
+                                                Text="{Binding Subtitle}"
+                                                TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <GridView
+                            x:Name="MediaGrid"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            IsItemClickEnabled="True"
+                            ItemClick="MediaGrid_ItemClick"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ScrollViewer.VerticalScrollMode="Disabled"
+                            SelectionMode="None"
+                            Visibility="Collapsed">
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsWrapGrid
+                                        HorizontalAlignment="Center"
+                                        ItemHeight="104"
+                                        ItemWidth="104"
+                                        Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                            <GridView.ItemContainerStyle>
+                                <Style TargetType="GridViewItem">
+                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0,0,3,3" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </GridView.ItemContainerStyle>
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                        Width="104"
+                                        Height="104"
+                                        Background="{ThemeResource ProfileDividerBrush}">
+                                        <Image
+                                            Source="{Binding PreviewSource}"
+                                            Stretch="UniformToFill"
+                                            Visibility="{Binding PreviewVisibility}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            FontSize="26"
+                                            Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                                            Text="{Binding IconGlyph}"
+                                            Visibility="{Binding IconVisibility}" />
+                                        <Border
+                                            Width="26"
+                                            Height="26"
+                                            Margin="0,0,5,5"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Background="#AA000000"
+                                            Visibility="{Binding VideoBadgeVisibility}">
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontFamily="Segoe MDL2 Assets"
+                                                FontSize="15"
+                                                Foreground="White"
+                                                Text="&#xE714;" />
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+
+                        <Button
+                            x:Name="LoadMoreContentButton"
+                            Height="42"
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource ProfilePanelBackgroundBrush}"
+                            BorderThickness="0"
+                            Click="LoadMoreContentButton_Click"
+                            Content="Load more"
+                            Foreground="{ThemeResource ProfilePrimaryTextBrush}"
+                            Visibility="Collapsed" />
+
+                        <TextBlock
+                            x:Name="EmptyContentText"
+                            Margin="0,10,0,0"
+                            FontSize="14"
+                            Foreground="{ThemeResource ProfileSecondaryTextBrush}"
+                            Text=""
+                            Visibility="Collapsed" />
+
+                        <TextBlock
+                            x:Name="LoadingText"
+                            Margin="0,8,0,0"
+                            FontSize="14"
+                            Foreground="{ThemeResource ProfileSecondaryTextBrush}"
+                            Text="Loading..."
+                            Visibility="Collapsed" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+        <ProgressBar
+            x:Name="TopLoadingBar"
+            Grid.Row="0"
+            Height="3"
+            VerticalAlignment="Top"
+            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+            IsIndeterminate="False"
+            Visibility="Collapsed" />
+        <CommandBar
+            Grid.Row="1"
+            Background="{ThemeResource ProfilePanelBackgroundBrush}"
+            ClosedDisplayMode="Compact"
+            Foreground="{ThemeResource ProfilePrimaryTextBrush}">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton
+                    Click="CallButton_Click"
+                    IsEnabled="False"
+                    Label="Call">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE717;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <!--
+                <AppBarButton IsEnabled="False" Label="Video">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE714;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                -->
+                <AppBarButton Click="ChatButton_Click" Label="Chat">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8BD;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Click="MusicButton_Click" Label="Music">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC4F;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <!--
+                <AppBarButton
+                    Width="{Binding ActualWidth, ElementName=BottomMenuAppBar}"
+                    HorizontalAlignment="Stretch"
+                    Label="Change wallpaper"
+                    Template="{StaticResource ChatsSecondaryCommandButtonTemplate}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8B9;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton
+                    Width="{Binding ActualWidth, ElementName=BottomMenuAppBar}"
+                    HorizontalAlignment="Stretch"
+                    Label="Start Secret Chat"
+                    Template="{StaticResource ChatsSecondaryCommandButtonTemplate}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton
+                    Width="{Binding ActualWidth, ElementName=BottomMenuAppBar}"
+                    HorizontalAlignment="Stretch"
+                    Label="Send a Gift"
+                    Template="{StaticResource ChatsSecondaryCommandButtonTemplate}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC06;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton
+                    Width="{Binding ActualWidth, ElementName=BottomMenuAppBar}"
+                    HorizontalAlignment="Stretch"
+                    Label="Enable Auto-Delete"
+                    Template="{StaticResource ChatsSecondaryCommandButtonTemplate}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE916;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton
+                    Width="{Binding ActualWidth, ElementName=BottomMenuAppBar}"
+                    HorizontalAlignment="Stretch"
+                    Label="Disable sharing"
+                    Template="{StaticResource ChatsSecondaryCommandButtonTemplate}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton
+                    Width="{Binding ActualWidth, ElementName=BottomMenuAppBar}"
+                    HorizontalAlignment="Stretch"
+                    Label="Clear messages"
+                    Template="{StaticResource ChatsSecondaryCommandButtonTemplate}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                -->
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+
+        <controls:UserProfileMusicSheet
+            x:Name="ProfileMusicSheet"
+            Grid.RowSpan="2"
+            Canvas.ZIndex="100" />
+
+        <Grid
+            x:Name="MediaOverlay"
+            Grid.RowSpan="2"
+            Background="#D9000000"
+            IsHitTestVisible="True"
+            Visibility="Collapsed">
+            <Grid
+                x:Name="MediaOverlayBackground"
+                Background="Transparent"
+                Tapped="MediaOverlayBackground_Tapped" />
+
+            <Button
+                x:Name="CloseMediaOverlayButton"
+                Width="44"
+                Height="44"
+                Margin="14"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="#CC000000"
+                BorderThickness="0"
+                Canvas.ZIndex="20"
+                Click="CloseMediaOverlayButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse
+                                Width="44"
+                                Height="44"
+                                Fill="{TemplateBinding Background}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="20"
+                    Foreground="White"
+                    Text="&#xE711;" />
+            </Button>
+
+            <TextBlock
+                x:Name="MediaOverlayCounter"
+                Margin="0,27,18,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Canvas.ZIndex="20"
+                FontSize="14"
+                Foreground="#CCCCCC" />
+
+            <Button
+                x:Name="GoToMediaMessageButton"
+                Width="44"
+                Height="44"
+                Margin="0,0,66,14"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="#CC000000"
+                BorderThickness="0"
+                Canvas.ZIndex="20"
+                Click="GoToMediaMessageButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse
+                                Width="44"
+                                Height="44"
+                                Fill="{TemplateBinding Background}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="20"
+                    Foreground="White"
+                    Text="&#xE7B3;" />
+            </Button>
+
+            <Button
+                x:Name="DownloadMediaOverlayButton"
+                Width="44"
+                Height="44"
+                Margin="14"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="#CC000000"
+                BorderThickness="0"
+                Canvas.ZIndex="20"
+                Click="DownloadMediaOverlayButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse
+                                Width="44"
+                                Height="44"
+                                Fill="{TemplateBinding Background}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="20"
+                    Foreground="White"
+                    Text="&#xE118;" />
+            </Button>
+
+            <FlipView
+                x:Name="MediaOverlayFlipView"
+                Margin="0,64,0,64"
+                SelectionChanged="MediaOverlayFlipView_SelectionChanged">
+                <FlipView.ItemTemplate>
+                    <DataTemplate>
+                        <ScrollViewer
+                            HorizontalScrollMode="Enabled"
+                            MaxZoomFactor="4"
+                            MinZoomFactor="1"
+                            VerticalScrollMode="Enabled"
+                            ZoomMode="Enabled">
+                            <Grid>
+                                <Image
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Source="{Binding}"
+                                    Stretch="Uniform" />
+                            </Grid>
+                        </ScrollViewer>
+                    </DataTemplate>
+                </FlipView.ItemTemplate>
+            </FlipView>
+
+            <StackPanel
+                x:Name="MediaOverlayIndicatorPanel"
+                Margin="0,0,0,24"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Canvas.ZIndex="20"
+                Orientation="Horizontal" />
+        </Grid>
+    </Grid>
+</Page>
