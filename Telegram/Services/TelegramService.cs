@@ -730,6 +730,21 @@ namespace Telegram.Services
             await _client.SendBotStartMessageAsync(chat, parameter);
         }
 
+        public async Task<InlineQueryResultsPageViewModel> GetInlineQueryResultsAsync(ChatViewModel chat, string username, string query, string offset)
+        {
+            return await _client.GetInlineQueryResultsAsync(chat, username, query, offset);
+        }
+
+        public async Task<string> DownloadInlineQueryPreviewAsync(long fileId)
+        {
+            return await _client.DownloadInlineQueryPreviewAsync(fileId);
+        }
+
+        public async Task SendInlineQueryResultAsync(ChatViewModel chat, InlineQueryResultItemViewModel result, int replyToMessageId)
+        {
+            await _client.SendInlineQueryResultAsync(chat, result, replyToMessageId);
+        }
+
         public async Task<BotCallbackAnswerViewModel> AnswerBotCallbackAsync(ChatViewModel chat, BotKeyboardButtonViewModel button)
         {
             return await _client.AnswerBotCallbackAsync(chat, button);

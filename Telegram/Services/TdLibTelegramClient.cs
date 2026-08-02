@@ -32,6 +32,7 @@ namespace Telegram.Services
         private readonly Dictionary<long, JArray> _pendingChatPositions = new Dictionary<long, JArray>();
         private readonly HashSet<long> _archivedChatIds = new HashSet<long>();
         private readonly Dictionary<long, JObject> _users = new Dictionary<long, JObject>();
+        private readonly Dictionary<string, InlineQueryBotViewModel> _inlineBots = new Dictionary<string, InlineQueryBotViewModel>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<long, JObject> _supergroups = new Dictionary<long, JObject>();
         private readonly Dictionary<long, JObject> _basicGroups = new Dictionary<long, JObject>();
         private readonly Dictionary<string, long> _peerChatIds = new Dictionary<string, long>();
@@ -1159,6 +1160,426 @@ namespace Telegram.Services
                 ["chat_id"] = chatId,
                 ["parameter"] = parameter ?? string.Empty
             }, TimeSpan.FromSeconds(20));
+        }
+
+        public async Task<InlineQueryResultsPageViewModel> GetInlineQueryResultsAsync(ChatViewModel peer, string username, string query, string offset)
+        {
+            if (peer == null) throw new ArgumentNullException("peer");
+            await StartAsync();
+
+            var bot = await ResolveInlineBotAsync(username);
+            if (bot == null) return null;
+
+            var chatId = ResolveChatId(peer);
+            if (chatId == 0)
+                throw new InvalidOperationException("Chat is not resolved.");
+
+            var response = await SendAsync(new JObject
+            {
+                ["@type"] = "getInlineQueryResults",
+                ["bot_user_id"] = bot.UserId,
+                ["chat_id"] = chatId,
+                ["user_location"] = JValue.CreateNull(),
+                ["query"] = query ?? string.Empty,
+                ["offset"] = offset ?? string.Empty
+            }, TimeSpan.FromSeconds(25));
+
+            var page = new InlineQueryResultsPageViewModel
+            {
+                Bot = bot,
+                QueryId = ReadLong(response == null ? null : response["inline_query_id"]),
+                NextOffset = ReadString(response == null ? null : response["next_offset"], string.Empty),
+                Button = MapInlineQueryResultsButton(response == null ? null : response["button"] as JObject, bot.Username)
+            };
+
+            var hasGalleryResult = false;
+            var forceVerticalLayout = false;
+            var results = response == null ? null : response["results"] as JArray;
+            if (results != null)
+            {
+                foreach (var token in results)
+                {
+                    var result = token as JObject;
+                    var resultType = ReadString(result == null ? null : result["@type"], string.Empty);
+                    if (resultType == "inlineQueryResultAnimation" ||
+                        resultType == "inlineQueryResultPhoto" ||
+                        resultType == "inlineQueryResultSticker")
+                        hasGalleryResult = true;
+                    else if (resultType == "inlineQueryResultArticle" ||
+                             resultType == "inlineQueryResultAudio" ||
+                             resultType == "inlineQueryResultContact" ||
+                             resultType == "inlineQueryResultVoiceNote")
+                        forceVerticalLayout = true;
+
+                    var mapped = MapInlineQueryResult(result, page.QueryId, bot.Username);
+                    if (mapped != null) page.Results.Add(mapped);
+                }
+            }
+
+            // Telegram's Bot API derives the gallery flag from result types. TDLib doesn't expose
+            // that flag to clients, so mirror the same type rules here.
+            page.IsGallery = hasGalleryResult && !forceVerticalLayout;
+            return page;
+        }
+
+        public async Task<string> DownloadInlineQueryPreviewAsync(long fileId)
+        {
+            if (fileId == 0) return string.Empty;
+            try
+            {
+                var file = await DownloadFileAsync(fileId, null);
+                if (!IsDownloadCompleted(file)) return string.Empty;
+                return ToImageFileUri(ReadFilePath(file));
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public async Task SendInlineQueryResultAsync(ChatViewModel peer, InlineQueryResultItemViewModel result, int replyToMessageId)
+        {
+            if (peer == null || result == null || result.QueryId == 0 || string.IsNullOrEmpty(result.ResultId)) return;
+            await StartAsync();
+
+            var request = new JObject
+            {
+                ["@type"] = "sendInlineQueryResultMessage",
+                ["chat_id"] = ResolveChatId(peer),
+                ["query_id"] = result.QueryId,
+                ["result_id"] = result.ResultId,
+                ["hide_via_bot"] = string.Equals(result.BotUsername, "gif", StringComparison.OrdinalIgnoreCase)
+            };
+            var topic = BuildMessageTopic(peer);
+            if (topic != null) request["topic_id"] = topic;
+            if (replyToMessageId > 0)
+                request["reply_to"] = new JObject { ["@type"] = "inputMessageReplyToMessage", ["message_id"] = ResolveMessageId(peer, replyToMessageId) };
+
+            await SendAsync(request, TimeSpan.FromSeconds(30));
+        }
+
+        private async Task<InlineQueryBotViewModel> ResolveInlineBotAsync(string username)
+        {
+            username = (username ?? string.Empty).Trim().TrimStart('@');
+            if (string.IsNullOrEmpty(username)) return null;
+
+            InlineQueryBotViewModel cached;
+            lock (_syncRoot)
+            {
+                if (_inlineBots.TryGetValue(username, out cached)) return cached;
+            }
+
+            JObject chat = null;
+            Exception resolveError = null;
+            for (var attempt = 0; attempt < 2; attempt++)
+            {
+                try
+                {
+                    chat = await SendAsync(new JObject
+                    {
+                        ["@type"] = "searchPublicChat",
+                        ["username"] = username
+                    }, TimeSpan.FromSeconds(15));
+                    resolveError = null;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    resolveError = ex;
+                    if (attempt == 0)
+                        await Task.Delay(300);
+                }
+            }
+            if (chat == null && resolveError != null) throw resolveError;
+            if (chat == null) return null;
+
+            var chatType = chat == null ? null : chat["type"] as JObject;
+            if (ReadString(chatType == null ? null : chatType["@type"], string.Empty) != "chatTypePrivate")
+                return null;
+
+            var userId = ReadLong(chatType["user_id"]);
+            if (userId == 0) return null;
+            var user = await GetUserAsync(userId);
+            var userType = user == null ? null : user["type"] as JObject;
+            if (ReadString(userType == null ? null : userType["@type"], string.Empty) != "userTypeBot" ||
+                !ReadBool(userType["is_inline"]))
+                return null;
+
+            var firstName = ReadString(user["first_name"], string.Empty);
+            var lastName = ReadString(user["last_name"], string.Empty);
+            var displayName = (firstName + " " + lastName).Trim();
+            var resolvedUsername = ReadUsername(user);
+            if (string.IsNullOrEmpty(resolvedUsername)) resolvedUsername = username;
+
+            var bot = new InlineQueryBotViewModel
+            {
+                UserId = userId,
+                Username = resolvedUsername,
+                DisplayName = string.IsNullOrEmpty(displayName) ? "@" + resolvedUsername : displayName,
+                Placeholder = ReadString(userType["inline_query_placeholder"], string.Empty)
+            };
+
+            lock (_syncRoot)
+            {
+                _inlineBots[username] = bot;
+                _inlineBots[resolvedUsername] = bot;
+            }
+            return bot;
+        }
+
+        private static InlineQueryResultsButtonViewModel MapInlineQueryResultsButton(JObject button, string botUsername)
+        {
+            if (button == null) return null;
+            var text = ReadString(button["text"], string.Empty);
+            var type = button["type"] as JObject;
+            var typeName = ReadString(type == null ? null : type["@type"], string.Empty);
+            if (string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(typeName)) return null;
+
+            return new InlineQueryResultsButtonViewModel
+            {
+                Text = text,
+                Type = typeName,
+                Parameter = ReadString(type == null ? null : type["parameter"], string.Empty),
+                Url = ReadString(type == null ? null : type["url"], string.Empty),
+                BotUsername = botUsername
+            };
+        }
+
+        private static InlineQueryResultItemViewModel MapInlineQueryResult(JObject result, long queryId, string botUsername)
+        {
+            if (result == null) return null;
+            var type = ReadString(result["@type"], string.Empty);
+            var id = ReadString(result["id"], string.Empty);
+            if (string.IsNullOrEmpty(type) || string.IsNullOrEmpty(id)) return null;
+
+            int width;
+            int height;
+            var preview = ReadInlineQueryPreviewFile(result, type, out width, out height);
+            var title = ReadString(result["title"], string.Empty);
+            var description = ReadString(result["description"], string.Empty);
+            var url = ReadString(result["url"], string.Empty);
+            var glyph = "\uE8A5";
+
+            if (type == "inlineQueryResultAnimation")
+            {
+                glyph = "\uE91B";
+            }
+            else if (type == "inlineQueryResultPhoto")
+            {
+                glyph = "\uE91B";
+            }
+            else if (type == "inlineQueryResultVideo")
+            {
+                glyph = "\uE714";
+                var video = result["video"] as JObject;
+                if (string.IsNullOrEmpty(title) && video != null)
+                    title = ReadString(video["file_name"], string.Empty);
+                if (string.IsNullOrEmpty(description) && video != null)
+                    description = FormatInlineDuration(ReadInt(video["duration"]));
+            }
+            else if (type == "inlineQueryResultArticle")
+            {
+                glyph = "\uE71B";
+            }
+            else if (type == "inlineQueryResultAudio")
+            {
+                glyph = "\uE8D6";
+                var audio = result["audio"] as JObject;
+                if (string.IsNullOrEmpty(title) && audio != null)
+                    title = ReadString(audio["title"], string.Empty);
+                if (string.IsNullOrEmpty(description) && audio != null)
+                    description = ReadString(audio["performer"], string.Empty);
+                if (string.IsNullOrEmpty(description) && audio != null)
+                    description = FormatInlineDuration(ReadInt(audio["duration"]));
+            }
+            else if (type == "inlineQueryResultVoiceNote")
+            {
+                glyph = "\uE8D6";
+                var voice = result["voice_note"] as JObject;
+                if (string.IsNullOrEmpty(description) && voice != null)
+                    description = FormatInlineDuration(ReadInt(voice["duration"]));
+            }
+            else if (type == "inlineQueryResultContact")
+            {
+                glyph = "\uE77B";
+                var contact = result["contact"] as JObject;
+                if (string.IsNullOrEmpty(title) && contact != null)
+                    title = (ReadString(contact["first_name"], string.Empty) + " " + ReadString(contact["last_name"], string.Empty)).Trim();
+                if (string.IsNullOrEmpty(description) && contact != null)
+                    description = ReadString(contact["phone_number"], string.Empty);
+            }
+            else if (type == "inlineQueryResultLocation")
+            {
+                glyph = "\uE707";
+                var location = result["location"] as JObject;
+                if (string.IsNullOrEmpty(description) && location != null)
+                {
+                    var latitude = ReadString(location["latitude"], string.Empty);
+                    var longitude = ReadString(location["longitude"], string.Empty);
+                    description = (latitude + " " + longitude).Trim();
+                }
+            }
+            else if (type == "inlineQueryResultVenue")
+            {
+                glyph = "\uE707";
+                var venue = result["venue"] as JObject;
+                if (string.IsNullOrEmpty(title) && venue != null)
+                    title = ReadString(venue["title"], string.Empty);
+                if (string.IsNullOrEmpty(description) && venue != null)
+                    description = ReadString(venue["address"], string.Empty);
+            }
+            else if (type == "inlineQueryResultSticker")
+            {
+                glyph = "\uE76E";
+                var sticker = result["sticker"] as JObject;
+                if (string.IsNullOrEmpty(description) && sticker != null)
+                    description = ReadString(sticker["emoji"], string.Empty);
+            }
+            else if (type == "inlineQueryResultDocument")
+            {
+                glyph = "\uE8A5";
+                var document = result["document"] as JObject;
+                if (string.IsNullOrEmpty(title) && document != null)
+                    title = ReadString(document["file_name"], string.Empty);
+            }
+            else if (type == "inlineQueryResultGame")
+            {
+                glyph = "\uE7FC";
+                var game = result["game"] as JObject;
+                if (string.IsNullOrEmpty(title) && game != null)
+                    title = ReadString(game["title"], string.Empty);
+                if (string.IsNullOrEmpty(description) && game != null)
+                    description = ReadString(game["description"], string.Empty);
+            }
+
+            var item = new InlineQueryResultItemViewModel
+            {
+                QueryId = queryId,
+                ResultId = id,
+                BotUsername = botUsername,
+                ResultType = type,
+                Title = title,
+                Description = description,
+                Url = url,
+                KindGlyph = glyph,
+                PreviewFileId = ReadLong(preview == null ? null : preview["id"]),
+                PreviewWidth = width,
+                PreviewHeight = height,
+                MiniThumbnailBytes = ReadInlineQueryMiniThumbnailBytes(result, type)
+            };
+
+            if (preview != null && IsDownloadCompleted(preview))
+                item.PreviewUri = ToImageFileUri(ReadFilePath(preview));
+            return item;
+        }
+
+        private static string FormatInlineDuration(int seconds)
+        {
+            if (seconds <= 0) return string.Empty;
+            var minutes = seconds / 60;
+            var remainder = seconds % 60;
+            return minutes.ToString(CultureInfo.InvariantCulture) + ":" + remainder.ToString("00", CultureInfo.InvariantCulture);
+        }
+
+        private static byte[] ReadInlineQueryMiniThumbnailBytes(JObject result, string type)
+        {
+            if (result == null) return null;
+
+            JObject media = null;
+            if (type == "inlineQueryResultAnimation") media = result["animation"] as JObject;
+            else if (type == "inlineQueryResultVideo") media = result["video"] as JObject;
+            else if (type == "inlineQueryResultDocument") media = result["document"] as JObject;
+            else if (type == "inlineQueryResultAudio") media = result["audio"] as JObject;
+            else if (type == "inlineQueryResultVoiceNote") media = result["voice_note"] as JObject;
+            else if (type == "inlineQueryResultSticker") media = result["sticker"] as JObject;
+            else if (type == "inlineQueryResultPhoto") media = result["photo"] as JObject;
+            else if (type == "inlineQueryResultGame")
+            {
+                var game = result["game"] as JObject;
+                media = game == null ? null : game["photo"] as JObject;
+            }
+
+            var bytes = ReadMediaThumbnailBytes(media);
+            if (bytes != null && bytes.Length > 0) return bytes;
+            return ReadMediaThumbnailBytes(result);
+        }
+
+        private static JObject ReadInlineQueryPreviewFile(JObject result, string type, out int width, out int height)
+        {
+            width = 0;
+            height = 0;
+            JObject thumbnail = null;
+            JObject media = null;
+
+            if (type == "inlineQueryResultAnimation") media = result["animation"] as JObject;
+            else if (type == "inlineQueryResultVideo") media = result["video"] as JObject;
+            else if (type == "inlineQueryResultDocument") media = result["document"] as JObject;
+            else if (type == "inlineQueryResultAudio") media = result["audio"] as JObject;
+            else if (type == "inlineQueryResultVoiceNote") media = result["voice_note"] as JObject;
+            else if (type == "inlineQueryResultSticker") media = result["sticker"] as JObject;
+            else if (type == "inlineQueryResultArticle" || type == "inlineQueryResultContact" ||
+                     type == "inlineQueryResultLocation" || type == "inlineQueryResultVenue")
+                thumbnail = result["thumbnail"] as JObject;
+            else if (type == "inlineQueryResultPhoto")
+                return ReadInlinePhotoPreview(result["photo"] as JObject, out width, out height);
+            else if (type == "inlineQueryResultGame")
+            {
+                var game = result["game"] as JObject;
+                return ReadInlinePhotoPreview(game == null ? null : game["photo"] as JObject, out width, out height);
+            }
+
+            if (thumbnail == null && media != null) thumbnail = media["thumbnail"] as JObject;
+            if (thumbnail == null) return null;
+            var format = thumbnail["format"] as JObject;
+            var formatType = ReadString(format == null ? null : format["@type"], string.Empty);
+            if (formatType == "thumbnailFormatMpeg4" || formatType == "thumbnailFormatTgs" || formatType == "thumbnailFormatWebm")
+                return null;
+
+            width = ReadInt(thumbnail["width"]);
+            height = ReadInt(thumbnail["height"]);
+            return thumbnail["file"] as JObject;
+        }
+
+        private static JObject ReadInlinePhotoPreview(JObject photo, out int width, out int height)
+        {
+            width = 0;
+            height = 0;
+            if (photo == null) return null;
+            var sizes = photo["sizes"] as JArray;
+            JObject bestFile = null;
+            JObject bestSize = null;
+            long bestArea = 0;
+            long bestAboveArea = long.MaxValue;
+            if (sizes != null)
+            {
+                foreach (var size in sizes.OfType<JObject>())
+                {
+                    var file = size["photo"] as JObject;
+                    if (file == null) continue;
+                    var w = ReadInt(size["width"]);
+                    var h = ReadInt(size["height"]);
+                    var area = (long)Math.Max(1, w) * Math.Max(1, h);
+                    var maxSide = Math.Max(w, h);
+                    if (maxSide >= 320 && area < bestAboveArea)
+                    {
+                        bestAboveArea = area;
+                        bestFile = file;
+                        bestSize = size;
+                    }
+                    else if (bestAboveArea == long.MaxValue && area >= bestArea)
+                    {
+                        bestArea = area;
+                        bestFile = file;
+                        bestSize = size;
+                    }
+                }
+            }
+            if (bestSize != null)
+            {
+                width = ReadInt(bestSize["width"]);
+                height = ReadInt(bestSize["height"]);
+            }
+            return bestFile;
         }
 
         public async Task<List<ChatMessageViewModel>> GetPinnedMessagesAsync(ChatViewModel peer, int limit)
@@ -2739,6 +3160,7 @@ namespace Telegram.Services
             public readonly TaskCompletionSource<JObject> Completion = new TaskCompletionSource<JObject>();
             public readonly List<Action<long, long>> Progress = new List<Action<long, long>>();
             public JObject LastFile;
+            public int WaiterCount;
         }
 
         /// <summary>
@@ -2761,6 +3183,7 @@ namespace Telegram.Services
                     watcher = new FileDownloadWatcher();
                     _fileDownloadWatchers[fileId] = watcher;
                 }
+                watcher.WaiterCount++;
                 if (progress != null) watcher.Progress.Add(progress);
             }
 
@@ -2822,7 +3245,9 @@ namespace Telegram.Services
                     if (_fileDownloadWatchers.TryGetValue(fileId, out current) && current == watcher)
                     {
                         if (progress != null) current.Progress.Remove(progress);
-                        if (current.Progress.Count == 0) _fileDownloadWatchers.Remove(fileId);
+                        if (current.WaiterCount > 0) current.WaiterCount--;
+                        if (current.WaiterCount == 0 && current.Progress.Count == 0)
+                            _fileDownloadWatchers.Remove(fileId);
                     }
                 }
             }

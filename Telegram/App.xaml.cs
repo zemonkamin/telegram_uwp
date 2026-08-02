@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,6 +26,113 @@ namespace Telegram
     /// </summary>
     sealed partial class App : Application
     {
+        private const string AppleEmojiFileName = "AppleColorEmoji.ttc";
+        private const string AppleEmojiFamilyName = "Apple Color Emoji";
+
+        // Inline emoji need a smaller layout slot than the Apple font reports.  The visual
+        // glyph is positioned independently from the slot: this removes the empty area below
+        // message lines and the oversized trailing advance next to normal text.
+        internal const double ChatInlineEmojiBoxWidth = 15.0;
+        internal const double ChatInlineEmojiBoxHeight = 14.0;
+        internal const double ChatInlineEmojiFontSize = 18.0;
+        internal const double ChatInlineEmojiLineHeight = 18.0;
+        internal const double ChatInlineEmojiLeftOffset = -1.5;
+        internal const double ChatInlineEmojiTopOffset = -1.0;
+        internal const double ChatInlineEmojiRenderOffsetY = 2.75;
+        internal static readonly Thickness ChatInlineEmojiLayoutMargin = new Thickness(0, 0, 0, -3.0);
+
+        internal const double ChatsInlineEmojiBoxWidth = 12.0;
+        internal const double ChatsInlineEmojiBoxHeight = 12.0;
+        internal const double ChatsInlineEmojiFontSize = 15.0;
+        internal const double ChatsInlineEmojiLineHeight = 15.0;
+        internal const double ChatsInlineEmojiLeftOffset = -1.1;
+        internal const double ChatsInlineEmojiTopOffset = -0.8;
+        internal const double ChatsInlineEmojiRenderOffsetY = 2.0;
+        internal static readonly Thickness ChatsInlineEmojiLayoutMargin = new Thickness(0, 0, 0, -2.0);
+
+        internal static readonly FontFamily ChatInlineAppleEmojiFont =
+            new FontFamily("ms-appx:///Assets/Emoji/" + AppleEmojiFileName + "#" +
+                           AppleEmojiFamilyName);
+
+        internal static FrameworkElement CreateChatInlineEmoji(string emoji)
+        {
+            return CreateInlineAppleEmoji(
+                emoji,
+                ChatInlineEmojiBoxWidth,
+                ChatInlineEmojiBoxHeight,
+                ChatInlineEmojiFontSize,
+                ChatInlineEmojiLineHeight,
+                ChatInlineEmojiLeftOffset,
+                ChatInlineEmojiTopOffset,
+                ChatInlineEmojiRenderOffsetY,
+                ChatInlineEmojiLayoutMargin);
+        }
+
+        internal static FrameworkElement CreateChatsInlineEmoji(string emoji)
+        {
+            return CreateInlineAppleEmoji(
+                emoji,
+                ChatsInlineEmojiBoxWidth,
+                ChatsInlineEmojiBoxHeight,
+                ChatsInlineEmojiFontSize,
+                ChatsInlineEmojiLineHeight,
+                ChatsInlineEmojiLeftOffset,
+                ChatsInlineEmojiTopOffset,
+                ChatsInlineEmojiRenderOffsetY,
+                ChatsInlineEmojiLayoutMargin);
+        }
+
+        private static FrameworkElement CreateInlineAppleEmoji(
+            string emoji,
+            double boxWidth,
+            double boxHeight,
+            double fontSize,
+            double lineHeight,
+            double leftOffset,
+            double topOffset,
+            double renderOffsetY,
+            Thickness layoutMargin)
+        {
+            if (string.IsNullOrEmpty(emoji))
+                return null;
+
+            // Keep the inline child simple. A nested TextBlock inside a Canvas is validated
+            // only when it is inserted into TextBlock.Inlines on older UWP builds and can
+            // produce E_INVALIDARG. FontIcon renders the same font glyph without creating
+            // another text layout tree inside the parent text control.
+            return new FontIcon
+            {
+                Glyph = emoji,
+                FontFamily = ChatInlineAppleEmojiFont,
+                FontSize = fontSize,
+                Width = boxWidth,
+                Height = boxHeight,
+                Margin = layoutMargin,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                IsHitTestVisible = false,
+                UseLayoutRounding = false,
+                RenderTransform = new TranslateTransform
+                {
+                    X = leftOffset,
+                    Y = topOffset + renderOffsetY
+                }
+            };
+        }
+
+        internal static void ApplyCompactEmojiLineMetrics(TextBlock textBlock)
+        {
+            if (textBlock == null || textBlock.FontSize <= 0) return;
+
+            // A fixed block line height prevents Apple Color Emoji's ascender/descender
+            // metrics from adding visible space below a message or chat preview.
+            textBlock.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+            textBlock.LineHeight = Math.Ceiling(textBlock.FontSize * 1.12);
+        }
+
+        private FontFamily _appleEmojiFont;
+        private Frame _appleEmojiRootFrame;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -90,6 +197,8 @@ namespace Telegram
                 Window.Current.Content = rootFrame;
             }
 
+            InitializeAppleEmoji(rootFrame);
+
             if (e.PrelaunchActivated == false)
             {
                 var authorizedForNotifications = false;
@@ -138,6 +247,8 @@ namespace Telegram
                 rootFrame.NavigationFailed += OnNavigationFailed;
                 Window.Current.Content = rootFrame;
             }
+
+            InitializeAppleEmoji(rootFrame);
 
             if (rootFrame.Content == null)
             {
@@ -344,6 +455,112 @@ namespace Telegram
             {
                 SaveStartupError("Notification init: " + ex.Message);
             }
+        }
+
+        private void InitializeAppleEmoji(Frame rootFrame)
+        {
+            if (rootFrame == null)
+                return;
+
+            if (!object.ReferenceEquals(_appleEmojiRootFrame, rootFrame))
+            {
+                if (_appleEmojiRootFrame != null)
+                    _appleEmojiRootFrame.Navigated -= AppleEmojiRootFrame_Navigated;
+
+                _appleEmojiRootFrame = rootFrame;
+                _appleEmojiRootFrame.Navigated += AppleEmojiRootFrame_Navigated;
+            }
+
+            if (_appleEmojiFont == null)
+            {
+                _appleEmojiFont = CreateAppleEmojiFont(
+                    "ms-appx:///Assets/Emoji/" + AppleEmojiFileName);
+            }
+
+            ApplyAppleEmojiFont(rootFrame, _appleEmojiFont);
+        }
+
+        private static FontFamily CreateAppleEmojiFont(string fontFileUri)
+        {
+            return new FontFamily("Segoe UI, " + fontFileUri + "#" + AppleEmojiFamilyName);
+        }
+
+        private void ApplyAppleEmojiFont(Frame rootFrame, FontFamily font)
+        {
+            if (rootFrame == null || font == null)
+                return;
+
+            _appleEmojiFont = font;
+
+            try
+            {
+                Resources["AppleEmojiFontFamily"] = font;
+                Resources["FluentEmojiFontFamily"] = font;
+                Resources["ContentControlThemeFontFamily"] = font;
+            }
+            catch
+            {
+            }
+
+            if (!IsIconFont(rootFrame.FontFamily))
+                rootFrame.FontFamily = font;
+
+            ApplyAppleEmojiFontToVisualTree(rootFrame, font);
+        }
+
+        private void AppleEmojiRootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            var frame = sender as Frame;
+            if (frame == null || _appleEmojiFont == null)
+                return;
+
+            var ignored = frame.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, delegate
+            {
+                ApplyAppleEmojiFontToVisualTree(frame, _appleEmojiFont);
+            });
+        }
+
+        private static void ApplyAppleEmojiFontToVisualTree(DependencyObject root, FontFamily font)
+        {
+            if (root == null || font == null)
+                return;
+
+            var textBlock = root as TextBlock;
+            if (textBlock != null)
+            {
+                if (!IsIconFont(textBlock.FontFamily))
+                    textBlock.FontFamily = font;
+            }
+            else
+            {
+                var richTextBlock = root as RichTextBlock;
+                if (richTextBlock != null)
+                {
+                    if (!IsIconFont(richTextBlock.FontFamily))
+                        richTextBlock.FontFamily = font;
+                }
+                else
+                {
+                    var control = root as Control;
+                    if (control != null && !IsIconFont(control.FontFamily))
+                        control.FontFamily = font;
+                }
+            }
+
+            var childCount = VisualTreeHelper.GetChildrenCount(root);
+            for (var i = 0; i < childCount; i++)
+                ApplyAppleEmojiFontToVisualTree(VisualTreeHelper.GetChild(root, i), font);
+        }
+
+        private static bool IsIconFont(FontFamily font)
+        {
+            var source = font == null ? string.Empty : font.Source;
+            if (string.IsNullOrWhiteSpace(source))
+                return false;
+
+            return source.IndexOf("Segoe MDL2 Assets", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   source.IndexOf("Segoe UI Symbol", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   source.IndexOf("Segoe Fluent Icons", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
     }

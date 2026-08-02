@@ -113,6 +113,7 @@ namespace Telegram
         private void ApplyChatLastMessageText(TextBlock textBlock)
         {
             if (textBlock == null) return;
+            App.ApplyCompactEmojiLineMetrics(textBlock);
             textBlock.Text = string.Empty;
             textBlock.Inlines.Clear();
 
@@ -129,7 +130,7 @@ namespace Telegram
                 return;
             }
 
-            AddLocalEmojiInlines(textBlock.Inlines, text, 16, 16, new Thickness(1, 0, 1, -2));
+            AddLocalEmojiInlines(textBlock.Inlines, text);
         }
 
         private static bool HasPossibleLocalEmoji(string text)
@@ -145,7 +146,7 @@ namespace Telegram
             return false;
         }
 
-        private void AddLocalEmojiInlines(InlineCollection inlines, string text, double width, double height, Thickness margin)
+        private void AddLocalEmojiInlines(InlineCollection inlines, string text)
         {
             if (inlines == null || string.IsNullOrEmpty(text)) return;
 
@@ -153,9 +154,9 @@ namespace Telegram
             var index = 0;
             while (index < text.Length)
             {
-                string uri;
+                string emoji;
                 int length;
-                if (!TryReadLocalEmojiUri(text, index, out uri, out length))
+                if (!TryReadInlineEmoji(text, index, out emoji, out length))
                 {
                     index++;
                     continue;
@@ -164,17 +165,36 @@ namespace Telegram
                 if (index > segmentStart)
                     inlines.Add(new Run { Text = text.Substring(segmentStart, index - segmentStart) });
 
-                inlines.Add(new InlineUIContainer
+                var element = App.CreateChatsInlineEmoji(emoji);
+                if (element != null)
                 {
-                    Child = new Image
+                    try
                     {
-                        Width = width,
-                        Height = height,
-                        Stretch = Stretch.Uniform,
-                        Margin = margin,
-                        Source = new BitmapImage(new Uri(uri))
+                        // TextBlock accepts the same simple inline UI shape as the old Image.
+                        // Avoid negative horizontal margins and a fallback font list here: both
+                        // are validated only when the inline is inserted and caused E_INVALIDARG.
+                        inlines.Add(new InlineUIContainer
+                        {
+                            Child = element,
+                            FontSize = 1
+                        });
                     }
-                });
+                    catch (ArgumentException)
+                    {
+                        // Some older UWP builds reject non-Image inline children in TextBlock.
+                        // Never crash the chat list; use an Apple-font Run on those systems.
+                        inlines.Add(new Run
+                        {
+                            Text = emoji,
+                            FontFamily = App.ChatInlineAppleEmojiFont,
+                            FontSize = App.ChatsInlineEmojiFontSize
+                        });
+                    }
+                }
+                else
+                {
+                    inlines.Add(new Run { Text = emoji });
+                }
 
                 index += length;
                 segmentStart = index;
@@ -182,6 +202,21 @@ namespace Telegram
 
             if (segmentStart < text.Length)
                 inlines.Add(new Run { Text = text.Substring(segmentStart) });
+        }
+
+        private bool TryReadInlineEmoji(string text, int index, out string emoji, out int length)
+        {
+            emoji = null;
+            length = 0;
+
+            string uri;
+            if (TryReadLocalEmojiUri(text, index, out uri, out length))
+            {
+                emoji = text.Substring(index, length);
+                return true;
+            }
+
+            return ChatPage.TryReadAppleEmojiCluster(text, index, out emoji, out length);
         }
 
         private bool TryReadLocalEmojiUri(string text, int index, out string uri, out int length)

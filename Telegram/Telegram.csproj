@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -100,6 +100,7 @@
       <HintPath>Newtonsoft.Json.dll</HintPath>
     </Reference>
     <None Include="project.json" />
+    <Content Include="Assets\Emoji\AppleColorEmoji.ttc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -169,6 +170,7 @@
     <Compile Include="Models\FolderViewModel.cs" />
     <Compile Include="Models\StickerItemViewModel.cs" />
     <Compile Include="Models\StickerSetViewModel.cs" />
+    <Compile Include="Models\InlineQueryViewModels.cs" />
     <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Controls\Messages\MessageMediaHost.cs" />
     <Compile Include="Controls\CommentsPreviewControl.xaml.cs">
@@ -250,7 +252,6 @@
     <Content Include="Newtonsoft.Json.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Emoji\emoji_manifest.json" />
     <Content Include="Assets\ApplicationBar\appbar.add.rest.png" />
     <Content Include="Assets\ApplicationBar\appbar.attach.png" />
     <Content Include="Assets\ApplicationBar\appbar.back.png" />
@@ -514,9 +515,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\Emoji\Static\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

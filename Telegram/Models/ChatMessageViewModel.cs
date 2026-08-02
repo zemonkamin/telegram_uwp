@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -221,6 +221,7 @@ namespace Telegram.Models
                 _customEmojiUri = value;
                 OnPropertyChanged("CustomEmojiUri");
                 OnPropertyChanged("CustomEmojiVisibility");
+                OnPropertyChanged("CustomEmojiFallbackVisibility");
                 OnPropertyChanged("EmoticonVisibility");
                 OnPropertyChanged("DisplayText");
             }
@@ -277,6 +278,16 @@ namespace Telegram.Models
         public Visibility LocalEmojiVisibility
         {
             get { return CustomEmojiDocumentId == 0 && !string.IsNullOrEmpty(LocalEmojiUri) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility StandardEmojiVisibility
+        {
+            get { return CustomEmojiDocumentId == 0 ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility CustomEmojiFallbackVisibility
+        {
+            get { return CustomEmojiDocumentId != 0 && string.IsNullOrEmpty(CustomEmojiUri) ? Visibility.Visible : Visibility.Collapsed; }
         }
 
         public Visibility EmoticonVisibility
@@ -358,6 +369,8 @@ namespace Telegram.Models
             OnPropertyChanged("DisplayText");
             OnPropertyChanged("CustomEmojiUri");
             OnPropertyChanged("CustomEmojiVisibility");
+            OnPropertyChanged("StandardEmojiVisibility");
+            OnPropertyChanged("CustomEmojiFallbackVisibility");
             OnPropertyChanged("LocalEmojiUri");
             OnPropertyChanged("LocalEmojiImageSource");
             OnPropertyChanged("LocalEmojiVisibility");
@@ -1674,6 +1687,35 @@ namespace Telegram.Models
         public bool RemovesReplyKeyboard { get; set; }
         public string ReplyKeyboardPlaceholder { get; set; }
         public Visibility InlineKeyboardVisibility { get { return InlineKeyboardRows != null && InlineKeyboardRows.Count > 0 ? Visibility.Visible : Visibility.Collapsed; } }
+
+        /// <summary>
+        /// Telegram lets an inline keyboard be wider than a short message bubble, but
+        /// still limits it to the normal message width. Estimate the server keyboard's
+        /// requested width from its longest row so buttons stay compact instead of
+        /// stretching every bot message across the whole chat.
+        /// </summary>
+        public double InlineKeyboardWidth
+        {
+            get
+            {
+                if (InlineKeyboardRows == null || InlineKeyboardRows.Count == 0) return 0;
+
+                var desired = 180.0;
+                foreach (var row in InlineKeyboardRows)
+                {
+                    if (row == null || row.Buttons == null || row.Buttons.Count == 0) continue;
+                    var widestButton = 72.0;
+                    foreach (var button in row.Buttons)
+                    {
+                        var length = button == null || string.IsNullOrEmpty(button.Text) ? 0 : button.Text.Length;
+                        widestButton = Math.Max(widestButton, Math.Min(190.0, 30.0 + length * 7.2));
+                    }
+                    desired = Math.Max(desired, widestButton * row.Buttons.Count + 5.0 * Math.Max(0, row.Buttons.Count - 1));
+                }
+                return Math.Min(BubbleMaxWidth, desired);
+            }
+        }
+
         public bool HasReplyKeyboard { get { return ReplyKeyboardRows != null && ReplyKeyboardRows.Count > 0; } }
         public long GroupedId { get; set; }
         public bool IsServiceMessage { get; set; }
@@ -2520,7 +2562,6 @@ namespace Telegram.Models
                 if (HasMedia && !IsWebPageMedia(MediaKind)) return true;
                 if (CanOpenComments) return true;
                 if (Reactions != null && Reactions.Count > 0) return true;
-                if (InlineKeyboardRows != null && InlineKeyboardRows.Count > 0) return true;
                 return false;
             }
         }
@@ -2927,6 +2968,7 @@ namespace Telegram.Models
             OnPropertyChanged("ReplyToVisibility");
             OnPropertyChanged("InlineKeyboardRows");
             OnPropertyChanged("InlineKeyboardVisibility");
+            OnPropertyChanged("InlineKeyboardWidth");
             OnPropertyChanged("BubbleStretchContentWidth");
             OnPropertyChanged("ReplyKeyboardRows");
             OnPropertyChanged("HasReplyKeyboard");
@@ -2959,6 +3001,7 @@ namespace Telegram.Models
             OnPropertyChanged("BubbleAlignment");
             OnPropertyChanged("BubbleMargin");
             OnPropertyChanged("BubbleMaxWidth");
+            OnPropertyChanged("InlineKeyboardWidth");
             OnPropertyChanged("BubbleContentAlignment");
             OnPropertyChanged("BubbleBackground");
             OnPropertyChanged("PollVisibility");
@@ -4051,6 +4094,7 @@ namespace Telegram.Models
         public void NotifyLayoutMetricsChanged()
         {
             OnPropertyChanged("BubbleMaxWidth");
+            OnPropertyChanged("InlineKeyboardWidth");
             OnPropertyChanged("BubbleStretchContentWidth");
             OnPropertyChanged("BubbleContentAlignment");
             OnPropertyChanged("MediaPlaceholderWidth");
@@ -4089,6 +4133,7 @@ namespace Telegram.Models
             OnPropertyChanged("GifRenderWidth");
             OnPropertyChanged("GifRenderHeight");
             OnPropertyChanged("BubbleMaxWidth");
+            OnPropertyChanged("InlineKeyboardWidth");
         }
 
         private static Color GetAccentColor()
@@ -4458,6 +4503,7 @@ namespace Telegram.Models
         public Visibility ReactionsVisibility { get { return Visibility.Collapsed; } }
         public object InlineKeyboardRows { get { return null; } }
         public Visibility InlineKeyboardVisibility { get { return Visibility.Collapsed; } }
+        public double InlineKeyboardWidth { get { return 0; } }
         public Visibility CommentsPreviewVisibility { get { return Visibility.Collapsed; } }
         public object CommentAvatars { get { return null; } }
         public Visibility CommentAvatarsVisibility { get { return Visibility.Collapsed; } }

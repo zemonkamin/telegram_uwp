@@ -28,6 +28,8 @@
                     <SolidColorBrush x:Key="TelegramMediaPlaceholderBrush" Color="#FFA6A6A6" />
                     <SolidColorBrush x:Key="TelegramReplyBackgroundBrush" Color="#FF111111" />
                     <SolidColorBrush x:Key="TelegramAttachmentBackgroundBrush" Color="#FF151515" />
+                    <SolidColorBrush x:Key="TelegramInlineKeyboardButtonBrush" Color="#D93C3C3C" />
+                    <SolidColorBrush x:Key="TelegramInlineKeyboardButtonForegroundBrush" Color="#FFFFFFFF" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="TelegramPageBackgroundBrush" Color="#FFFFFFFF" />
@@ -44,6 +46,8 @@
                     <SolidColorBrush x:Key="TelegramMediaPlaceholderBrush" Color="#FFE7E7E7" />
                     <SolidColorBrush x:Key="TelegramReplyBackgroundBrush" Color="#FFF2F2F2" />
                     <SolidColorBrush x:Key="TelegramAttachmentBackgroundBrush" Color="#FFEFEFEF" />
+                    <SolidColorBrush x:Key="TelegramInlineKeyboardButtonBrush" Color="#C76A6A6A" />
+                    <SolidColorBrush x:Key="TelegramInlineKeyboardButtonForegroundBrush" Color="#FFFFFFFF" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
@@ -92,6 +96,71 @@
                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Content="{TemplateBinding Content}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="TelegramInlineKeyboardButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{ThemeResource TelegramInlineKeyboardButtonBrush}" />
+                <Setter Property="Foreground" Value="{ThemeResource TelegramInlineKeyboardButtonForegroundBrush}" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="8,4" />
+                <Setter Property="MinWidth" Value="0" />
+                <Setter Property="MinHeight" Value="44" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid x:Name="InlineKeyboardButtonRoot">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="InlineKeyboardButtonSurface"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="0.88"
+                                                    Duration="0:0:0" />
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="InlineKeyboardButtonSurface"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="0.68"
+                                                    Duration="0:0:0" />
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="InlineKeyboardButtonRoot"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="0.45"
+                                                    Duration="0:0:0" />
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Border
+                                    x:Name="InlineKeyboardButtonSurface"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="0">
+                                    <ContentPresenter
+                                        Padding="{TemplateBinding Padding}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                </Border>
                             </Grid>
                         </ControlTemplate>
                     </Setter.Value>
@@ -238,6 +307,11 @@
                                 Background="Transparent"
                                 Holding="MessageRoot_Holding"
                                 RightTapped="MessageRoot_RightTapped"
+                                Tapped="MessageRoot_Tapped"
+                                ManipulationMode="System,TranslateX"
+                                ManipulationStarted="MessageRoot_ManipulationStarted"
+                                ManipulationDelta="MessageRoot_ManipulationDelta"
+                                ManipulationCompleted="MessageRoot_ManipulationCompleted"
                                 Tag="{Binding}"
                                 Visibility="{Binding Converter={StaticResource NormalMessageVisibilityConverter}}">
                             <Grid
@@ -269,8 +343,16 @@
                                     Visibility="{Binding SenderInitialsVisibility}" />
                             </Grid>
 
-                            <Grid Margin="{Binding BubbleMargin}" HorizontalAlignment="{Binding BubbleAlignment}">
+                            <Grid
+                                MaxWidth="{Binding BubbleMaxWidth}"
+                                Margin="{Binding BubbleMargin}"
+                                HorizontalAlignment="{Binding BubbleAlignment}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
                                 <Border
+                                    Grid.Row="0"
                                     MinHeight="{Binding BubbleMinHeight}"
                                     MaxWidth="{Binding BubbleMaxWidth}"
                                     Padding="{Binding BubblePadding}"
@@ -376,36 +458,57 @@
                                                             Style="{StaticResource TelegramBareButtonStyle}">
                                                             <Border
                                                                 MinWidth="54"
-                                                                MinHeight="30"
-                                                                Padding="9,1,9,2"
+                                                                Height="32"
+                                                                Padding="9,0,9,0"
                                                                 Background="{Binding ChipBackground}"
                                                                 CornerRadius="0">
                                                                 <StackPanel
-                                                                    Margin="0,-1,0,0"
                                                                     HorizontalAlignment="Center"
                                                                     VerticalAlignment="Center"
                                                                     Orientation="Horizontal">
-                                                                    <controls:FfmpegStickerImageControl
+                                                                    <Canvas
                                                                         Width="22"
-                                                                        Height="22"
+                                                                        Height="24"
                                                                         Margin="0,0,6,0"
-                                                                        ImageStretch="Uniform"
-                                                                        MediaKind="sticker"
-                                                                        SourceUri="{Binding CustomEmojiUri}"
-                                                                        Visibility="{Binding CustomEmojiVisibility}" />
-                                                                    <Image
-                                                                        Width="20"
-                                                                        Height="20"
+                                                                        Visibility="{Binding CustomEmojiVisibility}">
+                                                                        <controls:FfmpegStickerImageControl
+                                                                            Canvas.Left="0"
+                                                                            Canvas.Top="4"
+                                                                            Width="22"
+                                                                            Height="22"
+                                                                            ImageStretch="Uniform"
+                                                                            MediaKind="sticker"
+                                                                            SourceUri="{Binding CustomEmojiUri}" />
+                                                                    </Canvas>
+                                                                    <Canvas
+                                                                        Width="22"
+                                                                        Height="24"
                                                                         Margin="0,0,6,0"
-                                                                        Source="{Binding LocalEmojiImageSource}"
-                                                                        Stretch="Uniform"
-                                                                        Visibility="{Binding LocalEmojiVisibility}" />
-                                                                    <TextBlock
+                                                                        Visibility="{Binding StandardEmojiVisibility}">
+                                                                        <TextBlock
+                                                                            Canvas.Left="-1"
+                                                                            Canvas.Top="4"
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            FontFamily="ms-appx:///Assets/Emoji/AppleColorEmoji.ttc#Apple Color Emoji"
+                                                                            FontSize="18"
+                                                                            Text="{Binding Emoticon}"
+                                                                            TextAlignment="Center" />
+                                                                    </Canvas>
+                                                                    <Canvas
+                                                                        Width="22"
+                                                                        Height="24"
                                                                         Margin="0,0,6,0"
-                                                                        VerticalAlignment="Center"
-                                                                        FontSize="17"
-                                                                        Text="{Binding DisplayText}"
-                                                                        Visibility="{Binding EmoticonVisibility}" />
+                                                                        Visibility="{Binding CustomEmojiFallbackVisibility}">
+                                                                        <TextBlock
+                                                                            Canvas.Left="-1"
+                                                                            Canvas.Top="4"
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            FontSize="18"
+                                                                            Text="{Binding DisplayText}"
+                                                                            TextAlignment="Center" />
+                                                                    </Canvas>
                                                                     <TextBlock
                                                                         VerticalAlignment="Center"
                                                                         FontSize="16"
@@ -414,43 +517,6 @@
                                                                 </StackPanel>
                                                             </Border>
                                                         </Button>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-
-                                            <ItemsControl
-                                                MaxWidth="{Binding BubbleMaxWidth}"
-                                                Margin="0,6,0,0"
-                                                HorizontalAlignment="Stretch"
-                                                ItemsSource="{Binding InlineKeyboardRows}"
-                                                Visibility="{Binding InlineKeyboardVisibility}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <ItemsControl
-                                                            Margin="0,0,0,4"
-                                                            HorizontalAlignment="Stretch"
-                                                            ItemsSource="{Binding Buttons}">
-                                                            <ItemsControl.ItemsPanel>
-                                                                <ItemsPanelTemplate>
-                                                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" />
-                                                                </ItemsPanelTemplate>
-                                                            </ItemsControl.ItemsPanel>
-                                                            <ItemsControl.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <Button
-                                                                        MinWidth="82"
-                                                                        MinHeight="36"
-                                                                        MaxWidth="190"
-                                                                        Margin="0,0,4,0"
-                                                                        Padding="10,4"
-                                                                        HorizontalContentAlignment="Center"
-                                                                        Click="BotInlineButton_Click"
-                                                                        Content="{Binding Text}"
-                                                                        Style="{StaticResource TelegramFullWidthTextButtonStyle}"
-                                                                        Tag="{Binding}" />
-                                                                </DataTemplate>
-                                                            </ItemsControl.ItemTemplate>
-                                                        </ItemsControl>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
@@ -489,6 +555,54 @@
                                         </StackPanel>
                                     </Grid>
                                 </Border>
+
+                                <ItemsControl
+                                    Grid.Row="1"
+                                    MinWidth="{Binding InlineKeyboardWidth}"
+                                    MaxWidth="{Binding BubbleMaxWidth}"
+                                    Margin="0,3,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch"
+                                    ItemsSource="{Binding InlineKeyboardRows}"
+                                    Visibility="{Binding InlineKeyboardVisibility}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ItemsControl
+                                                Margin="0,0,0,4"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Stretch"
+                                                ItemsSource="{Binding Buttons}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <local:InlineKeyboardRowPanel ItemSpacing="5" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Button
+                                                            MinHeight="44"
+                                                            Padding="8,4"
+                                                            HorizontalAlignment="Stretch"
+                                                            HorizontalContentAlignment="Center"
+                                                            Click="BotInlineButton_Click"
+                                                            Style="{StaticResource TelegramInlineKeyboardButtonStyle}"
+                                                            Tag="{Binding}">
+                                                            <TextBlock
+                                                                MaxLines="2"
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource TelegramInlineKeyboardButtonForegroundBrush}"
+                                                                Text="{Binding Text}"
+                                                                TextAlignment="Center"
+                                                                TextTrimming="CharacterEllipsis"
+                                                                TextWrapping="WrapWholeWords" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
                         </Grid>
                 </Grid>
@@ -502,6 +616,11 @@
                                 Background="Transparent"
                                 Holding="MessageRoot_Holding"
                                 RightTapped="MessageRoot_RightTapped"
+                                Tapped="MessageRoot_Tapped"
+                                ManipulationMode="System,TranslateX"
+                                ManipulationStarted="MessageRoot_ManipulationStarted"
+                                ManipulationDelta="MessageRoot_ManipulationDelta"
+                                ManipulationCompleted="MessageRoot_ManipulationCompleted"
                                 Tag="{Binding}"
                                 Visibility="{Binding Converter={StaticResource NormalMessageVisibilityConverter}}">
                             <Grid
@@ -533,8 +652,16 @@
                                     Visibility="{Binding SenderInitialsVisibility}" />
                             </Grid>
 
-                            <Grid Margin="{Binding BubbleMargin}" HorizontalAlignment="{Binding BubbleAlignment}">
+                            <Grid
+                                MaxWidth="{Binding BubbleMaxWidth}"
+                                Margin="{Binding BubbleMargin}"
+                                HorizontalAlignment="{Binding BubbleAlignment}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
                                 <Border
+                                    Grid.Row="0"
                                     MinHeight="{Binding BubbleMinHeight}"
                                     MaxWidth="{Binding BubbleMaxWidth}"
                                     Padding="{Binding BubblePadding}"
@@ -658,36 +785,57 @@
                                                             Style="{StaticResource TelegramBareButtonStyle}">
                                                             <Border
                                                                 MinWidth="54"
-                                                                MinHeight="30"
-                                                                Padding="9,1,9,2"
+                                                                Height="32"
+                                                                Padding="9,0,9,0"
                                                                 Background="{Binding ChipBackground}"
                                                                 CornerRadius="0">
                                                                 <StackPanel
-                                                                    Margin="0,-1,0,0"
                                                                     HorizontalAlignment="Center"
                                                                     VerticalAlignment="Center"
                                                                     Orientation="Horizontal">
-                                                                    <controls:FfmpegStickerImageControl
+                                                                    <Canvas
                                                                         Width="22"
-                                                                        Height="22"
+                                                                        Height="24"
                                                                         Margin="0,0,6,0"
-                                                                        ImageStretch="Uniform"
-                                                                        MediaKind="sticker"
-                                                                        SourceUri="{Binding CustomEmojiUri}"
-                                                                        Visibility="{Binding CustomEmojiVisibility}" />
-                                                                    <Image
-                                                                        Width="20"
-                                                                        Height="20"
+                                                                        Visibility="{Binding CustomEmojiVisibility}">
+                                                                        <controls:FfmpegStickerImageControl
+                                                                            Canvas.Left="0"
+                                                                            Canvas.Top="4"
+                                                                            Width="22"
+                                                                            Height="22"
+                                                                            ImageStretch="Uniform"
+                                                                            MediaKind="sticker"
+                                                                            SourceUri="{Binding CustomEmojiUri}" />
+                                                                    </Canvas>
+                                                                    <Canvas
+                                                                        Width="22"
+                                                                        Height="24"
                                                                         Margin="0,0,6,0"
-                                                                        Source="{Binding LocalEmojiImageSource}"
-                                                                        Stretch="Uniform"
-                                                                        Visibility="{Binding LocalEmojiVisibility}" />
-                                                                    <TextBlock
+                                                                        Visibility="{Binding StandardEmojiVisibility}">
+                                                                        <TextBlock
+                                                                            Canvas.Left="-1"
+                                                                            Canvas.Top="4"
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            FontFamily="ms-appx:///Assets/Emoji/AppleColorEmoji.ttc#Apple Color Emoji"
+                                                                            FontSize="18"
+                                                                            Text="{Binding Emoticon}"
+                                                                            TextAlignment="Center" />
+                                                                    </Canvas>
+                                                                    <Canvas
+                                                                        Width="22"
+                                                                        Height="24"
                                                                         Margin="0,0,6,0"
-                                                                        VerticalAlignment="Center"
-                                                                        FontSize="17"
-                                                                        Text="{Binding DisplayText}"
-                                                                        Visibility="{Binding EmoticonVisibility}" />
+                                                                        Visibility="{Binding CustomEmojiFallbackVisibility}">
+                                                                        <TextBlock
+                                                                            Canvas.Left="-1"
+                                                                            Canvas.Top="4"
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            FontSize="18"
+                                                                            Text="{Binding DisplayText}"
+                                                                            TextAlignment="Center" />
+                                                                    </Canvas>
                                                                     <TextBlock
                                                                         VerticalAlignment="Center"
                                                                         FontSize="16"
@@ -696,43 +844,6 @@
                                                                 </StackPanel>
                                                             </Border>
                                                         </Button>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-
-                                            <ItemsControl
-                                                MaxWidth="{Binding BubbleMaxWidth}"
-                                                Margin="0,6,0,0"
-                                                HorizontalAlignment="Stretch"
-                                                ItemsSource="{Binding InlineKeyboardRows}"
-                                                Visibility="{Binding InlineKeyboardVisibility}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <ItemsControl
-                                                            Margin="0,0,0,4"
-                                                            HorizontalAlignment="Stretch"
-                                                            ItemsSource="{Binding Buttons}">
-                                                            <ItemsControl.ItemsPanel>
-                                                                <ItemsPanelTemplate>
-                                                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" />
-                                                                </ItemsPanelTemplate>
-                                                            </ItemsControl.ItemsPanel>
-                                                            <ItemsControl.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <Button
-                                                                        MinWidth="82"
-                                                                        MinHeight="36"
-                                                                        MaxWidth="190"
-                                                                        Margin="0,0,4,0"
-                                                                        Padding="10,4"
-                                                                        HorizontalContentAlignment="Center"
-                                                                        Click="BotInlineButton_Click"
-                                                                        Content="{Binding Text}"
-                                                                        Style="{StaticResource TelegramFullWidthTextButtonStyle}"
-                                                                        Tag="{Binding}" />
-                                                                </DataTemplate>
-                                                            </ItemsControl.ItemTemplate>
-                                                        </ItemsControl>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
@@ -771,6 +882,54 @@
                                         </StackPanel>
                                     </Grid>
                                 </Border>
+
+                                <ItemsControl
+                                    Grid.Row="1"
+                                    MinWidth="{Binding InlineKeyboardWidth}"
+                                    MaxWidth="{Binding BubbleMaxWidth}"
+                                    Margin="0,3,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch"
+                                    ItemsSource="{Binding InlineKeyboardRows}"
+                                    Visibility="{Binding InlineKeyboardVisibility}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ItemsControl
+                                                Margin="0,0,0,4"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Stretch"
+                                                ItemsSource="{Binding Buttons}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <local:InlineKeyboardRowPanel ItemSpacing="5" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Button
+                                                            MinHeight="44"
+                                                            Padding="8,4"
+                                                            HorizontalAlignment="Stretch"
+                                                            HorizontalContentAlignment="Center"
+                                                            Click="BotInlineButton_Click"
+                                                            Style="{StaticResource TelegramInlineKeyboardButtonStyle}"
+                                                            Tag="{Binding}">
+                                                            <TextBlock
+                                                                MaxLines="2"
+                                                                FontSize="14"
+                                                                FontWeight="SemiBold"
+                                                                Foreground="{ThemeResource TelegramInlineKeyboardButtonForegroundBrush}"
+                                                                Text="{Binding Text}"
+                                                                TextAlignment="Center"
+                                                                TextTrimming="CharacterEllipsis"
+                                                                TextWrapping="WrapWholeWords" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
                         </Grid>
                 </Grid>
@@ -2140,6 +2299,10 @@
                 Background="Transparent"
                 BorderThickness="0"
                 IsItemClickEnabled="False"
+                IsSwipeEnabled="False"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.HorizontalScrollMode="Disabled"
+                ScrollViewer.IsHorizontalRailEnabled="False"
                 Opacity="0"
                 SelectionMode="None"
                 ShowsScrollingPlaceholders="False">
@@ -2241,11 +2404,12 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Border
                     x:Name="ChatInputGlass"
-                    Grid.RowSpan="5"
+                    Grid.RowSpan="6"
                     Background="Transparent"
                     IsHitTestVisible="False" />
 
@@ -2403,9 +2567,229 @@
                     </Grid>
                 </Grid>
 
+                <Border
+                    x:Name="InlineQueryPanel"
+                    Grid.Row="3"
+                    Height="116"
+                    Background="{ThemeResource TelegramPanelBackgroundBrush}"
+                    BorderBrush="{ThemeResource TelegramPanelBorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Button
+                            x:Name="InlineQueryActionButton"
+                            Grid.Row="0"
+                            Height="44"
+                            Padding="14,0"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Background="Transparent"
+                            BorderBrush="{ThemeResource TelegramPanelBorderBrush}"
+                            BorderThickness="0,0,0,1"
+                            Click="InlineQueryActionButton_Click"
+                            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                            Visibility="Collapsed">
+                            <TextBlock
+                                x:Name="InlineQueryActionButtonText"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                TextTrimming="CharacterEllipsis" />
+                        </Button>
+
+                        <Grid Grid.Row="1">
+                            <GridView
+                                x:Name="InlineQueryResultsGrid"
+                                Margin="6,4,6,4"
+                                IsItemClickEnabled="True"
+                                ItemClick="InlineQueryResultsGrid_ItemClick"
+                                SelectionMode="None"
+                                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                ScrollViewer.HorizontalScrollMode="Enabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollMode="Disabled">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                                <GridView.ItemContainerStyle>
+                                    <Style TargetType="GridViewItem">
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Margin" Value="0,0,4,0" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                    </Style>
+                                </GridView.ItemContainerStyle>
+                                <GridView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Width="128" Height="104">
+                                            <Border
+                                                Background="{ThemeResource TelegramMediaPlaceholderBrush}"
+                                                CornerRadius="3" />
+                                            <Image
+                                                Source="{Binding PreviewImageSource}"
+                                                Stretch="UniformToFill"
+                                                Visibility="{Binding PreviewVisibility}" />
+                                            <Grid Visibility="{Binding PlaceholderVisibility}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontFamily="Segoe MDL2 Assets"
+                                                    FontSize="34"
+                                                    Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                                                    Opacity="0.7"
+                                                    Text="{Binding KindGlyph}" />
+                                            </Grid>
+                                            <Border
+                                                Background="#66000000"
+                                                Visibility="{Binding SendingVisibility}">
+                                                <ProgressRing
+                                                    Width="28"
+                                                    Height="28"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    IsActive="{Binding IsSending}"
+                                                    Foreground="White" />
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>
+
+                            <ListView
+                                x:Name="InlineQueryResultsList"
+                                IsItemClickEnabled="True"
+                                ItemClick="InlineQueryResultsGrid_ItemClick"
+                                SelectionMode="None"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                ScrollViewer.HorizontalScrollMode="Disabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                ScrollViewer.VerticalScrollMode="Enabled"
+                                Visibility="Collapsed">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="MinHeight" Value="0" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid MinHeight="68" Padding="8,6,8,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="52" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Width="52" Height="52">
+                                                <Border
+                                                    Background="{ThemeResource TelegramMediaPlaceholderBrush}"
+                                                    CornerRadius="3" />
+                                                <Image
+                                                    Source="{Binding PreviewImageSource}"
+                                                    Stretch="UniformToFill"
+                                                    Visibility="{Binding PreviewVisibility}" />
+                                                <Grid Visibility="{Binding PlaceholderVisibility}">
+                                                    <TextBlock
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        FontFamily="Segoe MDL2 Assets"
+                                                        FontSize="24"
+                                                        Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                                                        Opacity="0.75"
+                                                        Text="{Binding KindGlyph}" />
+                                                </Grid>
+                                                <Border
+                                                    Background="#66000000"
+                                                    Visibility="{Binding SendingVisibility}">
+                                                    <ProgressRing
+                                                        Width="24"
+                                                        Height="24"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        IsActive="{Binding IsSending}"
+                                                        Foreground="White" />
+                                                </Border>
+                                            </Grid>
+                                            <StackPanel
+                                                Grid.Column="1"
+                                                Margin="10,0,4,0"
+                                                VerticalAlignment="Center">
+                                                <TextBlock
+                                                    FontSize="15"
+                                                    FontWeight="SemiBold"
+                                                    Foreground="{ThemeResource TelegramPrimaryTextBrush}"
+                                                    Text="{Binding DisplayTitle}"
+                                                    TextTrimming="CharacterEllipsis" />
+                                                <TextBlock
+                                                    Height="34"
+                                                    Margin="0,1,0,0"
+                                                    FontSize="13"
+                                                    Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                                                    Text="{Binding DisplayDescription}"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    TextWrapping="Wrap"
+                                                    Visibility="{Binding DescriptionVisibility}" />
+                                                <TextBlock
+                                                    Margin="0,1,0,0"
+                                                    FontSize="12"
+                                                    Foreground="{ThemeResource TelegramSubtleTextBrush}"
+                                                    Text="{Binding DisplayUrl}"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    Visibility="{Binding UrlVisibility}" />
+                                            </StackPanel>
+                                            <Border
+                                                Grid.ColumnSpan="2"
+                                                VerticalAlignment="Bottom"
+                                                BorderBrush="{ThemeResource TelegramPanelBorderBrush}"
+                                                BorderThickness="0,0,0,1"
+                                                Opacity="0.65" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                            <ProgressRing
+                                x:Name="InlineQueryProgress"
+                                Width="24"
+                                Height="24"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                IsActive="False"
+                                IsHitTestVisible="False"
+                                Visibility="Collapsed" />
+                            <TextBlock
+                                x:Name="InlineQueryEmptyText"
+                                Margin="20"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Foreground="{ThemeResource TelegramSubtleTextBrush}"
+                                IsHitTestVisible="False"
+                                Text="No results"
+                                TextAlignment="Center"
+                                TextWrapping="WrapWholeWords"
+                                Visibility="Collapsed" />
+                        </Grid>
+                    </Grid>
+                </Border>
+
                 <Grid
                     x:Name="ComposerPanel"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     MinHeight="56"
                     VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
@@ -2559,7 +2943,7 @@
 
                 <Grid
                     x:Name="ReadOnlyPanel"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Height="56"
                     Margin="0"
                     Visibility="Collapsed">
@@ -2591,7 +2975,7 @@
 
                 <Border
                     x:Name="BotReplyKeyboardPanel"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     MaxHeight="240"
                     Padding="8,6,8,8"
                     Background="{ThemeResource TelegramPanelBackgroundBrush}"
@@ -2635,7 +3019,7 @@
 
                 <Border
                     x:Name="EmojiKeyboardPanel"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Height="260"
                     Background="{ThemeResource TelegramPanelBackgroundBrush}"
                     BorderBrush="{ThemeResource TelegramPanelBorderBrush}"
