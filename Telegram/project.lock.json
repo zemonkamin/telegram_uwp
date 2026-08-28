@@ -1,8 +1,7 @@
 {
-  "locked": false,
-  "version": 2,
+  "version": 3,
   "targets": {
-    "UAP,Version=v10.0": {
+    "UAP,Version=v10.0.14393": {
       "FFmpegInterop.UWP/1.0.4": {
         "type": "package",
         "compile": {
@@ -2018,7 +2017,7 @@
         }
       }
     },
-    "UAP,Version=v10.0/win10-arm": {
+    "UAP,Version=v10.0.14393/win10-arm": {
       "FFmpegInterop.UWP/1.0.4": {
         "type": "package",
         "compile": {
@@ -3801,7 +3800,7 @@
         }
       }
     },
-    "UAP,Version=v10.0/win10-arm-aot": {
+    "UAP,Version=v10.0.14393/win10-arm-aot": {
       "FFmpegInterop.UWP/1.0.4": {
         "type": "package",
         "compile": {
@@ -5541,7 +5540,7 @@
         }
       }
     },
-    "UAP,Version=v10.0/win10-x64": {
+    "UAP,Version=v10.0.14393/win10-x64": {
       "FFmpegInterop.UWP/1.0.4": {
         "type": "package",
         "compile": {
@@ -7333,7 +7332,7 @@
         }
       }
     },
-    "UAP,Version=v10.0/win10-x64-aot": {
+    "UAP,Version=v10.0.14393/win10-x64-aot": {
       "FFmpegInterop.UWP/1.0.4": {
         "type": "package",
         "compile": {
@@ -9073,7 +9072,7 @@
         }
       }
     },
-    "UAP,Version=v10.0/win10-x86": {
+    "UAP,Version=v10.0.14393/win10-x86": {
       "FFmpegInterop.UWP/1.0.4": {
         "type": "package",
         "compile": {
@@ -10865,7 +10864,7 @@
         }
       }
     },
-    "UAP,Version=v10.0/win10-x86-aot": {
+    "UAP,Version=v10.0.14393/win10-x86-aot": {
       "FFmpegInterop.UWP/1.0.4": {
         "type": "package",
         "compile": {
@@ -12608,13 +12607,15 @@
   },
   "libraries": {
     "FFmpegInterop.UWP/1.0.4": {
-      "sha512": "OfbFYIlzQOeQFoKimTyKBpuMJGnf4JHfmaG9Fvf9bpxYs6AKNxJASZvsGM4CbaWSJ5kkPKu48j3sZ9vPs9UtJg==",
+      "sha512": "am15KrybcfhQndN5AYXqCFA1nJR0zR1gAOcUq8CFT5Rh+IWQwUBnTFD03qw648yakhpRwgup83nOottLfUL4bQ==",
       "type": "package",
+      "path": "ffmpeginterop.uwp/1.0.4",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
-        "FFmpegInterop.UWP.1.0.4.nupkg.sha512",
-        "FFmpegInterop.UWP.nuspec",
         "README.md",
+        "ffmpeginterop.uwp.1.0.4.nupkg.sha512",
+        "ffmpeginterop.uwp.nuspec",
         "include/libavcodec/avcodec.h",
         "include/libavcodec/avdct.h",
         "include/libavcodec/avfft.h",
@@ -13358,12 +13359,13 @@
       ]
     },
     "Newtonsoft.Json/9.0.1": {
-      "sha512": "2okXpTRwUcgQb06put5LwwCjtgoFo74zkPksjcvOpnIjx7TagGW5IoBCAA4luZx1+tfiIhoNqoiI7Y7zwWGyKA==",
+      "sha512": "U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
       "type": "package",
+      "path": "newtonsoft.json/9.0.1",
+      "hasTools": true,
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
-        "Newtonsoft.Json.9.0.1.nupkg.sha512",
-        "Newtonsoft.Json.nuspec",
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
         "lib/net35/Newtonsoft.Json.dll",
@@ -13378,6 +13380,8 @@
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.9.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec",
         "tools/install.ps1"
       ]
     },
@@ -16254,13 +16258,12 @@
       ]
     },
     "Win2D.uwp/1.21.0": {
-      "sha512": "mDwummDtvwHwKYcUDD1E+KfouZKFvu1yuwQulG874h0mFHUjm6DGp/53KuBhBhJVnTN/NBED5b/OwBbgskl+OA==",
+      "sha512": "4ddgs6Mt4cDVOPcKE+gV02Rn8G9nhp8C9S94A/msxULD2ysq6Q/z3CmeyATJhJNVfhumWUaXzx0B3v39vB5A4Q==",
       "type": "package",
+      "path": "win2d.uwp/1.21.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Win2D.uwp.1.21.0.nupkg.sha512",
-        "Win2D.uwp.nuspec",
         "Win2d.githash.txt",
         "build/native/Win2D.uwp.targets",
         "include/Microsoft.Graphics.Canvas.h",
@@ -16269,7 +16272,9 @@
         "lib/uap10.0/Microsoft.Graphics.Canvas.xml",
         "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll",
         "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll",
-        "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll"
+        "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll",
+        "win2d.uwp.1.21.0.nupkg.sha512",
+        "win2d.uwp.nuspec"
       ]
     }
   },
@@ -16280,6 +16285,62 @@
       "Newtonsoft.Json >= 9.0.1",
       "Win2D.uwp >= 1.21.0"
     ],
-    "UAP,Version=v10.0": []
+    "UAP,Version=v10.0.14393": []
+  },
+  "packageFolders": {
+    "C:\\Users\\user\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "restore": {
+      "projectUniqueName": "D:\\GitHub\\telegram_uwp\\Telegram\\Telegram.csproj",
+      "projectName": "Telegram",
+      "projectPath": "D:\\GitHub\\telegram_uwp\\Telegram\\Telegram.csproj",
+      "projectJsonPath": "D:\\GitHub\\telegram_uwp\\Telegram\\project.json",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "D:\\GitHub\\telegram_uwp\\Telegram\\obj\\",
+      "projectStyle": "ProjectJson",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      }
+    },
+    "dependencies": {
+      "FFmpegInterop.UWP": "[1.0.4, )",
+      "Microsoft.NETCore.UniversalWindowsPlatform": "[5.1.0, )",
+      "Newtonsoft.Json": "[9.0.1, )",
+      "Win2D.uwp": "[1.21.0, )"
+    },
+    "frameworks": {
+      "uap10.0.14393": {}
+    },
+    "runtimes": {
+      "win10-arm": {
+        "#import": []
+      },
+      "win10-arm-aot": {
+        "#import": []
+      },
+      "win10-x64": {
+        "#import": []
+      },
+      "win10-x64-aot": {
+        "#import": []
+      },
+      "win10-x86": {
+        "#import": []
+      },
+      "win10-x86-aot": {
+        "#import": []
+      }
+    }
   }
 }
