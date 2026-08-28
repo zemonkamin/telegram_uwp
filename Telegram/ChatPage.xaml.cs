@@ -1664,6 +1664,19 @@ namespace Telegram
             if (button == null || _chat == null) return;
 
             var flyout = new MenuFlyout();
+
+            // Calling comes first, and only for a person. There is nobody at the far
+            // end of a channel, and a group call is a different feature entirely -
+            // offering "call" there would fail in a way that looks like a bug.
+            if (CanCallThisChat())
+            {
+                var callAction = new MenuFlyoutItem();
+                callAction.Text = "call";
+                callAction.Click += CallMenuItem_Click;
+                flyout.Items.Add(callAction);
+                flyout.Items.Add(new MenuFlyoutSeparator());
+            }
+
             var notificationAction = new MenuFlyoutItem();
             ApplyNotificationMenuText(notificationAction, _chat.IsMuted, false);
             notificationAction.Click += NotificationMenuItem_Click;
@@ -1683,6 +1696,30 @@ namespace Telegram
 
             var refreshVersion = ++_notificationMenuRefreshVersion;
             var ignored = RefreshNotificationMenuItemAsync(notificationAction, refreshVersion);
+        }
+
+        /// <summary>
+        /// Whether this chat is one that can be called.
+        ///
+        /// A person, and a build that has the voice stack in it. On a desktop build
+        /// libtgvoip is absent, so the item is left out rather than offered and then
+        /// apologised for.
+        /// </summary>
+        private bool CanCallThisChat()
+        {
+            if (_chat == null || _chat.PeerType != "user") return false;
+            if (_chat.UserId == 0) return false;
+
+            return TelegramService.Instance.CallsSupported;
+        }
+
+        private void CallMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (!CanCallThisChat()) return;
+
+            // The page places the call itself, so that an outgoing call and an
+            // incoming one both arrive at the same screen in the same state.
+            Frame.Navigate(typeof(CallPage), _chat);
         }
 
         private async System.Threading.Tasks.Task RefreshNotificationMenuItemAsync(MenuFlyoutItem item, int version)

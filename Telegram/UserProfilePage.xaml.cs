@@ -154,6 +154,27 @@ namespace Telegram
             ApplyChannelCard(chat.ProfileChannel);
             ApplyAvatar(chat.AvatarUri);
             SetFallbackProfilePhotos(chat.AvatarUri);
+
+            ApplyCallAvailability(chat);
+        }
+
+        /// <summary>
+        /// Whether this profile can be called.
+        ///
+        /// A person, with a user id, on a build that carries the voice stack. The
+        /// same rule as the chat's own menu - one place deciding it would be better,
+        /// but the two screens do not share a base class to put it in.
+        /// </summary>
+        private void ApplyCallAvailability(ChatViewModel chat)
+        {
+            if (CallButton == null) return;
+
+            bool callable = chat != null
+                            && chat.PeerType == "user"
+                            && chat.UserId != 0
+                            && TelegramService.Instance.CallsSupported;
+
+            CallButton.IsEnabled = callable;
         }
 
         private void ApplyProfile(UserProfileViewModel profile)

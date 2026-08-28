@@ -105,6 +105,10 @@ namespace Telegram
 
             InitializeFluentEmoji(rootFrame);
 
+            // A call can arrive whenever the app is running, and nothing else was
+            // listening for one.
+            IncomingCallWatcher.Attach();
+
             if (e.PrelaunchActivated == false)
             {
                 var authorizedForNotifications = false;

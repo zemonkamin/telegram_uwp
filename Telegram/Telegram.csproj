@@ -251,6 +251,7 @@
     <Compile Include="Services\ProxyProfile.cs" />
     <Compile Include="Services\TdLibTelegramClient.cs" />
     <Compile Include="Services\CallInfo.cs" />
+    <Compile Include="Services\IncomingCallWatcher.cs" />
     <Compile Include="Services\TelegramService.cs" />
     <Compile Include="Services\TelegramSettings.cs" />
     <Compile Include="Services\ActiveChatService.cs" />

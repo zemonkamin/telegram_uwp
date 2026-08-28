@@ -81,9 +81,33 @@
                 TextAlignment="Center" />
         </StackPanel>
 
+        <!--
+          Answer and hang up share the bottom row. The answer button is collapsed
+          for an outgoing call and takes no space, so the hang-up button spans the
+          row exactly as it did before.
+        -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="AnswerColumn" Width="0" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                x:Name="AnswerButton"
+                Grid.Column="0"
+                Visibility="Collapsed"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="#FF2FA84F"
+                BorderThickness="0"
+                Click="AnswerButton_Click"
+                Content="answer"
+                FontSize="22"
+                Foreground="White" />
+
         <Button
             x:Name="HangupButton"
-            Grid.Row="1"
+            Grid.Column="1"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="{ThemeResource CallPageHangupBrush}"
@@ -92,5 +116,6 @@
             Content="hang up"
             FontSize="22"
             Foreground="White" />
+        </Grid>
     </Grid>
 </Page>

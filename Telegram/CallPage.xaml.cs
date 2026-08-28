@@ -19,6 +19,7 @@ namespace Telegram
         private bool _ending;
         private bool _backRequestedAttached;
         private bool _subscribed;
+        private CallInfo _incoming;
 
         public CallPage()
         {
@@ -35,7 +36,19 @@ namespace Telegram
         {
             base.OnNavigatedTo(e);
             ConfigureSystemBackButton(true);
+            // Two ways in, and they differ only at the start. An outgoing call is
+            // navigated to with the chat and places itself; an incoming one is
+            // navigated to with the call that has already arrived, and waits to be
+            // answered. Everything after that is the same screen in the same state.
             _peer = e.Parameter as ChatViewModel;
+            _incoming = e.Parameter as CallInfo;
+
+            if (_incoming != null)
+            {
+                _call = _incoming;
+                _peer = ResolveIncomingPeer(_incoming);
+            }
+
             ApplyPeer(_peer);
         }
 
@@ -68,7 +81,7 @@ namespace Telegram
         {
             Loaded -= CallPage_Loaded;
 
-            if (_peer == null || _peer.PeerType != "user")
+            if (_incoming == null && (_peer == null || _peer.PeerType != "user"))
             {
                 CallStatusText.Text = "Call unavailable";
                 HangupButton.Content = "close";
@@ -92,6 +105,13 @@ namespace Telegram
 
                 TelegramService.Instance.CallStateChanged += OnCallStateChanged;
                 _subscribed = true;
+
+                if (_incoming != null)
+                {
+                    ShowAnswerButton(true);
+                    ApplyCallState(_incoming);
+                    return;
+                }
 
                 // Nothing is awaited and nothing comes back. TDLib answers with
                 // updateCall, the same way it reports every later change, so the
@@ -118,7 +138,42 @@ namespace Telegram
             if (call == null || _ending) return;
 
             _call = call;
+
+            // Nothing left to answer once it is up or over.
+            if (call.IsActive || call.IsDiscarded) ShowAnswerButton(false);
+
             ApplyCallState(call);
+        }
+
+        private void AnswerButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowAnswerButton(false);
+            CallStatusText.Text = "Connecting";
+
+            TelegramService.Instance.AcceptCall();
+        }
+
+        private void ShowAnswerButton(bool visible)
+        {
+            AnswerButton.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            AnswerColumn.Width = new GridLength(visible ? 1 : 0, visible ? GridUnitType.Star : GridUnitType.Pixel);
+        }
+
+        /// <summary>
+        /// A stand-in peer for an incoming call.
+        ///
+        /// The call carries a user id and nothing else - no name, no avatar - so the
+        /// page shows what it has rather than waiting for a lookup that would delay
+        /// a ringing phone.
+        /// </summary>
+        private static ChatViewModel ResolveIncomingPeer(CallInfo call)
+        {
+            return new ChatViewModel
+            {
+                PeerType = "user",
+                UserId = call.UserId,
+                Title = "Incoming call",
+            };
         }
 
         private void DurationTimer_Tick(object sender, object e)

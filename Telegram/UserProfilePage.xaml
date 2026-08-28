@@ -603,7 +603,11 @@
             ClosedDisplayMode="Compact"
             Foreground="{ThemeResource ProfilePrimaryTextBrush}">
             <CommandBar.PrimaryCommands>
+                <!-- Enabled at runtime rather than here. It was hard-disabled while
+                     calls did not work; now whether it should be available depends on
+                     the peer and on the build, and neither is knowable from XAML. -->
                 <AppBarButton
+                    x:Name="CallButton"
                     Click="CallButton_Click"
                     IsEnabled="False"
                     Label="Call">
