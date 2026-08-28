@@ -166,15 +166,36 @@ namespace Telegram
         /// same rule as the chat's own menu - one place deciding it would be better,
         /// but the two screens do not share a base class to put it in.
         /// </summary>
-        private void ApplyCallAvailability(ChatViewModel chat)
+        private async void ApplyCallAvailability(ChatViewModel chat)
         {
             if (CallButton == null) return;
 
-            bool callable = chat != null
+            bool possible = chat != null
                             && chat.PeerType == "user"
                             && chat.UserId != 0
                             && TelegramService.Instance.CallsSupported;
 
+            // Disabled first, then enabled if the server allows it. The button must
+            // never be live while the answer is still outstanding.
+            CallButton.IsEnabled = possible && chat.CallAvailabilityKnown && chat.CanBeCalled;
+            if (!possible || chat.CallAvailabilityKnown) return;
+
+            long userId = chat.UserId;
+            bool callable;
+            try
+            {
+                callable = await TelegramService.Instance.CanCallUserAsync(userId);
+            }
+            catch (Exception)
+            {
+                callable = false;
+            }
+
+            // The page may have moved on to somebody else while that was in flight.
+            if (_chat == null || _chat.UserId != userId) return;
+
+            chat.CanBeCalled = callable;
+            chat.CallAvailabilityKnown = true;
             CallButton.IsEnabled = callable;
         }
 

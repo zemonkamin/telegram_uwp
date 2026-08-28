@@ -80,6 +80,22 @@ namespace Telegram.Models
                 OnPropertyChanged("MutedVisibility");
             }
         }
+        /// <summary>
+        /// Whether Telegram will accept a call to this person.
+        ///
+        /// From userFullInfo.can_be_called, which is the server's answer after it has
+        /// applied their privacy settings - who may call them, whether we are a
+        /// contact, whether we are blocked. It cannot be worked out on the client, and
+        /// guessing it wrong means offering a call that is refused on dial.
+        ///
+        /// False until the full info has been fetched, so it is only trustworthy
+        /// alongside <see cref="CallAvailabilityKnown"/>.
+        /// </summary>
+        public bool CanBeCalled { get; set; }
+
+        /// <summary>Whether can_be_called has actually been read for this chat.</summary>
+        public bool CallAvailabilityKnown { get; set; }
+
         public bool IsContact { get; set; }
         public bool IsBot { get; set; }
         public long ReplyMarkupMessageId { get; set; }

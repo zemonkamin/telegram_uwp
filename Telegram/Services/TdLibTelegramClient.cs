@@ -3123,6 +3123,21 @@ namespace Telegram.Services
             return user;
         }
 
+        /// <summary>
+        /// Whether this person can be called right now.
+        ///
+        /// Asked of the server rather than inferred, because the answer depends on
+        /// their privacy settings - calls from contacts only, from nobody, or blocked
+        /// - none of which the client can see any other way.
+        /// </summary>
+        public async Task<bool> CanCallUserAsync(long userId)
+        {
+            if (userId == 0) return false;
+
+            var full = await GetUserFullInfoAsync(userId);
+            return full != null && ReadBool(full["can_be_called"]);
+        }
+
         private async Task<JObject> GetUserFullInfoAsync(long userId)
         {
             if (userId == 0) return null;
@@ -4368,6 +4383,11 @@ namespace Telegram.Services
             return new ChatViewModel
             {
                 PeerId = id,
+
+                // A private chat's id is the user's id, and leaving this at zero is
+                // what greyed the call button out everywhere this path built the chat:
+                // every check for "is there somebody to call" reads UserId.
+                UserId = id,
                 PeerType = self ? "self" : "user",
                 PeerKey = (self ? "self" : "user") + ":" + id.ToString(),
                 Title = name,
@@ -4412,6 +4432,13 @@ namespace Telegram.Services
         private void ApplyUserFullInfo(ChatViewModel vm, JObject full)
         {
             if (vm == null || full == null) return;
+
+            // Before anything that can return early below: this is the only place the
+            // answer arrives, and a call button that is grey for want of a field
+            // nobody read is worse than no button.
+            vm.CanBeCalled = ReadBool(full["can_be_called"]);
+            vm.CallAvailabilityKnown = true;
+
             vm.Bio = ReadFormattedTextToken(full["bio"], vm.Bio ?? "");
             if (string.IsNullOrEmpty(vm.Bio))
                 vm.Bio = ReadString(full["description"], "");

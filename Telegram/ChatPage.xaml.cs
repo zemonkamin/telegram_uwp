@@ -1697,11 +1697,18 @@ namespace Telegram
             // Calling comes first, and only for a person. There is nobody at the far
             // end of a channel, and a group call is a different feature entirely -
             // offering "call" there would fail in a way that looks like a bug.
+            MenuFlyoutItem callAction = null;
             if (CanCallThisChat())
             {
-                var callAction = new MenuFlyoutItem();
+                callAction = new MenuFlyoutItem();
                 callAction.Text = "call";
                 callAction.Click += CallMenuItem_Click;
+
+                // Shown greyed rather than hidden while the answer is unknown. The
+                // item appearing a moment after the menu opens would be worse than an
+                // item that starts disabled and enables itself.
+                callAction.IsEnabled = _chat.CallAvailabilityKnown && _chat.CanBeCalled;
+
                 flyout.Items.Add(callAction);
                 flyout.Items.Add(new MenuFlyoutSeparator());
             }
@@ -1733,6 +1740,46 @@ namespace Telegram
 
             var refreshVersion = ++_notificationMenuRefreshVersion;
             var ignored = RefreshNotificationMenuItemAsync(notificationAction, refreshVersion);
+            var ignoredCall = RefreshCallMenuItemAsync(callAction, refreshVersion);
+        }
+
+        /// <summary>
+        /// Settles whether the call item is usable, once the server has answered.
+        ///
+        /// can_be_called comes from userFullInfo, which the chat list does not carry -
+        /// so the menu opens before the answer is known and this fills it in. Versioned
+        /// against the same counter as the notification item so a menu opened, closed
+        /// and reopened does not have an older reply arrive and re-enable the wrong
+        /// item.
+        /// </summary>
+        private async System.Threading.Tasks.Task RefreshCallMenuItemAsync(MenuFlyoutItem item, int version)
+        {
+            if (item == null || _chat == null) return;
+            if (_chat.CallAvailabilityKnown)
+            {
+                // Already answered for this chat; the item was built with it.
+                return;
+            }
+
+            long userId = _chat.UserId;
+            bool callable;
+            try
+            {
+                callable = await TelegramService.Instance.CanCallUserAsync(userId);
+            }
+            catch (Exception)
+            {
+                // No answer is not a yes: dialling would only fail later and less
+                // clearly.
+                callable = false;
+            }
+
+            if (version != _notificationMenuRefreshVersion) return;
+            if (_chat == null || _chat.UserId != userId) return;
+
+            _chat.CanBeCalled = callable;
+            _chat.CallAvailabilityKnown = true;
+            item.IsEnabled = callable;
         }
 
         /// <summary>
@@ -1753,6 +1800,7 @@ namespace Telegram
         private void CallMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (!CanCallThisChat()) return;
+            if (!_chat.CanBeCalled) return;
 
             // The page places the call itself, so that an outgoing call and an
             // incoming one both arrive at the same screen in the same state.

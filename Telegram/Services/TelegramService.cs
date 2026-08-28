@@ -526,6 +526,11 @@ namespace Telegram.Services
 
         public void StartCall(long userId) { _client.StartCall(userId); }
 
+        public async Task<bool> CanCallUserAsync(long userId)
+        {
+            return await RunTdLibAsync(() => _client.CanCallUserAsync(userId));
+        }
+
         public void AcceptCall() { _client.AcceptCall(); }
 
         public void HangUpCall() { _client.HangUpCall(); }
