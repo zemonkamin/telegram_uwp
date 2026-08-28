@@ -43,15 +43,47 @@ namespace Telegram
             if (call.IsDiscarded)
             {
                 if (call.Id == _showing) _showing = 0;
+
+                // The ringing screen is a looping notification. Left up, it goes on
+                // ringing for a call that has already ended.
+                Notifications.IncomingCallToast.Clear(call.Id);
                 return;
             }
 
             // Only a call somebody else placed, and only while it is still ringing.
             // An outgoing call already has a page in front of it - the one that
             // placed it - and navigating again would replace it with a copy.
-            if (call.IsOutgoing || call.State != "callStatePending") return;
+            if (call.IsOutgoing) return;
+
+            if (call.State != "callStatePending")
+            {
+                // Answered, or moved on. Either way it is no longer ringing.
+                Notifications.IncomingCallToast.Clear(call.Id);
+                return;
+            }
 
             if (call.Id == _showing) return;
+            _showing = call.Id;
+
+            // Off screen, this is the only thing the user will see.
+            //
+            // A backgrounded app cannot bring itself to the foreground, so the
+            // navigation below happens to a window nobody is looking at - which is
+            // exactly how an incoming call behaved with background mode on: it
+            // negotiated correctly, the page was reached, and the call was found only
+            // after it had been missed. The notification is not a message about the
+            // call, it is the means of answering one.
+            //
+            // Gated on visibility rather than raised always. A scenario="incomingCall"
+            // notification takes over the whole screen, so raising it while the user is
+            // already in the app replaces the app's own call screen with a system one.
+            if (!AppVisibility.IsOnScreen)
+            {
+                // No name to show: an incoming update carries a user id, and nothing
+                // in this path resolves it. The notification falls back to the app
+                // name, which is the same thing the call page shows.
+                Notifications.IncomingCallToast.Show(call.Id, string.Empty);
+            }
 
             var frame = Window.Current == null ? null : Window.Current.Content as Frame;
             if (frame == null) return;
@@ -60,7 +92,6 @@ namespace Telegram
             // a second call page on top of it helps nobody.
             if (frame.Content is CallPage) return;
 
-            _showing = call.Id;
             frame.Navigate(typeof(CallPage), call);
         }
     }

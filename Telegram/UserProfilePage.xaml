@@ -634,6 +634,32 @@
                 </AppBarButton>
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
+                <!-- The same two actions the chat's own menu offers. They were
+                     reachable only from inside the conversation, which is the one
+                     place you are not when you are looking at somebody's profile
+                     deciding whether to keep talking to them. -->
+                <!-- Plain AppBarButtons. The commented-out placeholders below carry a
+                     Template and a Width binding copied from Chats.xaml, where both
+                     resolve; here the template is a page-local resource of that other
+                     page and BottomMenuAppBar is an element that does not exist, so
+                     reusing them gives an item with no width and an unresolvable
+                     resource rather than an item. -->
+                <AppBarButton
+                    x:Name="NotificationsCommand"
+                    Click="NotificationsCommand_Click"
+                    Label="Turn off notifications">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7ED;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton
+                    x:Name="DeleteChatCommand"
+                    Click="DeleteChatCommand_Click"
+                    Label="Delete chat">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
                 <!--
                 <AppBarButton
                     Width="{Binding ActualWidth, ElementName=BottomMenuAppBar}"

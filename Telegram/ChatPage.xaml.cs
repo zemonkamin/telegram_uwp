@@ -1522,6 +1522,21 @@ namespace Telegram
         private void Header_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (IsFromHeaderMoreButton(e.OriginalSource as DependencyObject)) return;
+
+            // Kept as a backstop after the real fix, which is in the markup.
+            //
+            // This handler used to sit on the whole header bar, so every tap anywhere
+            // along the top - including the "..." button's own column and the area a
+            // dismissed flyout hands its tap back to - arrived here and navigated to
+            // the profile. Guarding after the fact never covered every route: the
+            // menu alternated with the profile page no matter how many checks were
+            // added, because the header was still the thing being tapped.
+            //
+            // It is now attached to the avatar and the name only, which is also where
+            // a tap means "show me this person" to begin with. The button's column is
+            // simply not a navigation target any more.
+            if (_headerFlyoutOpen) return;
+            if ((DateTime.UtcNow - _headerFlyoutClosedUtc).TotalMilliseconds < 400) return;
             if (_chat == null || Frame == null) return;
             if (_chat.IsForumTopic)
             {
@@ -1658,6 +1673,20 @@ namespace Telegram
             };
         }
 
+        /// <summary>
+        /// Stops the tap reaching the header behind the button.
+        ///
+        /// The whole header bar is tappable and opens the profile, and this button
+        /// sits inside it. A Click does not mark the Tapped event handled, so one tap
+        /// on the dots opened the menu and navigated to the profile at the same time
+        /// - whichever won looked like the menu behaving differently on different
+        /// taps for the same chat.
+        /// </summary>
+        private void HeaderMoreButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         private void HeaderMoreButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as FrameworkElement;
@@ -1692,6 +1721,14 @@ namespace Telegram
                 action.Click += ChatActionMenuItem_Click;
                 flyout.Items.Add(action);
             }
+            _headerFlyoutOpen = true;
+            flyout.Opened += delegate { _headerFlyoutOpen = true; };
+            flyout.Closed += delegate
+            {
+                _headerFlyoutOpen = false;
+                _headerFlyoutClosedUtc = DateTime.UtcNow;
+            };
+
             flyout.ShowAt(button);
 
             var refreshVersion = ++_notificationMenuRefreshVersion;
@@ -1774,6 +1811,9 @@ namespace Telegram
                 _notificationToggleRunning = false;
             }
         }
+
+        private bool _headerFlyoutOpen;
+        private DateTime _headerFlyoutClosedUtc = DateTime.MinValue;
 
         private bool IsFromHeaderMoreButton(DependencyObject source)
         {

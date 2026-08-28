@@ -6,6 +6,7 @@ using Windows.Devices.Geolocation;
 using Windows.ApplicationModel.ExtendedExecution;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
+using Windows.System;
 
 namespace Telegram.Notifications
 {
@@ -21,6 +22,22 @@ namespace Telegram.Notifications
         private static DateTime _lastLoopDiagnosticUtc = DateTime.MinValue;
         private static DateTime _lastPositionDiagnosticUtc = DateTime.MinValue;
         private static readonly SemaphoreSlim DiagnosticGate = new SemaphoreSlim(1, 1);
+
+        /// <summary>
+        /// Serialises StartKeepAliveAsync.
+        ///
+        /// The "already active" check cannot do it alone: two awaits follow it, so two
+        /// callers arriving together both find no session, both build a Geolocator, and
+        /// the second overwrites the first. The first is then unreachable - still
+        /// subscribed, still holding the location engine, and impossible to stop,
+        /// because StopGeolocator only knows about the field. The log shows this
+        /// happening: "Location status changed: Ready" arrives twice, once per
+        /// orphaned tracker.
+        ///
+        /// The method is called from EnteredBackground, LeavingBackground, Resuming and
+        /// the shell page, so overlapping calls are normal rather than exceptional.
+        /// </summary>
+        private static readonly SemaphoreSlim KeepAliveGate = new SemaphoreSlim(1, 1);
         private const string DiagnosticLogFileName = "telegram-bg-geo.log";
 
         public static string LastKeepAliveStatus
@@ -41,6 +58,38 @@ namespace Telegram.Notifications
             }
             catch
             {
+            }
+        }
+
+        /// <summary>
+        /// The tail of the background log, for the diagnostics block in Settings.
+        ///
+        /// Whether always-on is holding, was denied, or was revoked and by whom looks
+        /// identical from the outside - notifications simply stop. The poller has been
+        /// recording all of it here the whole time; this only makes it readable on the
+        /// handset, where the failure actually happens.
+        /// </summary>
+        public static async Task<string> ReadDiagnosticsAsync(int lines)
+        {
+            await DiagnosticGate.WaitAsync();
+            try
+            {
+                var item = await ApplicationData.Current.LocalFolder.TryGetItemAsync(DiagnosticLogFileName);
+                var file = item as StorageFile;
+                if (file == null) return "No background log yet.";
+
+                var all = await FileIO.ReadLinesAsync(file);
+                var start = all.Count > lines ? all.Count - lines : 0;
+                var text = string.Join(Environment.NewLine, System.Linq.Enumerable.Skip(all, start));
+                return string.IsNullOrEmpty(text) ? "No background log yet." : text;
+            }
+            catch (Exception ex)
+            {
+                return "Background log unavailable: " + ex.Message;
+            }
+            finally
+            {
+                DiagnosticGate.Release();
             }
         }
 
@@ -80,7 +129,8 @@ namespace Telegram.Notifications
                 _cancellation = new CancellationTokenSource();
             }
 
-            Diag("Poller started. mode=" + TelegramAppSettings.NotificationMode.ToString() + " keepAlive=" + KeepAliveActive.ToString());
+            Diag("Poller started. mode=" + TelegramAppSettings.NotificationMode.ToString() + " keepAlive=" + KeepAliveActive.ToString() + Memory());
+            MemoryManager.AppMemoryUsageIncreased += OnMemoryUsageIncreased;
             var ignored = RunLoopAsync(_cancellation.Token);
         }
 
@@ -116,7 +166,7 @@ namespace Telegram.Notifications
                 return;
             }
 
-            Diag("EnterBackground: mode=" + TelegramAppSettings.NotificationMode.ToString());
+            Diag("EnterBackground: mode=" + TelegramAppSettings.NotificationMode.ToString() + Memory());
             Start();
             if (TelegramAppSettings.NotificationMode == TelegramNotificationMode.Always)
                 await StartKeepAliveAsync();
@@ -169,7 +219,7 @@ namespace Telegram.Notifications
                         if (DateTime.UtcNow - _lastLoopDiagnosticUtc >= TimeSpan.FromMinutes(1))
                         {
                             _lastLoopDiagnosticUtc = DateTime.UtcNow;
-                            Diag("PollAndNotify tick. mode=" + mode.ToString() + " keepAlive=" + KeepAliveActive.ToString());
+                            Diag("PollAndNotify tick. mode=" + mode.ToString() + " keepAlive=" + KeepAliveActive.ToString() + Memory());
                         }
                         await TelegramNotificationRuntime.PollAndNotifyAsync();
                     }
@@ -239,7 +289,58 @@ namespace Telegram.Notifications
             }
         }
 
+        /// <summary>
+        /// How much of the app's memory budget is left, as a log fragment.
+        ///
+        /// A revoked session announces itself; a process killed for memory does not,
+        /// and the log shows exactly that - ticks that simply stop, with the next line
+        /// being a fresh "Poller started". Without a number against each entry there is
+        /// no way to tell an OS policy decision from the app being over its budget, and
+        /// on a 1 GB handset those need opposite fixes.
+        /// </summary>
+        private static string Memory()
+        {
+            try
+            {
+                var limit = MemoryManager.AppMemoryUsageLimit;
+                var used = MemoryManager.AppMemoryUsage;
+                return " mem=" + (used / 1024 / 1024).ToString() +
+                       "/" + (limit / 1024 / 1024).ToString() + "MB" +
+                       " level=" + MemoryManager.AppMemoryUsageLevel.ToString();
+            }
+            catch (Exception)
+            {
+                // Not worth failing a diagnostic over.
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Reports the app crossing a memory threshold.
+        ///
+        /// This is the warning shot before termination: the level goes High or
+        /// OverLimit and the process is reclaimed shortly after, too fast to log
+        /// anything from the code that was running.
+        /// </summary>
+        private static void OnMemoryUsageIncreased(object sender, object e)
+        {
+            Diag("Memory level rose." + Memory());
+        }
+
         public static async Task<bool> StartKeepAliveAsync()
+        {
+            await KeepAliveGate.WaitAsync();
+            try
+            {
+                return await StartKeepAliveCoreAsync();
+            }
+            finally
+            {
+                KeepAliveGate.Release();
+            }
+        }
+
+        private static async Task<bool> StartKeepAliveCoreAsync()
         {
             Diag("StartKeepAlive requested. mode=" + TelegramAppSettings.NotificationMode.ToString() + " active=" + KeepAliveActive.ToString());
             if (TelegramAppSettings.NotificationMode == TelegramNotificationMode.None)
@@ -404,7 +505,7 @@ namespace Telegram.Notifications
 
         private static async void OnKeepAliveRevoked(object sender, ExtendedExecutionRevokedEventArgs args)
         {
-            _lastKeepAliveStatus = "Always-on background session revoked: " + (args == null ? string.Empty : args.Reason.ToString());
+            _lastKeepAliveStatus = "Always-on background session revoked: " + (args == null ? string.Empty : args.Reason.ToString()) + Memory();
             Diag(_lastKeepAliveStatus);
             StopKeepAlive();
 

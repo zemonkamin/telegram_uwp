@@ -156,6 +156,7 @@ namespace Telegram
             SetFallbackProfilePhotos(chat.AvatarUri);
 
             ApplyCallAvailability(chat);
+            RefreshNotificationsCommandAsync(chat);
         }
 
         /// <summary>
@@ -1083,6 +1084,89 @@ namespace Telegram
         {
             if (_chat == null || ProfileMusicSheet == null) return;
             ProfileMusicSheet.Show(_chat);
+        }
+
+        /// <summary>
+        /// Reads the real mute state and labels the item accordingly.
+        ///
+        /// Asked rather than assumed: the chat model carries a cached flag that can
+        /// be stale by the time a profile is opened, and an item offering to turn off
+        /// notifications that are already off is worse than no item.
+        /// </summary>
+        private async void RefreshNotificationsCommandAsync(ChatViewModel chat)
+        {
+            if (NotificationsCommand == null || chat == null) return;
+
+            try
+            {
+                var muted = await TelegramService.Instance.GetNotificationsMutedAsync(chat);
+                chat.IsMuted = muted;
+
+                if (_chat == chat)
+                    NotificationsCommand.Label = muted ? "Turn on notifications" : "Turn off notifications";
+            }
+            catch
+            {
+                // The label keeps whatever it had. A wrong word is better than a
+                // profile that fails to open because a lookup did.
+            }
+        }
+
+        private async void NotificationsCommand_Click(object sender, RoutedEventArgs e)
+        {
+            if (_chat == null || _notificationToggleRunning) return;
+
+            _notificationToggleRunning = true;
+            NotificationsCommand.IsEnabled = false;
+
+            try
+            {
+                var currentlyMuted = await TelegramService.Instance.GetNotificationsMutedAsync(_chat);
+                var newMuted = !currentlyMuted;
+
+                await TelegramService.Instance.SetNotificationsMutedAsync(_chat, newMuted);
+
+                _chat.IsMuted = newMuted;
+                NotificationsCommand.Label = newMuted ? "Turn on notifications" : "Turn off notifications";
+            }
+            catch
+            {
+            }
+            finally
+            {
+                _notificationToggleRunning = false;
+                NotificationsCommand.IsEnabled = true;
+            }
+        }
+
+        private bool _notificationToggleRunning;
+
+        /// <summary>
+        /// Deletes the conversation and leaves the profile.
+        ///
+        /// Staying would leave the page describing a chat that no longer exists, and
+        /// every action on it pointing at nothing.
+        /// </summary>
+        private async void DeleteChatCommand_Click(object sender, RoutedEventArgs e)
+        {
+            if (_chat == null) return;
+
+            DeleteChatCommand.IsEnabled = false;
+
+            try
+            {
+                await TelegramService.Instance.DeleteChatAsync(_chat);
+
+                TelegramService.Instance.NotifyChatRemoved(_chat);
+                TelegramService.Instance.ClearDialogsCache();
+
+                if (Frame != null && Frame.CanGoBack) Frame.GoBack();
+                else if (Frame != null) Frame.Navigate(typeof(Chats));
+            }
+            catch
+            {
+                DeleteChatCommand.IsEnabled = true;
+            }
         }
 
         private void CallButton_Click(object sender, RoutedEventArgs e)

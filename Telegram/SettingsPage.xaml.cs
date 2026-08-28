@@ -435,6 +435,14 @@ namespace Telegram
             return TelegramNotificationMode.Periodic;
         }
 
+        private async void BackgroundDiagnosticsButton_Click(object sender, RoutedEventArgs e)
+        {
+            BackgroundDiagnosticsText.Text = "Reading...";
+            BackgroundDiagnosticsText.Visibility = Visibility.Visible;
+            BackgroundDiagnosticsText.Text =
+                await TelegramContinuousNotificationPoller.ReadDiagnosticsAsync(40);
+        }
+
         private void UpdateNotificationStatusText()
         {
             var mode = TelegramAppSettings.NotificationMode;

@@ -252,6 +252,8 @@
     <Compile Include="Services\TdLibTelegramClient.cs" />
     <Compile Include="Services\CallInfo.cs" />
     <Compile Include="Services\IncomingCallWatcher.cs" />
+    <Compile Include="Services\AppVisibility.cs" />
+    <Compile Include="Notifications\IncomingCallToast.cs" />
     <Compile Include="Services\TelegramService.cs" />
     <Compile Include="Services\TelegramSettings.cs" />
     <Compile Include="Services\ActiveChatService.cs" />

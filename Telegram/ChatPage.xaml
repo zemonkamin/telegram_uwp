@@ -2113,8 +2113,7 @@
             Margin="0,0,-2,0"
             Background="{ThemeResource TelegramHeaderBackgroundBrush}"
             BorderBrush="{ThemeResource TelegramHeaderBorderBrush}"
-            BorderThickness="0,0,0,1"
-            Tapped="Header_Tapped">
+            BorderThickness="0,0,0,1">
             <Grid>
                 <Grid
                     Canvas.ZIndex="1"
@@ -2130,7 +2129,8 @@
                         Width="42"
                         Height="42"
                         VerticalAlignment="Center"
-                        Background="Transparent">
+                        Background="Transparent"
+                        Tapped="Header_Tapped">
                         <Ellipse
                             Width="42"
                             Height="42"
@@ -2153,7 +2153,9 @@
                     <StackPanel
                         Grid.Column="1"
                         Margin="8,0,0,0"
-                        VerticalAlignment="Center">
+                        VerticalAlignment="Center"
+                        Background="Transparent"
+                        Tapped="Header_Tapped">
                         <TextBlock
                             x:Name="HeaderTitle"
                             FontSize="17"
@@ -2178,6 +2180,7 @@
                         Margin="0,4,0,3"
                         VerticalAlignment="Center"
                         Click="HeaderMoreButton_Click"
+                        Tapped="HeaderMoreButton_Tapped"
                         Style="{StaticResource TelegramBareButtonStyle}">
                         <TextBlock
                             HorizontalAlignment="Center"

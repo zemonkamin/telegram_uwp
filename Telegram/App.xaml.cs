@@ -77,6 +77,7 @@ namespace Telegram
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             ActiveChatService.SetForeground(true);
+            AppVisibility.NoteComingToForeground();
             CaptureUiDispatcher();
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -136,10 +137,34 @@ namespace Telegram
         protected override async void OnActivated(IActivatedEventArgs args)
         {
             ActiveChatService.SetForeground(true);
+            AppVisibility.NoteComingToForeground();
             CaptureUiDispatcher();
             var toastArgs = args as ToastNotificationActivatedEventArgs;
-            if (toastArgs != null)
+            var callAction = toastArgs == null
+                ? null
+                : Notifications.IncomingCallToast.Kind(toastArgs.Argument);
+
+            if (callAction != null)
             {
+                try
+                {
+                    // Answer and decline are acted on here rather than left to the call
+                    // page. The ringing screen is drawn by the shell, not by us, so the
+                    // user can have chosen before ever seeing the page.
+                    if (callAction == "answer") TelegramService.Instance.AcceptCall();
+                    else if (callAction == "decline") TelegramService.Instance.HangUpCall();
+
+                    Notifications.IncomingCallToast.ClearAll();
+                }
+                catch (Exception ex)
+                {
+                    SaveStartupError("Call activation: " + ex.Message);
+                }
+            }
+            else if (toastArgs != null)
+            {
+                // Only a message notification goes to the chat-opening path. Handing a
+                // call argument to it would open a conversation mid-ring.
                 try
                 {
                     await TelegramNotificationRuntime.HandleToastActionAsync(toastArgs.Argument, toastArgs.UserInput);
@@ -165,7 +190,8 @@ namespace Telegram
                 var authorizedForNotifications = IsCachedAuthorized();
                 var startPage = authorizedForNotifications ? typeof(AdaptiveShellPage) : typeof(Welcome);
 
-                rootFrame.Navigate(startPage, toastArgs == null ? string.Empty : toastArgs.Argument);
+                rootFrame.Navigate(startPage,
+                    toastArgs == null || callAction != null ? string.Empty : toastArgs.Argument);
                 if (authorizedForNotifications)
                 {
                     var ignoredNotifications = InitializeNotificationsAfterActivationAsync();
@@ -211,6 +237,7 @@ namespace Telegram
         private async void OnEnteredBackground(object sender, EnteredBackgroundEventArgs e)
         {
             ActiveChatService.SetForeground(false);
+            AppVisibility.NoteWentToBackground();
             var deferral = e.GetDeferral();
             try
             {
@@ -232,6 +259,7 @@ namespace Telegram
         private async void OnLeavingBackground(object sender, LeavingBackgroundEventArgs e)
         {
             ActiveChatService.SetForeground(true);
+            AppVisibility.NoteComingToForeground();
             try
             {
                 TelegramContinuousNotificationPoller.LeaveBackground();
@@ -250,6 +278,7 @@ namespace Telegram
         private void OnResuming(object sender, object e)
         {
             ActiveChatService.SetForeground(true);
+            AppVisibility.NoteComingToForeground();
             try
             {
                 if (TelegramAppSettings.NotificationMode == TelegramNotificationMode.Always &&
@@ -291,6 +320,7 @@ namespace Telegram
             try
             {
                 ActiveChatService.SetForeground(false);
+            AppVisibility.NoteWentToBackground();
                 TelegramService.Instance.PrepareForBackgroundNotifications();
                 await TelegramContinuousNotificationPoller.EnterBackgroundAsync();
                 var ignoredRegister = TelegramNotificationRegistrar.RegisterAsync();
