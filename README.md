@@ -40,4 +40,13 @@ Telegram UWP is intended for enthusiasts of Windows Phone, Windows 10 Mobile, an
       Computershik73
     </td>
 </tr>
+
+<tr>
+    <td style="vertical-align: middle;">
+      <img src="https://avatars.githubusercontent.com/u/66211418?v=4" width=50px>
+    </td>
+    <td style="vertical-align: middle; padding-left: 12px; font-size: 16px;">
+      Symnok
+    </td>
+</tr>
 </table>
