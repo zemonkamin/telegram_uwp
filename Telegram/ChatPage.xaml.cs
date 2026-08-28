@@ -4284,7 +4284,6 @@ namespace Telegram
         private void ApplyLocalEmojiTextBlock(TextBlock textBlock)
         {
             if (textBlock == null) return;
-            App.ApplyCompactEmojiLineMetrics(textBlock);
             var text = GetLocalEmojiTextBlockSource(textBlock);
 
             textBlock.Text = string.Empty;
@@ -4316,7 +4315,6 @@ namespace Telegram
         private void ApplyMarkdownText(TextBlock textBlock, ChatMessageViewModel msg)
         {
             if (textBlock == null) return;
-            App.ApplyCompactEmojiLineMetrics(textBlock);
             msg = ResolveMarkdownTextBlockMessage(textBlock, msg);
 
             var text = msg == null ? null : msg.VisibleText;
@@ -5142,10 +5140,9 @@ namespace Telegram
                 return true;
             }
 
-            // The bundled PNG catalog is intentionally limited. Emoji that are present only in
-            // AppleColorEmoji.ttc must still use the same fixed-size inline host; otherwise they
-            // fall back to a normal Run and keep Apple font's large right-side advance/baseline.
-            if (TryReadAppleEmojiCluster(text, index, out emoji, out length))
+            // The bundled PNG catalog is intentionally limited. Keep complete emoji clusters
+            // together when they fall back to the bundled Fluent Emoji font.
+            if (TryReadEmojiCluster(text, index, out emoji, out length))
             {
                 key = "FONT";
                 return true;
@@ -5157,7 +5154,7 @@ namespace Telegram
             return false;
         }
 
-        internal static bool TryReadAppleEmojiCluster(string text, int index, out string emoji, out int length)
+        internal static bool TryReadEmojiCluster(string text, int index, out string emoji, out int length)
         {
             emoji = null;
             length = 0;
@@ -5317,40 +5314,12 @@ namespace Telegram
         private void AddLocalEmojiInline(InlineCollection inlines, string emoji, string key)
         {
             if (inlines == null || string.IsNullOrEmpty(emoji)) return;
-            try
+            inlines.Add(new Run
             {
-                // The old Image kept a 20 px layout slot even when its margin/render transform
-                // changed, so the apparent right gap never actually became smaller. App creates
-                // a fixed-width host and positions the Apple glyph inside it independently.
-                var element = App.CreateChatInlineEmoji(emoji);
-                if (element == null)
-                {
-                    AddStyledRun(inlines, emoji, false, false, false);
-                    return;
-                }
-
-                inlines.Add(new InlineUIContainer
-                {
-                    Child = element,
-                    FontSize = 1
-                });
-            }
-            catch (ArgumentException)
-            {
-                // Keep Apple Emoji even on older UWP text engines that reject a complex
-                // inline child. The smaller run no longer increases the message line box.
-                var run = new Run
-                {
-                    Text = emoji,
-                    FontFamily = App.ChatInlineAppleEmojiFont,
-                    FontSize = App.ChatInlineEmojiBoxHeight
-                };
-                inlines.Add(run);
-            }
-            catch
-            {
-                AddStyledRun(inlines, emoji, false, false, false);
-            }
+                Text = emoji,
+                FontFamily = App.ChatInlineFluentEmojiFont,
+                FontSize = App.ChatInlineEmojiFontSize
+            });
         }
 
         private void AddStyledRun(InlineCollection inlines, string text, bool bold, bool italic, bool code)
@@ -9972,14 +9941,13 @@ namespace Telegram
                     var emoji = new TextBlock
                     {
                         Text = reaction.Emoticon ?? string.Empty,
-                        FontFamily = App.ChatInlineAppleEmojiFont,
+                        FontFamily = App.ChatInlineFluentEmojiFont,
                         FontSize = 23,
                         Width = 30,
                         Height = 28,
                         TextAlignment = TextAlignment.Center
                     };
                     Canvas.SetLeft(emoji, -1);
-                    Canvas.SetTop(emoji, 4);
                     var emojiHost = new Canvas { Width = 28, Height = 28 };
                     emojiHost.Children.Add(emoji);
                     content = emojiHost;

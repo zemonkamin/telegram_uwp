@@ -473,7 +473,6 @@
                                                                         Visibility="{Binding CustomEmojiVisibility}">
                                                                         <controls:FfmpegStickerImageControl
                                                                             Canvas.Left="0"
-                                                                            Canvas.Top="4"
                                                                             Width="22"
                                                                             Height="22"
                                                                             ImageStretch="Uniform"
@@ -487,10 +486,9 @@
                                                                         Visibility="{Binding StandardEmojiVisibility}">
                                                                         <TextBlock
                                                                             Canvas.Left="-1"
-                                                                            Canvas.Top="4"
                                                                             Width="24"
                                                                             Height="24"
-                                                                            FontFamily="ms-appx:///Assets/Emoji/AppleColorEmoji.ttc#Apple Color Emoji"
+                                                                            FontFamily="ms-appx:///Assets/Emoji/FluentEmoji.ttf#Segoe UI Emoji"
                                                                             FontSize="18"
                                                                             Text="{Binding Emoticon}"
                                                                             TextAlignment="Center" />
@@ -502,7 +500,6 @@
                                                                         Visibility="{Binding CustomEmojiFallbackVisibility}">
                                                                         <TextBlock
                                                                             Canvas.Left="-1"
-                                                                            Canvas.Top="4"
                                                                             Width="24"
                                                                             Height="24"
                                                                             FontSize="18"
@@ -800,7 +797,6 @@
                                                                         Visibility="{Binding CustomEmojiVisibility}">
                                                                         <controls:FfmpegStickerImageControl
                                                                             Canvas.Left="0"
-                                                                            Canvas.Top="4"
                                                                             Width="22"
                                                                             Height="22"
                                                                             ImageStretch="Uniform"
@@ -814,10 +810,9 @@
                                                                         Visibility="{Binding StandardEmojiVisibility}">
                                                                         <TextBlock
                                                                             Canvas.Left="-1"
-                                                                            Canvas.Top="4"
                                                                             Width="24"
                                                                             Height="24"
-                                                                            FontFamily="ms-appx:///Assets/Emoji/AppleColorEmoji.ttc#Apple Color Emoji"
+                                                                            FontFamily="ms-appx:///Assets/Emoji/FluentEmoji.ttf#Segoe UI Emoji"
                                                                             FontSize="18"
                                                                             Text="{Binding Emoticon}"
                                                                             TextAlignment="Center" />
@@ -829,7 +824,6 @@
                                                                         Visibility="{Binding CustomEmojiFallbackVisibility}">
                                                                         <TextBlock
                                                                             Canvas.Left="-1"
-                                                                            Canvas.Top="4"
                                                                             Width="24"
                                                                             Height="24"
                                                                             FontSize="18"

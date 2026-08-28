@@ -100,7 +100,6 @@
       <HintPath>Newtonsoft.Json.dll</HintPath>
     </Reference>
     <None Include="project.json" />
-    <Content Include="Assets\Emoji\AppleColorEmoji.ttc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -515,7 +514,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\Emoji\FluentEmoji.ttf" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

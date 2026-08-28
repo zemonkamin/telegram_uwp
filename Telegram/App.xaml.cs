@@ -26,112 +26,18 @@ namespace Telegram
     /// </summary>
     sealed partial class App : Application
     {
-        private const string AppleEmojiFileName = "AppleColorEmoji.ttc";
-        private const string AppleEmojiFamilyName = "Apple Color Emoji";
+        private const string FluentEmojiFileName = "FluentEmoji.ttf";
+        private const string FluentEmojiFamilyName = "Segoe UI Emoji";
 
-        // Inline emoji need a smaller layout slot than the Apple font reports.  The visual
-        // glyph is positioned independently from the slot: this removes the empty area below
-        // message lines and the oversized trailing advance next to normal text.
-        internal const double ChatInlineEmojiBoxWidth = 15.0;
-        internal const double ChatInlineEmojiBoxHeight = 14.0;
         internal const double ChatInlineEmojiFontSize = 18.0;
-        internal const double ChatInlineEmojiLineHeight = 18.0;
-        internal const double ChatInlineEmojiLeftOffset = -1.5;
-        internal const double ChatInlineEmojiTopOffset = -1.0;
-        internal const double ChatInlineEmojiRenderOffsetY = 2.75;
-        internal static readonly Thickness ChatInlineEmojiLayoutMargin = new Thickness(0, 0, 0, -3.0);
-
-        internal const double ChatsInlineEmojiBoxWidth = 12.0;
-        internal const double ChatsInlineEmojiBoxHeight = 12.0;
         internal const double ChatsInlineEmojiFontSize = 15.0;
-        internal const double ChatsInlineEmojiLineHeight = 15.0;
-        internal const double ChatsInlineEmojiLeftOffset = -1.1;
-        internal const double ChatsInlineEmojiTopOffset = -0.8;
-        internal const double ChatsInlineEmojiRenderOffsetY = 2.0;
-        internal static readonly Thickness ChatsInlineEmojiLayoutMargin = new Thickness(0, 0, 0, -2.0);
 
-        internal static readonly FontFamily ChatInlineAppleEmojiFont =
-            new FontFamily("ms-appx:///Assets/Emoji/" + AppleEmojiFileName + "#" +
-                           AppleEmojiFamilyName);
+        internal static readonly FontFamily ChatInlineFluentEmojiFont =
+            new FontFamily("ms-appx:///Assets/Emoji/" + FluentEmojiFileName + "#" +
+                           FluentEmojiFamilyName);
 
-        internal static FrameworkElement CreateChatInlineEmoji(string emoji)
-        {
-            return CreateInlineAppleEmoji(
-                emoji,
-                ChatInlineEmojiBoxWidth,
-                ChatInlineEmojiBoxHeight,
-                ChatInlineEmojiFontSize,
-                ChatInlineEmojiLineHeight,
-                ChatInlineEmojiLeftOffset,
-                ChatInlineEmojiTopOffset,
-                ChatInlineEmojiRenderOffsetY,
-                ChatInlineEmojiLayoutMargin);
-        }
-
-        internal static FrameworkElement CreateChatsInlineEmoji(string emoji)
-        {
-            return CreateInlineAppleEmoji(
-                emoji,
-                ChatsInlineEmojiBoxWidth,
-                ChatsInlineEmojiBoxHeight,
-                ChatsInlineEmojiFontSize,
-                ChatsInlineEmojiLineHeight,
-                ChatsInlineEmojiLeftOffset,
-                ChatsInlineEmojiTopOffset,
-                ChatsInlineEmojiRenderOffsetY,
-                ChatsInlineEmojiLayoutMargin);
-        }
-
-        private static FrameworkElement CreateInlineAppleEmoji(
-            string emoji,
-            double boxWidth,
-            double boxHeight,
-            double fontSize,
-            double lineHeight,
-            double leftOffset,
-            double topOffset,
-            double renderOffsetY,
-            Thickness layoutMargin)
-        {
-            if (string.IsNullOrEmpty(emoji))
-                return null;
-
-            // Keep the inline child simple. A nested TextBlock inside a Canvas is validated
-            // only when it is inserted into TextBlock.Inlines on older UWP builds and can
-            // produce E_INVALIDARG. FontIcon renders the same font glyph without creating
-            // another text layout tree inside the parent text control.
-            return new FontIcon
-            {
-                Glyph = emoji,
-                FontFamily = ChatInlineAppleEmojiFont,
-                FontSize = fontSize,
-                Width = boxWidth,
-                Height = boxHeight,
-                Margin = layoutMargin,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                IsHitTestVisible = false,
-                UseLayoutRounding = false,
-                RenderTransform = new TranslateTransform
-                {
-                    X = leftOffset,
-                    Y = topOffset + renderOffsetY
-                }
-            };
-        }
-
-        internal static void ApplyCompactEmojiLineMetrics(TextBlock textBlock)
-        {
-            if (textBlock == null || textBlock.FontSize <= 0) return;
-
-            // A fixed block line height prevents Apple Color Emoji's ascender/descender
-            // metrics from adding visible space below a message or chat preview.
-            textBlock.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-            textBlock.LineHeight = Math.Ceiling(textBlock.FontSize * 1.12);
-        }
-
-        private FontFamily _appleEmojiFont;
-        private Frame _appleEmojiRootFrame;
+        private FontFamily _fluentEmojiFont;
+        private Frame _fluentEmojiRootFrame;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -197,7 +103,7 @@ namespace Telegram
                 Window.Current.Content = rootFrame;
             }
 
-            InitializeAppleEmoji(rootFrame);
+            InitializeFluentEmoji(rootFrame);
 
             if (e.PrelaunchActivated == false)
             {
@@ -248,7 +154,7 @@ namespace Telegram
                 Window.Current.Content = rootFrame;
             }
 
-            InitializeAppleEmoji(rootFrame);
+            InitializeFluentEmoji(rootFrame);
 
             if (rootFrame.Content == null)
             {
@@ -457,44 +363,43 @@ namespace Telegram
             }
         }
 
-        private void InitializeAppleEmoji(Frame rootFrame)
+        private void InitializeFluentEmoji(Frame rootFrame)
         {
             if (rootFrame == null)
                 return;
 
-            if (!object.ReferenceEquals(_appleEmojiRootFrame, rootFrame))
+            if (!object.ReferenceEquals(_fluentEmojiRootFrame, rootFrame))
             {
-                if (_appleEmojiRootFrame != null)
-                    _appleEmojiRootFrame.Navigated -= AppleEmojiRootFrame_Navigated;
+                if (_fluentEmojiRootFrame != null)
+                    _fluentEmojiRootFrame.Navigated -= FluentEmojiRootFrame_Navigated;
 
-                _appleEmojiRootFrame = rootFrame;
-                _appleEmojiRootFrame.Navigated += AppleEmojiRootFrame_Navigated;
+                _fluentEmojiRootFrame = rootFrame;
+                _fluentEmojiRootFrame.Navigated += FluentEmojiRootFrame_Navigated;
             }
 
-            if (_appleEmojiFont == null)
+            if (_fluentEmojiFont == null)
             {
-                _appleEmojiFont = CreateAppleEmojiFont(
-                    "ms-appx:///Assets/Emoji/" + AppleEmojiFileName);
+                _fluentEmojiFont = CreateFluentEmojiFont(
+                    "ms-appx:///Assets/Emoji/" + FluentEmojiFileName);
             }
 
-            ApplyAppleEmojiFont(rootFrame, _appleEmojiFont);
+            ApplyFluentEmojiFont(rootFrame, _fluentEmojiFont);
         }
 
-        private static FontFamily CreateAppleEmojiFont(string fontFileUri)
+        private static FontFamily CreateFluentEmojiFont(string fontFileUri)
         {
-            return new FontFamily("Segoe UI, " + fontFileUri + "#" + AppleEmojiFamilyName);
+            return new FontFamily("Segoe UI, " + fontFileUri + "#" + FluentEmojiFamilyName);
         }
 
-        private void ApplyAppleEmojiFont(Frame rootFrame, FontFamily font)
+        private void ApplyFluentEmojiFont(Frame rootFrame, FontFamily font)
         {
             if (rootFrame == null || font == null)
                 return;
 
-            _appleEmojiFont = font;
+            _fluentEmojiFont = font;
 
             try
             {
-                Resources["AppleEmojiFontFamily"] = font;
                 Resources["FluentEmojiFontFamily"] = font;
                 Resources["ContentControlThemeFontFamily"] = font;
             }
@@ -505,22 +410,22 @@ namespace Telegram
             if (!IsIconFont(rootFrame.FontFamily))
                 rootFrame.FontFamily = font;
 
-            ApplyAppleEmojiFontToVisualTree(rootFrame, font);
+            ApplyFluentEmojiFontToVisualTree(rootFrame, font);
         }
 
-        private void AppleEmojiRootFrame_Navigated(object sender, NavigationEventArgs e)
+        private void FluentEmojiRootFrame_Navigated(object sender, NavigationEventArgs e)
         {
             var frame = sender as Frame;
-            if (frame == null || _appleEmojiFont == null)
+            if (frame == null || _fluentEmojiFont == null)
                 return;
 
             var ignored = frame.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, delegate
             {
-                ApplyAppleEmojiFontToVisualTree(frame, _appleEmojiFont);
+                ApplyFluentEmojiFontToVisualTree(frame, _fluentEmojiFont);
             });
         }
 
-        private static void ApplyAppleEmojiFontToVisualTree(DependencyObject root, FontFamily font)
+        private static void ApplyFluentEmojiFontToVisualTree(DependencyObject root, FontFamily font)
         {
             if (root == null || font == null)
                 return;
@@ -549,7 +454,7 @@ namespace Telegram
 
             var childCount = VisualTreeHelper.GetChildrenCount(root);
             for (var i = 0; i < childCount; i++)
-                ApplyAppleEmojiFontToVisualTree(VisualTreeHelper.GetChild(root, i), font);
+                ApplyFluentEmojiFontToVisualTree(VisualTreeHelper.GetChild(root, i), font);
         }
 
         private static bool IsIconFont(FontFamily font)

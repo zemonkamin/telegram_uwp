@@ -113,7 +113,6 @@ namespace Telegram
         private void ApplyChatLastMessageText(TextBlock textBlock)
         {
             if (textBlock == null) return;
-            App.ApplyCompactEmojiLineMetrics(textBlock);
             textBlock.Text = string.Empty;
             textBlock.Inlines.Clear();
 
@@ -165,36 +164,12 @@ namespace Telegram
                 if (index > segmentStart)
                     inlines.Add(new Run { Text = text.Substring(segmentStart, index - segmentStart) });
 
-                var element = App.CreateChatsInlineEmoji(emoji);
-                if (element != null)
+                inlines.Add(new Run
                 {
-                    try
-                    {
-                        // TextBlock accepts the same simple inline UI shape as the old Image.
-                        // Avoid negative horizontal margins and a fallback font list here: both
-                        // are validated only when the inline is inserted and caused E_INVALIDARG.
-                        inlines.Add(new InlineUIContainer
-                        {
-                            Child = element,
-                            FontSize = 1
-                        });
-                    }
-                    catch (ArgumentException)
-                    {
-                        // Some older UWP builds reject non-Image inline children in TextBlock.
-                        // Never crash the chat list; use an Apple-font Run on those systems.
-                        inlines.Add(new Run
-                        {
-                            Text = emoji,
-                            FontFamily = App.ChatInlineAppleEmojiFont,
-                            FontSize = App.ChatsInlineEmojiFontSize
-                        });
-                    }
-                }
-                else
-                {
-                    inlines.Add(new Run { Text = emoji });
-                }
+                    Text = emoji,
+                    FontFamily = App.ChatInlineFluentEmojiFont,
+                    FontSize = App.ChatsInlineEmojiFontSize
+                });
 
                 index += length;
                 segmentStart = index;
@@ -216,7 +191,7 @@ namespace Telegram
                 return true;
             }
 
-            return ChatPage.TryReadAppleEmojiCluster(text, index, out emoji, out length);
+            return ChatPage.TryReadEmojiCluster(text, index, out emoji, out length);
         }
 
         private bool TryReadLocalEmojiUri(string text, int index, out string uri, out int length)
