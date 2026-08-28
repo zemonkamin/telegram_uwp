@@ -28,6 +28,34 @@ namespace Telegram
         /// </summary>
         private static long _showing;
 
+        /// <summary>
+        /// Puts the caller's name on a notification that has already been raised.
+        ///
+        /// An updateCall carries a user id only. Re-showing under the same tag replaces
+        /// the notification in place, so the ringing screen gains the name without a
+        /// second one appearing beneath it.
+        /// </summary>
+        private static async System.Threading.Tasks.Task NameCallerAsync(CallInfo call)
+        {
+            if (call == null || call.UserId == 0) return;
+
+            Telegram.Models.ChatViewModel peer = null;
+            try
+            {
+                peer = await TelegramService.Instance.GetPrivateChatAsync(call.UserId);
+            }
+            catch (Exception)
+            {
+            }
+
+            if (peer == null || string.IsNullOrEmpty(peer.Title)) return;
+
+            // Still ringing, and still this call.
+            if (_showing != call.Id) return;
+
+            Notifications.IncomingCallToast.Refresh(call.Id, peer.Title);
+        }
+
         public static void Attach()
         {
             if (_attached) return;
@@ -79,6 +107,11 @@ namespace Telegram
             // already in the app replaces the app's own call screen with a system one.
             if (!AppVisibility.IsOnScreen)
             {
+                // Raised now with whatever is known, and named afterwards. Waiting for
+                // the lookup would mean the phone stays silent while it runs, which is
+                // the one thing a ringing notification must not do.
+                var ignoredName = NameCallerAsync(call);
+
                 // No name to show: an incoming update carries a user id, and nothing
                 // in this path resolves it. The notification falls back to the app
                 // name, which is the same thing the call page shows.

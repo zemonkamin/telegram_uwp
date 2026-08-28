@@ -75,6 +75,18 @@ namespace Telegram.Notifications
             }
         }
 
+        /// <summary>
+        /// Shows the call again with the caller's name now that it is known.
+        ///
+        /// Identical to Show, and separate only so the intent reads at the call site:
+        /// this is a replacement of a notification already on screen, which works
+        /// because both carry the same tag and group.
+        /// </summary>
+        public static void Refresh(long callId, string caller)
+        {
+            Show(callId, caller);
+        }
+
         /// <summary>Takes the ringing screen down once the call is answered or over.</summary>
         public static void Clear(long callId)
         {

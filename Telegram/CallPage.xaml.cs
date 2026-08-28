@@ -50,6 +50,14 @@ namespace Telegram
             }
 
             ApplyPeer(_peer);
+
+            // An incoming call carries a user id and no name, so the page opens with a
+            // placeholder and the real one arrives a moment later. Not awaited: a
+            // ringing phone must be on screen now, not after a round trip.
+            if (_incoming != null)
+            {
+                var ignoredName = ResolveIncomingNameAsync(_incoming.UserId);
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -173,7 +181,44 @@ namespace Telegram
                 PeerType = "user",
                 UserId = call.UserId,
                 Title = "Incoming call",
+                IconText = "?",
             };
+        }
+
+        /// <summary>
+        /// Replaces the placeholder with whoever is actually calling.
+        ///
+        /// Nothing depends on this succeeding - the call works either way, and the
+        /// page is already usable - so a failed lookup leaves the placeholder rather
+        /// than reporting anything.
+        /// </summary>
+        private async System.Threading.Tasks.Task ResolveIncomingNameAsync(long userId)
+        {
+            if (userId == 0) return;
+
+            ChatViewModel peer = null;
+            try
+            {
+                peer = await TelegramService.Instance.GetPrivateChatAsync(userId);
+            }
+            catch (Exception)
+            {
+            }
+
+            if (peer == null || string.IsNullOrEmpty(peer.Title)) return;
+
+            // The call may have been answered, declined or replaced meanwhile.
+            if (_incoming == null || _incoming.UserId != userId) return;
+
+            _peer = peer;
+            ApplyPeer(peer);
+
+            // The ringing notification is showing the same placeholder. Re-showing it
+            // under the same tag replaces it rather than stacking a second one.
+            if (_incoming.State == "callStatePending" && !_incoming.IsOutgoing)
+            {
+                Notifications.IncomingCallToast.Refresh(_incoming.Id, peer.Title);
+            }
         }
 
         private void DurationTimer_Tick(object sender, object e)
