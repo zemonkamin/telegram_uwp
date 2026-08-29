@@ -13,22 +13,17 @@ namespace Telegram
     public sealed partial class CallPage : Page
     {
         private ChatViewModel _peer;
-        private TelegramCallInfo _call;
-        private DispatcherTimer _pollTimer;
+        private CallInfo _call;
         private DispatcherTimer _durationTimer;
         private DateTime _callStartedUtc;
         private bool _ending;
         private bool _backRequestedAttached;
-        private int _callProtocolAttempt;
-        private bool _retryingProtocol;
+        private bool _subscribed;
+        private CallInfo _incoming;
 
         public CallPage()
         {
             InitializeComponent();
-
-            _pollTimer = new DispatcherTimer();
-            _pollTimer.Interval = TimeSpan.FromSeconds(2);
-            _pollTimer.Tick += PollTimer_Tick;
 
             _durationTimer = new DispatcherTimer();
             _durationTimer.Interval = TimeSpan.FromSeconds(1);
@@ -41,23 +36,48 @@ namespace Telegram
         {
             base.OnNavigatedTo(e);
             ConfigureSystemBackButton(true);
+            // Two ways in, and they differ only at the start. An outgoing call is
+            // navigated to with the chat and places itself; an incoming one is
+            // navigated to with the call that has already arrived, and waits to be
+            // answered. Everything after that is the same screen in the same state.
             _peer = e.Parameter as ChatViewModel;
+            _incoming = e.Parameter as CallInfo;
+
+            if (_incoming != null)
+            {
+                _call = _incoming;
+                _peer = ResolveIncomingPeer(_incoming);
+            }
+
             ApplyPeer(_peer);
+
+            // An incoming call carries a user id and no name, so the page opens with a
+            // placeholder and the real one arrives a moment later. Not awaited: a
+            // ringing phone must be on screen now, not after a round trip.
+            if (_incoming != null)
+            {
+                var ignoredName = ResolveIncomingNameAsync(_incoming.UserId);
+            }
         }
 
-        protected override async void OnNavigatedFrom(NavigationEventArgs e)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
             ConfigureSystemBackButton(false);
             StopTimers();
+
+            if (_subscribed)
+            {
+                TelegramService.Instance.CallStateChanged -= OnCallStateChanged;
+                _subscribed = false;
+            }
 
             if (!_ending && _call != null && !_call.IsDiscarded)
             {
                 try
                 {
                     _ending = true;
-                    var duration = GetCurrentDurationSeconds();
-                    await TelegramService.Instance.DiscardCallAsync(_call, duration);
+                    TelegramService.Instance.HangUpCall();
                 }
                 catch
                 {
@@ -65,13 +85,23 @@ namespace Telegram
             }
         }
 
-        private async void CallPage_Loaded(object sender, RoutedEventArgs e)
+        private void CallPage_Loaded(object sender, RoutedEventArgs e)
         {
             Loaded -= CallPage_Loaded;
 
-            if (_peer == null || _peer.PeerType != "user")
+            if (_incoming == null && (_peer == null || _peer.PeerType != "user"))
             {
                 CallStatusText.Text = "Call unavailable";
+                HangupButton.Content = "close";
+                return;
+            }
+
+            if (!TelegramService.Instance.CallsSupported)
+            {
+                // Honest rather than hopeful. libtgvoip is ARM only, so on a desktop
+                // build there is nothing behind this page and saying "connecting"
+                // would be a lie that never resolves.
+                CallStatusText.Text = "Calls are not available in this build";
                 HangupButton.Content = "close";
                 return;
             }
@@ -81,24 +111,21 @@ namespace Telegram
                 CallStatusText.Text = "Connecting";
                 HangupButton.IsEnabled = true;
 
-                _callProtocolAttempt = 0;
-                _call = await TelegramService.Instance.RequestCallAsync(_peer, _callProtocolAttempt);
-                if (_call == null)
+                TelegramService.Instance.CallStateChanged += OnCallStateChanged;
+                _subscribed = true;
+
+                if (_incoming != null)
                 {
-                    CallStatusText.Text = "Failed to start call";
-                    HangupButton.Content = "close";
+                    ShowAnswerButton(true);
+                    ApplyCallState(_incoming);
                     return;
                 }
 
-                // phone.requestCall may already start the outgoing call on Telegram, but older
-                // layers/devices can return a wrapper we cannot fully parse immediately. Treat
-                // a non-error RPC response as a started outgoing call and keep the UI in the
-                // dialing state instead of showing a false failure. Poll/discard will still work
-                // as soon as the call id/access_hash are present.
-                ApplyCallState(_call);
-
-                if (!_call.IsActive && !_call.IsDiscarded)
-                    _pollTimer.Start();
+                // Nothing is awaited and nothing comes back. TDLib answers with
+                // updateCall, the same way it reports every later change, so the
+                // page waits on the event rather than on the request - which is also
+                // what makes the polling this replaced unnecessary.
+                TelegramService.Instance.StartCall(_peer.UserId);
             }
             catch (Exception ex)
             {
@@ -108,64 +135,89 @@ namespace Telegram
             }
         }
 
-        private async void PollTimer_Tick(object sender, object e)
+        /// <summary>
+        /// Every change to the call, pushed rather than polled.
+        ///
+        /// Already on the UI thread: the client marshals both TDLib updates and
+        /// libtgvoip's own state before raising this.
+        /// </summary>
+        private void OnCallStateChanged(object sender, CallInfo call)
         {
-            if (_call == null || _ending) return;
+            if (call == null || _ending) return;
 
-            try
-            {
-                var fresh = await TelegramService.Instance.GetCallAsync(_call);
-                if (fresh == null) return;
+            _call = call;
 
-                _call = fresh;
+            // Nothing left to answer once it is up or over.
+            if (call.IsActive || call.IsDiscarded) ShowAnswerButton(false);
 
-                if (await RetryWithNextProtocolIfUsefulAsync(_call))
-                    return;
-
-                ApplyCallState(_call);
-
-                if (_call.IsActive || _call.IsDiscarded)
-                    _pollTimer.Stop();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("TG_CALL_PAGE_POLL_ERROR " + ex.GetType().Name + ": " + ex.Message);
-                // Keep the visible call state stable. Polling is opportunistic and must not blank the page.
-            }
+            ApplyCallState(call);
         }
 
-        private async System.Threading.Tasks.Task<bool> RetryWithNextProtocolIfUsefulAsync(TelegramCallInfo call)
+        private void AnswerButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_retryingProtocol || _ending || call == null || !call.IsDiscarded)
-                return false;
-            if (!string.Equals(call.DiscardReason, "missed", StringComparison.OrdinalIgnoreCase))
-                return false;
+            ShowAnswerButton(false);
+            CallStatusText.Text = "Connecting";
 
-            var max = TelegramService.Instance.CallProtocolVariantCount;
-            if (_callProtocolAttempt + 1 >= max)
-                return false;
+            TelegramService.Instance.AcceptCall();
+        }
 
-            _retryingProtocol = true;
+        private void ShowAnswerButton(bool visible)
+        {
+            AnswerButton.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            AnswerColumn.Width = new GridLength(visible ? 1 : 0, visible ? GridUnitType.Star : GridUnitType.Pixel);
+        }
+
+        /// <summary>
+        /// A stand-in peer for an incoming call.
+        ///
+        /// The call carries a user id and nothing else - no name, no avatar - so the
+        /// page shows what it has rather than waiting for a lookup that would delay
+        /// a ringing phone.
+        /// </summary>
+        private static ChatViewModel ResolveIncomingPeer(CallInfo call)
+        {
+            return new ChatViewModel
+            {
+                PeerType = "user",
+                UserId = call.UserId,
+                Title = "Incoming call",
+                IconText = "?",
+            };
+        }
+
+        /// <summary>
+        /// Replaces the placeholder with whoever is actually calling.
+        ///
+        /// Nothing depends on this succeeding - the call works either way, and the
+        /// page is already usable - so a failed lookup leaves the placeholder rather
+        /// than reporting anything.
+        /// </summary>
+        private async System.Threading.Tasks.Task ResolveIncomingNameAsync(long userId)
+        {
+            if (userId == 0) return;
+
+            ChatViewModel peer = null;
             try
             {
-                _pollTimer.Stop();
-                _callProtocolAttempt++;
-                CallStatusText.Text = "Retrying connection";
-                Debug.WriteLine("TG_CALL_PROTOCOL_RETRY next=" + _callProtocolAttempt.ToString());
-                _call = await TelegramService.Instance.RequestCallAsync(_peer, _callProtocolAttempt);
-                ApplyCallState(_call);
-                if (_call != null && !_call.IsActive && !_call.IsDiscarded)
-                    _pollTimer.Start();
-                return true;
+                peer = await TelegramService.Instance.GetPrivateChatAsync(userId);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine("TG_CALL_PROTOCOL_RETRY_ERROR " + ex.GetType().Name + ": " + ex.Message);
-                return false;
             }
-            finally
+
+            if (peer == null || string.IsNullOrEmpty(peer.Title)) return;
+
+            // The call may have been answered, declined or replaced meanwhile.
+            if (_incoming == null || _incoming.UserId != userId) return;
+
+            _peer = peer;
+            ApplyPeer(peer);
+
+            // The ringing notification is showing the same placeholder. Re-showing it
+            // under the same tag replaces it rather than stacking a second one.
+            if (_incoming.State == "callStatePending" && !_incoming.IsOutgoing)
             {
-                _retryingProtocol = false;
+                Notifications.IncomingCallToast.Refresh(_incoming.Id, peer.Title);
             }
         }
 
@@ -199,7 +251,7 @@ namespace Telegram
             try
             {
                 if (_call != null && !_call.IsDiscarded)
-                    await TelegramService.Instance.DiscardCallAsync(_call, GetCurrentDurationSeconds());
+                    TelegramService.Instance.HangUpCall();
             }
             catch
             {
@@ -248,7 +300,7 @@ namespace Telegram
             }
         }
 
-        private void ApplyCallState(TelegramCallInfo call)
+        private void ApplyCallState(CallInfo call)
         {
             if (call == null)
             {
@@ -266,11 +318,21 @@ namespace Telegram
 
             if (call.IsActive)
             {
+                // Ready means Telegram considers the call up. That is not the same
+                // as audio flowing, and showing a running duration before the media
+                // layer has connected tells the user the call is working when it may
+                // not be - so the timer starts on Established, not before.
+                if (!string.Equals(call.MediaState, "Established", StringComparison.OrdinalIgnoreCase))
+                {
+                    CallStatusText.Text = string.IsNullOrEmpty(call.MediaState)
+                        ? "Connecting"
+                        : "Connecting - " + call.MediaState.ToLowerInvariant();
+                    return;
+                }
+
                 if (_callStartedUtc == DateTime.MinValue)
                 {
-                    _callStartedUtc = call.StartDate > 0
-                        ? FromUnixTimeSecondsUtc(call.StartDate)
-                        : DateTime.UtcNow;
+                    _callStartedUtc = DateTime.UtcNow;
                     _durationTimer.Start();
                 }
 
@@ -278,9 +340,9 @@ namespace Telegram
                 return;
             }
 
-            if (call.IsAccepted)
+            if (call.State == "callStatePending")
             {
-                CallStatusText.Text = "Connecting";
+                CallStatusText.Text = call.IsOutgoing ? "Ringing" : "Incoming call";
                 return;
             }
 
@@ -301,16 +363,8 @@ namespace Telegram
             return "Ended: " + reason;
         }
 
-        private int GetCurrentDurationSeconds()
-        {
-            if (_callStartedUtc == DateTime.MinValue) return 0;
-            var seconds = (int)(DateTime.UtcNow - _callStartedUtc).TotalSeconds;
-            return seconds < 0 ? 0 : seconds;
-        }
-
         private void StopTimers()
         {
-            if (_pollTimer != null) _pollTimer.Stop();
             if (_durationTimer != null) _durationTimer.Stop();
         }
 
@@ -342,18 +396,6 @@ namespace Telegram
             if (value.TotalHours >= 1)
                 return ((int)value.TotalHours).ToString() + ":" + value.Minutes.ToString("00") + ":" + value.Seconds.ToString("00");
             return value.Minutes.ToString() + ":" + value.Seconds.ToString("00");
-        }
-
-        private static DateTime FromUnixTimeSecondsUtc(int seconds)
-        {
-            try
-            {
-                return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(seconds);
-            }
-            catch
-            {
-                return DateTime.UtcNow;
-            }
         }
 
         private static string BuildErrorStatus(Exception ex)

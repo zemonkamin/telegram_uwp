@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3" IgnorableNamespaces="uap uap3 mp">
-  <Identity Name="cf58f5e5-17d1-44a1-899f-0076989a54b4" Publisher="CN=zemonkamin" Version="1.1.1.0" />
+  <Identity Name="cf58f5e5-17d1-44a1-899f-0076989a54b4" Publisher="CN=zemonkamin" Version="1.1.28.0" />
   <mp:PhoneIdentity PhoneProductId="cf58f5e5-17d1-44a1-899f-0076989a54b4" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Telegram</DisplayName>
@@ -9,6 +9,15 @@
   </Properties>
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+    <!-- Required by libtgvoip.dll, which imports MSVCP140_APP.dll,
+         VCRUNTIME140_APP.dll and vccorlib140_app.dll. Declared by hand rather than
+         through an SDKReference: the VCLibs extension SDK on a modern build machine
+         declares MinVersion 14.0.33519.0 and ships no ARM32 payload, so an
+         SDKReference would demand a runtime the phone can never have.
+
+         14.0.22929.0 is the first 14.0 release, so any VCLibs a device carries
+         satisfies it. The device supplies the runtime; nothing ships in the package. -->
+    <PackageDependency Name="Microsoft.VCLibs.140.00" MinVersion="14.0.22929.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
   </Dependencies>
   <Resources>
     <Resource Language="x-generate" />

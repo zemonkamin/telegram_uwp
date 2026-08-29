@@ -515,34 +515,25 @@ namespace Telegram.Services
             return chat;
         }
 
-        public int CallProtocolVariantCount
+        public bool CallsSupported { get { return _client.CallsSupported; } }
+
+        /// <summary>Every call change, already on the UI thread.</summary>
+        public event EventHandler<CallInfo> CallStateChanged
         {
-            get { return _client.CallProtocolVariantCount; }
+            add { _client.CallStateChanged += value; }
+            remove { _client.CallStateChanged -= value; }
         }
 
-        public async Task<TelegramCallInfo> RequestCallAsync(ChatViewModel peer)
+        public void StartCall(long userId) { _client.StartCall(userId); }
+
+        public async Task<bool> CanCallUserAsync(long userId)
         {
-            return await RequestCallAsync(peer, 0);
+            return await RunTdLibAsync(() => _client.CanCallUserAsync(userId));
         }
 
-        public async Task<TelegramCallInfo> RequestCallAsync(ChatViewModel peer, int protocolIndex)
-        {
-            return await RunTdLibAsync(() => _client.RequestCallAsync(peer, protocolIndex));
-        }
+        public void AcceptCall() { _client.AcceptCall(); }
 
-        public async Task<TelegramCallInfo> GetCallAsync(TelegramCallInfo call)
-        {
-            return await RunTdLibAsync(() => _client.GetCallAsync(call));
-        }
-
-        public async Task DiscardCallAsync(TelegramCallInfo call, int durationSeconds)
-        {
-            await RunTdLibAsync(async delegate
-            {
-                await _client.DiscardCallAsync(call, durationSeconds);
-                return true;
-            });
-        }
+        public void HangUpCall() { _client.HangUpCall(); }
 
         public async Task<List<ChatMessageViewModel>> GetHistoryAsync(ChatViewModel chat, int limit)
         {
@@ -1060,33 +1051,6 @@ namespace Telegram.Services
         public TelegramCloudPasswordRequiredException(string message) : base(message) { }
     }
 
-    public sealed class TelegramCallInfo
-    {
-        public long Id { get; set; }
-        public long AccessHash { get; set; }
-        public string State { get; set; }
-        public bool IsAccepted { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDiscarded { get; set; }
-        public string DiscardReason { get; set; }
-        public int StartDate { get; set; }
-        public bool IsIncomingRequested { get; set; }
-        public long AdminId { get; set; }
-        public long ParticipantId { get; set; }
-        public int ProtocolIndex { get; set; }
-        public string ProtocolName { get; set; }
-
-        public byte[] LocalA { get; set; }
-        public byte[] LocalGA { get; set; }
-        public byte[] RemoteGB { get; set; }
-        public byte[] RemoteGAHash { get; set; }
-        public byte[] DhP { get; set; }
-        public int DhG { get; set; }
-        public byte[] AuthKey { get; set; }
-        public long KeyFingerprint { get; set; }
-        public long RemoteKeyFingerprint { get; set; }
-        public bool IsConfirmed { get; set; }
-    }
 
     public sealed class TelegramLinkTarget
     {

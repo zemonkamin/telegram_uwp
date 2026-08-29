@@ -17,7 +17,7 @@ using Windows.Storage.FileProperties;
 
 namespace Telegram.Services
 {
-    internal sealed class TdLibTelegramClient
+    internal sealed partial class TdLibTelegramClient
     {
         public event EventHandler<long> NewMessageArrived;
         public event EventHandler<long> MessageContentUpdated;
@@ -82,10 +82,6 @@ namespace Telegram.Services
             Proxy = ProxySettings.Load();
         }
 
-        public int CallProtocolVariantCount
-        {
-            get { return 1; }
-        }
 
         public async Task StartAsync()
         {
@@ -2823,22 +2819,58 @@ namespace Telegram.Services
             }
         }
 
-        public async Task<TelegramCallInfo> RequestCallAsync(ChatViewModel peer)
+        /// <summary>
+        /// Whether this build can place calls at all.
+        ///
+        /// False on x86: libtgvoip has no desktop build, so the UI reports that
+        /// rather than starting something that can never connect.
+        /// </summary>
+        public bool CallsSupported
         {
-            return await RequestCallAsync(peer, 0);
+            get
+            {
+                bool supported = false;
+                QueryCallsSupported(ref supported);
+                return supported;
+            }
         }
 
-        public async Task<TelegramCallInfo> RequestCallAsync(ChatViewModel peer, int protocolIndex)
+        /// <summary>Raised whenever a call changes, already on the UI thread.</summary>
+        public event EventHandler<CallInfo> CallStateChanged;
+
+        internal void RaiseCallStateChanged(CallInfo call)
         {
-            await Task.Delay(1);
-            return new TelegramCallInfo { State = "unsupported", IsDiscarded = true, DiscardReason = "TDLib call control is not available in this build.", ProtocolIndex = protocolIndex, ProtocolName = "TDLib" };
+            var handler = CallStateChanged;
+            if (handler != null) handler(this, call);
         }
 
-        public async Task<TelegramCallInfo> GetCallAsync(TelegramCallInfo call)
+        /// <summary>
+        /// Places a call to a user.
+        ///
+        /// Nothing is returned. TDLib answers with updateCall, the same way it
+        /// reports every later change, so the caller waits on the event rather than
+        /// on this - which also means an incoming call and an outgoing one arrive
+        /// through exactly one path.
+        /// </summary>
+        public void StartCall(long userId)
         {
-            await Task.Delay(1);
-            return call;
+            StartCallCore(userId);
         }
+
+        public void AcceptCall()
+        {
+            AcceptCallCore();
+        }
+
+        public void HangUpCall()
+        {
+            HangUpCallCore();
+        }
+
+        partial void QueryCallsSupported(ref bool supported);
+        partial void StartCallCore(long userId);
+        partial void AcceptCallCore();
+        partial void HangUpCallCore();
 
         public async Task SendChatActionAsync(ChatViewModel peer, string actionKind)
         {
@@ -2854,11 +2886,6 @@ namespace Telegram.Services
                 ["action"] = new JObject { ["@type"] = MapChatActionType(actionKind) }
             };
             SendFireAndForget(request);
-        }
-
-        public async Task DiscardCallAsync(TelegramCallInfo call, int durationSeconds)
-        {
-            await Task.Delay(1);
         }
 
         private async Task<List<ChatMessageViewModel>> GetHistoryCoreAsync(ChatViewModel peer, int offsetMessageId, int limit, bool since)
@@ -3094,6 +3121,21 @@ namespace Telegram.Services
             user = await SendAsync(new JObject { ["@type"] = "getUser", ["user_id"] = userId }, TimeSpan.FromSeconds(10));
             UpdateUser(user);
             return user;
+        }
+
+        /// <summary>
+        /// Whether this person can be called right now.
+        ///
+        /// Asked of the server rather than inferred, because the answer depends on
+        /// their privacy settings - calls from contacts only, from nobody, or blocked
+        /// - none of which the client can see any other way.
+        /// </summary>
+        public async Task<bool> CanCallUserAsync(long userId)
+        {
+            if (userId == 0) return false;
+
+            var full = await GetUserFullInfoAsync(userId);
+            return full != null && ReadBool(full["can_be_called"]);
         }
 
         private async Task<JObject> GetUserFullInfoAsync(long userId)
@@ -3733,6 +3775,14 @@ namespace Telegram.Services
             return result;
         }
 
+        /// <summary>
+        /// Implemented only where libtgvoip exists.
+        ///
+        /// A partial method with no implementation compiles to nothing at all - the
+        /// call site below disappears on x86 rather than needing a guard around it.
+        /// </summary>
+        partial void OnUpdateCall(JObject update);
+
         private void SendFireAndForget(JObject request)
         {
             if (_client == IntPtr.Zero) return;
@@ -3863,6 +3913,11 @@ namespace Telegram.Services
                 return;
             }
 
+            if (type == "updateCall")
+            {
+                OnUpdateCall(update);
+                return;
+            }
             if (type == "updateNewChat")
             {
                 UpdateChat(update["chat"] as JObject);
@@ -4328,6 +4383,11 @@ namespace Telegram.Services
             return new ChatViewModel
             {
                 PeerId = id,
+
+                // A private chat's id is the user's id, and leaving this at zero is
+                // what greyed the call button out everywhere this path built the chat:
+                // every check for "is there somebody to call" reads UserId.
+                UserId = id,
                 PeerType = self ? "self" : "user",
                 PeerKey = (self ? "self" : "user") + ":" + id.ToString(),
                 Title = name,
@@ -4372,6 +4432,13 @@ namespace Telegram.Services
         private void ApplyUserFullInfo(ChatViewModel vm, JObject full)
         {
             if (vm == null || full == null) return;
+
+            // Before anything that can return early below: this is the only place the
+            // answer arrives, and a call button that is grey for want of a field
+            // nobody read is worse than no button.
+            vm.CanBeCalled = ReadBool(full["can_be_called"]);
+            vm.CallAvailabilityKnown = true;
+
             vm.Bio = ReadFormattedTextToken(full["bio"], vm.Bio ?? "");
             if (string.IsNullOrEmpty(vm.Bio))
                 vm.Bio = ReadString(full["description"], "");

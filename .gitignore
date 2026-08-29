@@ -1,0 +1,34 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Aa]pp[Pp]ackages/
+*.appx
+*.appxbundle
+*.appxsym
+*.appxupload
+
+# Visual Studio per-user state
+.vs/
+*.user
+*.suo
+*.userprefs
+*.cache
+
+# NuGet
+packages/
+*.nupkg
+
+# Test and profiling output
+TestResults/
+*.VisualState.xml
+*.coverage
+
+# Signing material. A test certificate is per-machine and its key must never be
+# committed; the manifest names the publisher, which is enough to regenerate one.
+*.pfx
+
+# Local session and credentials. Anything holding an api_id, an api_hash or a
+# logged-in session belongs on the machine that made it and nowhere else.
+Secrets.cs
+tdlib/
+*.binlog

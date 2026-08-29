@@ -76,6 +76,20 @@
                             FontSize="13"
                             Foreground="{ThemeResource TelegramSecondaryTextBrush}"
                             TextWrapping="WrapWholeWords" />
+                        <Button
+                            x:Name="BackgroundDiagnosticsButton"
+                            Margin="0,8,0,0"
+                            Click="BackgroundDiagnosticsButton_Click"
+                            Content="Show background log" />
+                        <TextBlock
+                            x:Name="BackgroundDiagnosticsText"
+                            Margin="0,8,0,0"
+                            FontFamily="Consolas"
+                            FontSize="11"
+                            Foreground="{ThemeResource TelegramSecondaryTextBrush}"
+                            IsTextSelectionEnabled="True"
+                            TextWrapping="Wrap"
+                            Visibility="Collapsed" />
 
                         <Rectangle Height="1" Margin="0,18,0,18" Fill="{ThemeResource TelegramSeparatorBrush}" />
 

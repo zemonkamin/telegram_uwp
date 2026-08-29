@@ -101,6 +101,35 @@
     </Reference>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'ARM'">
+    <!-- The call layer, compiled only where libtgvoip exists. Calls are a phone
+         feature and the component has no x86 build, so the desktop configuration
+         simply does not contain this code rather than containing a disabled copy
+         of it. -->
+    <Compile Include="Services\CallsSignalling.cs" />
+    <Compile Include="Services\CallsService.cs" />
+    <Compile Include="Services\TdLibTelegramClient.Calls.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'ARM'">
+    <!-- libtgvoip: Telegram's voice stack - Opus, jitter buffer, echo cancellation,
+         audio capture and playback - as a C++/CX WinRT component, prebuilt for ARM32.
+
+         ARM only, and conditioned rather than universal: there is no x86 build of the
+         component and no reason to want one, since calls are a phone feature. The
+         desktop configuration keeps building without it.
+
+         Referenced as a plain winmd on purpose, NOT via SDKReference. An SDKReference
+         injects a Microsoft.VCLibs.140.00 dependency whose MinVersion comes from
+         whichever VCLibs extension SDK is on the build machine - a modern one declares
+         14.0.33519.0, which no Windows 10 Mobile device can satisfy, and which ships no
+         ARM32 payload. The dependency is declared by hand in Package.appxmanifest
+         instead, at a version any phone already carries. -->
+    <Reference Include="libtgvoip">
+      <HintPath>$(ProjectDir)Libraries\libtgvoip\$(Platform)\libtgvoip.winmd</HintPath>
+      <Implementation>libtgvoip.dll</Implementation>
+    </Reference>
+    <ReferenceCopyLocalPaths Include="$(ProjectDir)Libraries\libtgvoip\$(Platform)\libtgvoip.dll" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -221,6 +250,10 @@
     <Compile Include="Services\ProxySettings.cs" />
     <Compile Include="Services\ProxyProfile.cs" />
     <Compile Include="Services\TdLibTelegramClient.cs" />
+    <Compile Include="Services\CallInfo.cs" />
+    <Compile Include="Services\IncomingCallWatcher.cs" />
+    <Compile Include="Services\AppVisibility.cs" />
+    <Compile Include="Notifications\IncomingCallToast.cs" />
     <Compile Include="Services\TelegramService.cs" />
     <Compile Include="Services\TelegramSettings.cs" />
     <Compile Include="Services\ActiveChatService.cs" />

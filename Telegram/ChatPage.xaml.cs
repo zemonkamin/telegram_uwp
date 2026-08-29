@@ -1522,6 +1522,21 @@ namespace Telegram
         private void Header_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (IsFromHeaderMoreButton(e.OriginalSource as DependencyObject)) return;
+
+            // Kept as a backstop after the real fix, which is in the markup.
+            //
+            // This handler used to sit on the whole header bar, so every tap anywhere
+            // along the top - including the "..." button's own column and the area a
+            // dismissed flyout hands its tap back to - arrived here and navigated to
+            // the profile. Guarding after the fact never covered every route: the
+            // menu alternated with the profile page no matter how many checks were
+            // added, because the header was still the thing being tapped.
+            //
+            // It is now attached to the avatar and the name only, which is also where
+            // a tap means "show me this person" to begin with. The button's column is
+            // simply not a navigation target any more.
+            if (_headerFlyoutOpen) return;
+            if ((DateTime.UtcNow - _headerFlyoutClosedUtc).TotalMilliseconds < 400) return;
             if (_chat == null || Frame == null) return;
             if (_chat.IsForumTopic)
             {
@@ -1658,12 +1673,46 @@ namespace Telegram
             };
         }
 
+        /// <summary>
+        /// Stops the tap reaching the header behind the button.
+        ///
+        /// The whole header bar is tappable and opens the profile, and this button
+        /// sits inside it. A Click does not mark the Tapped event handled, so one tap
+        /// on the dots opened the menu and navigated to the profile at the same time
+        /// - whichever won looked like the menu behaving differently on different
+        /// taps for the same chat.
+        /// </summary>
+        private void HeaderMoreButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         private void HeaderMoreButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as FrameworkElement;
             if (button == null || _chat == null) return;
 
             var flyout = new MenuFlyout();
+
+            // Calling comes first, and only for a person. There is nobody at the far
+            // end of a channel, and a group call is a different feature entirely -
+            // offering "call" there would fail in a way that looks like a bug.
+            MenuFlyoutItem callAction = null;
+            if (CanCallThisChat())
+            {
+                callAction = new MenuFlyoutItem();
+                callAction.Text = "call";
+                callAction.Click += CallMenuItem_Click;
+
+                // Shown greyed rather than hidden while the answer is unknown. The
+                // item appearing a moment after the menu opens would be worse than an
+                // item that starts disabled and enables itself.
+                callAction.IsEnabled = _chat.CallAvailabilityKnown && _chat.CanBeCalled;
+
+                flyout.Items.Add(callAction);
+                flyout.Items.Add(new MenuFlyoutSeparator());
+            }
+
             var notificationAction = new MenuFlyoutItem();
             ApplyNotificationMenuText(notificationAction, _chat.IsMuted, false);
             notificationAction.Click += NotificationMenuItem_Click;
@@ -1679,10 +1728,83 @@ namespace Telegram
                 action.Click += ChatActionMenuItem_Click;
                 flyout.Items.Add(action);
             }
+            _headerFlyoutOpen = true;
+            flyout.Opened += delegate { _headerFlyoutOpen = true; };
+            flyout.Closed += delegate
+            {
+                _headerFlyoutOpen = false;
+                _headerFlyoutClosedUtc = DateTime.UtcNow;
+            };
+
             flyout.ShowAt(button);
 
             var refreshVersion = ++_notificationMenuRefreshVersion;
             var ignored = RefreshNotificationMenuItemAsync(notificationAction, refreshVersion);
+            var ignoredCall = RefreshCallMenuItemAsync(callAction, refreshVersion);
+        }
+
+        /// <summary>
+        /// Settles whether the call item is usable, once the server has answered.
+        ///
+        /// can_be_called comes from userFullInfo, which the chat list does not carry -
+        /// so the menu opens before the answer is known and this fills it in. Versioned
+        /// against the same counter as the notification item so a menu opened, closed
+        /// and reopened does not have an older reply arrive and re-enable the wrong
+        /// item.
+        /// </summary>
+        private async System.Threading.Tasks.Task RefreshCallMenuItemAsync(MenuFlyoutItem item, int version)
+        {
+            if (item == null || _chat == null) return;
+            if (_chat.CallAvailabilityKnown)
+            {
+                // Already answered for this chat; the item was built with it.
+                return;
+            }
+
+            long userId = _chat.UserId;
+            bool callable;
+            try
+            {
+                callable = await TelegramService.Instance.CanCallUserAsync(userId);
+            }
+            catch (Exception)
+            {
+                // No answer is not a yes: dialling would only fail later and less
+                // clearly.
+                callable = false;
+            }
+
+            if (version != _notificationMenuRefreshVersion) return;
+            if (_chat == null || _chat.UserId != userId) return;
+
+            _chat.CanBeCalled = callable;
+            _chat.CallAvailabilityKnown = true;
+            item.IsEnabled = callable;
+        }
+
+        /// <summary>
+        /// Whether this chat is one that can be called.
+        ///
+        /// A person, and a build that has the voice stack in it. On a desktop build
+        /// libtgvoip is absent, so the item is left out rather than offered and then
+        /// apologised for.
+        /// </summary>
+        private bool CanCallThisChat()
+        {
+            if (_chat == null || _chat.PeerType != "user") return false;
+            if (_chat.UserId == 0) return false;
+
+            return TelegramService.Instance.CallsSupported;
+        }
+
+        private void CallMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (!CanCallThisChat()) return;
+            if (!_chat.CanBeCalled) return;
+
+            // The page places the call itself, so that an outgoing call and an
+            // incoming one both arrive at the same screen in the same state.
+            Frame.Navigate(typeof(CallPage), _chat);
         }
 
         private async System.Threading.Tasks.Task RefreshNotificationMenuItemAsync(MenuFlyoutItem item, int version)
@@ -1737,6 +1859,9 @@ namespace Telegram
                 _notificationToggleRunning = false;
             }
         }
+
+        private bool _headerFlyoutOpen;
+        private DateTime _headerFlyoutClosedUtc = DateTime.MinValue;
 
         private bool IsFromHeaderMoreButton(DependencyObject source)
         {
